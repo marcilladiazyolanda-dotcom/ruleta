@@ -33,34 +33,32 @@ input { width: 60px; }
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  position: relative;
   border: 4px solid black;
-  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-/* SEGMENTOS */
-.slice {
+/* CAPA DE NÚMEROS */
+.labels {
+  width: 100%;
+  height: 100%;
   position: absolute;
-  width: 50%;
-  height: 50%;
-  top: 50%;
+  top: 0;
+  left: 0;
+}
+
+/* NÚMEROS */
+.label {
+  position: absolute;
   left: 50%;
-  transform-origin: 0% 0%;
-}
-
-.slice span {
-  position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 50%;
   transform-origin: center;
-  color: white;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
+  color: white;
+  text-shadow: 0 0 3px black;
 }
-
-.red { background: #c62828; }
-.black { background: #000; }
-.green { background: #2e7d32; }
 
 .panel {
   display: flex;
@@ -93,6 +91,7 @@ button {
 
   <div class="wheel-container">
     <div id="wheel" class="wheel"></div>
+    <div id="labels" class="labels"></div>
   </div>
 
   <div class="panel">
@@ -108,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
+const labels = document.getElementById('labels');
 
 // TABLA
 for (let i = 0; i <= 36; i++) {
@@ -121,11 +121,8 @@ for (let i = 0; i <= 36; i++) {
 
 window.generar = function() {
 
-  wheel.innerHTML = '';
-
   let numeros = [];
 
-  // meter números según peso
   for (let i = 0; i <= 36; i++) {
     let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
 
@@ -141,20 +138,16 @@ window.generar = function() {
     return;
   }
 
-  // completar hasta 37 slots
   while (numeros.length < 37) {
     numeros = numeros.concat(numeros);
   }
 
   numeros = numeros.slice(0, 37);
 
-  // separar el 0
+  // 0 fijo + resto aleatorio
   const otros = numeros.filter(n => n !== 0);
-
-  // mezclar
   otros.sort(() => Math.random() - 0.5);
 
-  // reconstruir (0 primero)
   numeros = [0, ...otros.slice(0, 36)];
 
   dibujar(numeros);
@@ -170,40 +163,52 @@ function dibujar(numeros) {
   const total = numeros.length;
   const angle = 360 / total;
 
+  let gradient = "";
   let toggle = true;
 
   numeros.forEach((num, i) => {
 
-    const slice = document.createElement('div');
-    slice.className = 'slice';
-
     let color;
 
     if (num === 0) {
-      color = 'green';
+      color = "#2e7d32";
       toggle = true;
     } else {
-      color = toggle ? 'red' : 'black';
+      color = toggle ? "#c62828" : "#000";
       toggle = !toggle;
     }
 
-    slice.classList.add(color);
+    gradient += `${color} ${i * angle}deg ${(i + 1) * angle}deg,`;
+  });
 
-    slice.style.transform = `
-      rotate(${i * angle}deg)
-      skewY(${90 - angle}deg)
-    `;
+  gradient = gradient.slice(0, -1);
 
-    const label = document.createElement('span');
+  wheel.style.background = `conic-gradient(${gradient})`;
+
+  // LIMPIAR NÚMEROS
+  labels.innerHTML = "";
+
+  const radius = wheel.offsetWidth / 2;
+  const r = radius * 0.75;
+
+  numeros.forEach((num, i) => {
+
+    const midAngle = (i * angle) + angle / 2;
+    const rad = (midAngle - 90) * Math.PI / 180;
+
+    const x = radius + r * Math.cos(rad);
+    const y = radius + r * Math.sin(rad);
+
+    const label = document.createElement("div");
+    label.className = "label";
     label.textContent = num;
 
-    label.style.transform = `
-      skewY(-${90 - angle}deg)
-      rotate(${angle / 2}deg)
-    `;
+    label.style.left = x + "px";
+    label.style.top = y + "px";
 
-    slice.appendChild(label);
-    wheel.appendChild(slice);
+    label.style.transform = "translate(-50%, -50%)";
+
+    labels.appendChild(label);
   });
 }
 
