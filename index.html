@@ -21,12 +21,12 @@ input { width: 60px; }
   gap: 40px;
 }
 
-/* CONTENEDOR QUE GIRA */
+/* CONTENEDOR */
 .wheel-wrapper {
   width: 320px;
   height: 320px;
   position: relative;
-  transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 4s ease-out;
 }
 
 /* RULETA */
@@ -36,7 +36,6 @@ input { width: 60px; }
   border-radius: 50%;
   border: 6px solid black;
   position: absolute;
-  transform: rotate(-90deg); /* 🔥 CLAVE: 0 ARRIBA */
 }
 
 /* NÚMEROS */
@@ -133,9 +132,10 @@ window.generar = function() {
     }
   }
 
+  // aleatorio
   otros.sort(() => Math.random() - 0.5);
 
-  // 🔥 0 SIEMPRE PRIMERO
+  // 🔥 0 SIEMPRE EL PRIMERO
   let numeros = [0, ...otros.slice(0, 36)];
 
   window.numeros = numeros;
@@ -154,12 +154,13 @@ function dibujar(numeros) {
   let gradient = "";
   let toggle = true;
 
+  // 🎨 COLORES
   numeros.forEach((num, i) => {
 
     let color;
 
     if (num === 0) {
-      color = "#2e7d32"; // VERDE
+      color = "#2e7d32";
       toggle = true;
     } else {
       color = toggle ? "#c62828" : "#000";
@@ -169,26 +170,24 @@ function dibujar(numeros) {
     gradient += `${color} ${i * angle}deg ${(i + 1) * angle}deg,`;
   });
 
-  gradient = gradient.slice(0, -1);
-  wheel.style.background = `conic-gradient(${gradient})`;
+  wheel.style.background = `conic-gradient(from -90deg, ${gradient.slice(0, -1)})`;
 
   labels.innerHTML = "";
 
-  const radius = 140; // 🔥 AJUSTADO PARA CENTRADO PERFECTO
+  const radius = 135;
 
   numeros.forEach((num, i) => {
 
-    const midAngle = (i * angle) + angle / 2;
+    const midAngle = (i * angle) + angle / 2 - 90;
 
     const label = document.createElement("div");
     label.className = "label";
     label.textContent = num;
 
-    // 🔥 COMPENSAMOS EL -90deg DE LA RULETA
     label.style.transform = `
-      rotate(${midAngle - 90}deg)
+      rotate(${midAngle}deg)
       translate(${radius}px)
-      rotate(-${midAngle - 90}deg)
+      rotate(-${midAngle}deg)
     `;
 
     labels.appendChild(label);
