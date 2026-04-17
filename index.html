@@ -120,25 +120,24 @@ for (let i = 0; i <= 36; i++) {
 
 window.generar = function() {
 
-  let numeros = [];
+  let otros = [];
 
   for (let i = 1; i <= 36; i++) {
     let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
-
     for (let j = 0; j < count; j++) {
-      numeros.push(i);
+      otros.push(i);
     }
   }
 
   // aleatorio
-  numeros.sort(() => Math.random() - 0.5);
+  otros.sort(() => Math.random() - 0.5);
 
-  // 🔥 0 SIEMPRE EL PRIMERO
-  numeros = [0, ...numeros.slice(0, 36)];
-
-  dibujar(numeros);
+  // 🔥 0 SIEMPRE PRIMERO
+  let numeros = [0, ...otros.slice(0, 36)];
 
   window.numeros = numeros;
+
+  dibujar(numeros);
 
   document.getElementById('pantalla1').classList.add('hidden');
   document.getElementById('pantalla2').classList.remove('hidden');
@@ -146,7 +145,8 @@ window.generar = function() {
 
 function dibujar(numeros) {
 
-  const angle = 360 / 37;
+  const total = 37;
+  const angle = 360 / total;
 
   let gradient = "";
   let toggle = true;
@@ -156,7 +156,7 @@ function dibujar(numeros) {
     let color;
 
     if (num === 0) {
-      color = "#2e7d32";
+      color = "#2e7d32"; // VERDE
       toggle = true;
     } else {
       color = toggle ? "#c62828" : "#000";
@@ -171,7 +171,6 @@ function dibujar(numeros) {
 
   labels.innerHTML = "";
 
-  const center = 150;
   const radius = 120;
 
   numeros.forEach((num, i) => {
@@ -182,17 +181,18 @@ function dibujar(numeros) {
     label.className = "label";
     label.textContent = num;
 
+    // 🔥 ESTO ES LA CLAVE
     label.style.transform = `
       rotate(${midAngle}deg)
       translate(${radius}px)
-      rotate(90deg)
+      rotate(-${midAngle}deg)
     `;
 
     labels.appendChild(label);
   });
 }
 
-// 🎡 GIRO REAL
+// 🎡 GIRO
 window.girar = function() {
 
   const numeros = window.numeros;
