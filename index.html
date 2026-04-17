@@ -196,34 +196,35 @@ function dibujar(bloques) {
 }
 
 // 🎡 GIRO CON BOLA
+let ballRotation = 0;
+
 function girar() {
 
-  let bolsa = window.bolsa;
-  let bloques = window.bloques;
+  const bolsa = window.bolsa;
+  const bloques = window.bloques;
 
-  let result = bolsa[Math.floor(Math.random() * bolsa.length)];
+  const result = bolsa[Math.floor(Math.random() * bolsa.length)];
 
-  let ganador = bloques.find(b => b.num === result);
+  const ganador = bloques.find(b => b.num === result);
 
-  // 🎯 Ángulo REAL del segmento (ajustado a la ruleta)
-  let targetAngle = ganador.midAngle - 90;
+  // 🎯 Ángulo exacto del centro del segmento
+  const target = (ganador.midAngle - 90 + 360) % 360;
 
-  // 🔁 RESET bola (para que siempre anime)
-  ball.style.transition = "none";
-  ball.style.transform = "rotate(0deg) translate(145px)";
-  ball.offsetHeight;
+  // 🎡 queremos que termine EXACTAMENTE ahí
+  const vueltas = 6;
 
-  // 🎡 GIRO SOLO DE LA BOLA
-  ball.style.transition = "transform 2s cubic-bezier(0.2, 0.8, 0.2, 1)";
+  // 🎯 posición final absoluta
+  const finalRotation = ballRotation + (vueltas * 360) + target;
 
-  let vueltas = 6;
-
-  let finalAngle = (vueltas * 360) + targetAngle;
-
+  // 🔁 aplicar animación
+  ball.style.transition = "transform 2.2s cubic-bezier(0.2, 0.8, 0.2, 1)";
   ball.style.transform = `
-    rotate(${finalAngle}deg)
+    rotate(${finalRotation}deg)
     translate(145px)
   `;
+
+  // 🔥 guardar estado real
+  ballRotation = finalRotation % 360;
 
   document.getElementById('resultado').innerText = "Resultado: " + result;
 }
