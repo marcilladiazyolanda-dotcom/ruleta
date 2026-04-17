@@ -2,39 +2,82 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Ruleta Configurable</title>
+  <title>Ruleta Casino</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    table { border-collapse: collapse; margin-bottom: 20px; }
+    body { font-family: Arial; text-align: center; }
+    table { border-collapse: collapse; margin: 20px auto; }
     td, th { border: 1px solid #ccc; padding: 5px 10px; }
     input { width: 60px; }
+
     .hidden { display: none; }
-    .wheel { display: flex; flex-wrap: wrap; max-width: 400px; }
-    .slot { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid #000; margin: 2px; }
-    button { margin-top: 10px; }
+
+    /* RUEDA */
+    .wheel-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 30px auto;
+    }
+
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      border: 5px solid #000;
+    }
+
+    .segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+    }
+
+    .highlight {
+      background: gold !important;
+      color: black;
+      font-weight: bold;
+    }
+
+    button { margin-top: 15px; padding: 10px; }
   </style>
 </head>
 <body>
 
-<h2>Pantalla 1: Configuración</h2>
-<table id="configTable">
-  <tr><th>Número</th><th>Posiciones</th></tr>
-</table>
-<button onclick="generarRuleta()">Generar Ruleta</button>
+<!-- PANTALLA 1 -->
+<div id="pantalla1">
+  <h2>Configuración de Ruleta</h2>
+  <table id="configTable">
+    <tr><th>Número</th><th>Posiciones</th></tr>
+  </table>
+  <button onclick="generarRuleta()">Generar Ruleta</button>
+</div>
 
+<!-- PANTALLA 2 -->
 <div id="pantalla2" class="hidden">
-  <h2>Pantalla 2: Ruleta</h2>
-  <div id="ruleta" class="wheel"></div>
+  <h2>Ruleta</h2>
+  <div class="wheel-container">
+    <div id="wheel" class="wheel"></div>
+  </div>
   <button onclick="tirarRuleta()">Girar</button>
   <h3 id="resultado"></h3>
 </div>
 
 <script>
   const tabla = document.getElementById('configTable');
-  const ruletaDiv = document.getElementById('ruleta');
+  const wheel = document.getElementById('wheel');
   let ruletaArray = [];
 
-  // Crear tabla 0-36
+  // Crear tabla
   for (let i = 0; i <= 36; i++) {
     const row = document.createElement('tr');
     row.innerHTML = `
@@ -46,36 +89,57 @@
 
   function generarRuleta() {
     ruletaArray = [];
-    ruletaDiv.innerHTML = '';
+    wheel.innerHTML = '';
 
     for (let i = 0; i <= 36; i++) {
       const valor = parseInt(document.getElementById(`num-${i}`).value) || 0;
-
       for (let j = 0; j < valor; j++) {
         ruletaArray.push(i);
       }
     }
 
     if (ruletaArray.length === 0) {
-      alert('No hay números en la ruleta');
+      alert('No hay números');
       return;
     }
 
-    // Dibujar ruleta
-    ruletaArray.forEach(num => {
-      const div = document.createElement('div');
-      div.className = 'slot';
-      div.textContent = num;
-      ruletaDiv.appendChild(div);
-    });
+    dibujarRuleta();
 
+    document.getElementById('pantalla1').classList.add('hidden');
     document.getElementById('pantalla2').classList.remove('hidden');
   }
 
+  function dibujarRuleta() {
+    const total = ruletaArray.length;
+    const angulo = 360 / total;
+
+    ruletaArray.forEach((num, index) => {
+      const div = document.createElement('div');
+      div.className = 'segment';
+      div.style.transform = `rotate(${index * angulo}deg) skewY(${90 - angulo}deg)`;
+      div.style.background = index % 2 === 0 ? '#d32f2f' : '#000';
+      div.dataset.numero = num;
+
+      const span = document.createElement('span');
+      span.style.transform = `skewY(-${90 - angulo}deg) rotate(${angulo / 2}deg)`;
+      span.textContent = num;
+
+      div.appendChild(span);
+      wheel.appendChild(div);
+    });
+  }
+
   function tirarRuleta() {
-    const randomIndex = Math.floor(Math.random() * ruletaArray.length);
-    const resultado = ruletaArray[randomIndex];
+    const resultado = ruletaArray[Math.floor(Math.random() * ruletaArray.length)];
     document.getElementById('resultado').textContent = 'Resultado: ' + resultado;
+
+    // Quitar resaltados
+    document.querySelectorAll('.segment').forEach(el => el.classList.remove('highlight'));
+
+    // Resaltar todos los segmentos con ese número
+    document.querySelectorAll(`.segment[data-numero='${resultado}']`).forEach(el => {
+      el.classList.add('highlight');
+    });
   }
 </script>
 
