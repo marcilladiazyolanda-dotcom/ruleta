@@ -1,208 +1,146 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Ruleta Profesional</title>
+  <meta charset="UTF-8">
+  <title>Ruleta Casino</title>
+  <style>
+    body { font-family: Arial; text-align: center; }
+    table { border-collapse: collapse; margin: 20px auto; }
+    td, th { border: 1px solid #ccc; padding: 5px 10px; }
+    input { width: 60px; }
 
-<style>
-body { font-family: Arial; text-align: center; }
+    .hidden { display: none; }
 
-.hidden { display: none; }
+    /* RUEDA */
+    .wheel-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 30px auto;
+    }
 
-table { border-collapse: collapse; margin: 20px auto; }
-td, th { border: 1px solid #ccc; padding: 5px 10px; }
-input { width: 60px; }
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      border: 5px solid #000;
+    }
 
-.wheel-container {
-  position: relative;
-  width: 400px;
-  height: 400px;
-  margin: 40px auto;
-}
+    .segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+    }
 
-.wheel {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  position: relative;
-  border: 6px solid #000;
-}
+    .highlight {
+      background: gold !important;
+      color: black;
+      font-weight: bold;
+    }
 
-/* CENTRO */
-.wheel::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 20px;
-  height: 20px;
-  background: black;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.slice {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  top: 50%;
-  left: 50%;
-  transform-origin: 0% 0%;
-}
-
-/* TEXTO */
-.slice span {
-  position: absolute;
-  top: 10%;
-  left: 60%;
-  transform-origin: center;
-  font-size: 11px;
-  font-weight: bold;
-  color: white;
-  pointer-events: none;
-}
-
-.red { background: #c62828; }
-.black { background: #000; }
-.green { background: #2e7d32; }
-
-/* RESALTADO */
-.highlight {
-  box-shadow: 0 0 10px gold, 0 0 20px gold;
-  z-index: 2;
-}
-
-button { padding: 10px; margin-top: 10px; }
-</style>
+    button { margin-top: 15px; padding: 10px; }
+  </style>
 </head>
-
 <body>
 
 <!-- PANTALLA 1 -->
 <div id="pantalla1">
-<h2>Configuración</h2>
-<table id="tabla"></table>
-<button onclick="generar()">Generar Ruleta</button>
+  <h2>Configuración de Ruleta</h2>
+  <table id="configTable">
+    <tr><th>Número</th><th>Posiciones</th></tr>
+  </table>
+  <button onclick="generarRuleta()">Generar Ruleta</button>
 </div>
 
 <!-- PANTALLA 2 -->
 <div id="pantalla2" class="hidden">
-<h2>Ruleta</h2>
-
-<div class="wheel-container">
-  <div id="wheel" class="wheel"></div>
-</div>
-
-<button onclick="girar()">Girar</button>
-<h3 id="resultado"></h3>
+  <h2>Ruleta</h2>
+  <div class="wheel-container">
+    <div id="wheel" class="wheel"></div>
+  </div>
+  <button onclick="tirarRuleta()">Girar</button>
+  <h3 id="resultado"></h3>
 </div>
 
 <script>
-const tabla = document.getElementById('tabla');
-const wheel = document.getElementById('wheel');
-let slots = [];
+  const tabla = document.getElementById('configTable');
+  const wheel = document.getElementById('wheel');
+  let ruletaArray = [];
 
-// TABLA 0-36
-for (let i = 0; i <= 36; i++) {
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>${i}</td>
-    <td><input type="number" min="0" value="0" id="n-${i}"></td>
-  `;
-  tabla.appendChild(row);
-}
-
-function generar() {
-  slots = [];
-  wheel.innerHTML = '';
-
-  let suma = 0;
-
+  // Crear tabla
   for (let i = 0; i <= 36; i++) {
-    let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
-
-    if (count < 0) count = 0;
-
-    suma += count;
-
-    for (let j = 0; j < count; j++) {
-      slots.push(i);
-    }
-  }
-
-  // VALIDACIONES
-  if (suma === 0) {
-    alert('La suma no puede ser 0');
-    return;
-  }
-
-  if (suma > 36) {
-    alert('La suma no puede superar 36');
-    return;
-  }
-
-  // NORMALIZAR A 36
-  let finalSlots = [];
-
-  while (finalSlots.length < 36) {
-    finalSlots.push(...slots);
-  }
-
-  finalSlots = finalSlots.slice(0, 36);
-
-  // OPCIONAL: mezclar para que no queden bloques
-  finalSlots.sort(() => Math.random() - 0.5);
-
-  window.finalSlots = finalSlots;
-
-  dibujar(finalSlots);
-
-  document.getElementById('pantalla1').classList.add('hidden');
-  document.getElementById('pantalla2').classList.remove('hidden');
-}
-
-function dibujar(data) {
-  const angle = 360 / 36;
-
-  data.forEach((num, i) => {
-    const slice = document.createElement('div');
-    slice.className = 'slice';
-
-    let color = 'black';
-    if (num === 0) color = 'green';
-    else if (num % 2 === 0) color = 'black';
-    else color = 'red';
-
-    slice.classList.add(color);
-
-    slice.style.transform = `rotate(${i * angle}deg) skewY(${90 - angle}deg)`;
-    slice.dataset.num = num;
-
-    const label = document.createElement('span');
-    label.textContent = num;
-
-    label.style.transform = `
-      skewY(-${90 - angle}deg)
-      rotate(${angle / 2}deg)
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${i}</td>
+      <td><input type="number" min="0" value="0" id="num-${i}"></td>
     `;
+    tabla.appendChild(row);
+  }
 
-    slice.appendChild(label);
-    wheel.appendChild(slice);
-  });
-}
+  function generarRuleta() {
+    ruletaArray = [];
+    wheel.innerHTML = '';
 
-function girar() {
-  const data = window.finalSlots;
-  const result = data[Math.floor(Math.random() * data.length)];
+    for (let i = 0; i <= 36; i++) {
+      const valor = parseInt(document.getElementById(`num-${i}`).value) || 0;
+      for (let j = 0; j < valor; j++) {
+        ruletaArray.push(i);
+      }
+    }
 
-  document.getElementById('resultado').textContent = 'Resultado: ' + result;
+    if (ruletaArray.length === 0) {
+      alert('No hay números');
+      return;
+    }
 
-  document.querySelectorAll('.slice').forEach(s => s.classList.remove('highlight'));
+    dibujarRuleta();
 
-  document.querySelectorAll(`.slice[data-num='${result}']`).forEach(s => {
-    s.classList.add('highlight');
-  });
-}
+    document.getElementById('pantalla1').classList.add('hidden');
+    document.getElementById('pantalla2').classList.remove('hidden');
+  }
+
+  function dibujarRuleta() {
+    const total = ruletaArray.length;
+    const angulo = 360 / total;
+
+    ruletaArray.forEach((num, index) => {
+      const div = document.createElement('div');
+      div.className = 'segment';
+      div.style.transform = `rotate(${index * angulo}deg) skewY(${90 - angulo}deg)`;
+      div.style.background = index % 2 === 0 ? '#d32f2f' : '#000';
+      div.dataset.numero = num;
+
+      const span = document.createElement('span');
+      span.style.transform = `skewY(-${90 - angulo}deg) rotate(${angulo / 2}deg)`;
+      span.textContent = num;
+
+      div.appendChild(span);
+      wheel.appendChild(div);
+    });
+  }
+
+  function tirarRuleta() {
+    const resultado = ruletaArray[Math.floor(Math.random() * ruletaArray.length)];
+    document.getElementById('resultado').textContent = 'Resultado: ' + resultado;
+
+    // Quitar resaltados
+    document.querySelectorAll('.segment').forEach(el => el.classList.remove('highlight'));
+
+    // Resaltar todos los segmentos con ese número
+    document.querySelectorAll(`.segment[data-numero='${resultado}']`).forEach(el => {
+      el.classList.add('highlight');
+    });
+  }
 </script>
 
 </body>
