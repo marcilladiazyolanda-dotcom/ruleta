@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+ labels.appendChild(label);
+  });
+}<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -21,7 +23,6 @@ input { width: 60px; }
   gap: 40px;
 }
 
-/* CONTENEDOR */
 .wheel-wrapper {
   width: 320px;
   height: 320px;
@@ -29,7 +30,6 @@ input { width: 60px; }
   transition: transform 4s ease-out;
 }
 
-/* RULETA */
 .wheel {
   width: 100%;
   height: 100%;
@@ -38,7 +38,6 @@ input { width: 60px; }
   position: absolute;
 }
 
-/* NÚMEROS */
 .labels {
   position: absolute;
   width: 100%;
@@ -49,14 +48,14 @@ input { width: 60px; }
   position: absolute;
   left: 50%;
   top: 50%;
+  width: 24px;
+  margin-left: -12px;
+  text-align: center;
   font-size: 13px;
   font-weight: bold;
   color: white;
   text-shadow: 0 0 4px black;
   transform-origin: center;
-  width: 24px;
-  text-align: center;
-  margin-left: -12px;
 }
 
 .panel {
@@ -132,10 +131,9 @@ window.generar = function() {
     }
   }
 
-  // aleatorio
   otros.sort(() => Math.random() - 0.5);
 
-  // 🔥 0 SIEMPRE EL PRIMERO
+  // 🔥 0 SIEMPRE PRIMERO
   let numeros = [0, ...otros.slice(0, 36)];
 
   window.numeros = numeros;
@@ -154,7 +152,6 @@ function dibujar(numeros) {
   let gradient = "";
   let toggle = true;
 
-  // 🎨 COLORES
   numeros.forEach((num, i) => {
 
     let color;
@@ -170,6 +167,7 @@ function dibujar(numeros) {
     gradient += `${color} ${i * angle}deg ${(i + 1) * angle}deg,`;
   });
 
+  // 🔥 MISMO ORIGEN PARA TODO
   wheel.style.background = `conic-gradient(from -90deg, ${gradient.slice(0, -1)})`;
 
   labels.innerHTML = "";
@@ -178,7 +176,8 @@ function dibujar(numeros) {
 
   numeros.forEach((num, i) => {
 
-    const midAngle = (i * angle) + angle / 2 - 90;
+    // 🔥 EXACTAMENTE EL MISMO ANGULO QUE EL GRADIENT
+    const midAngle = (-90) + (i * angle) + (angle / 2);
 
     const label = document.createElement("div");
     label.className = "label";
@@ -190,11 +189,9 @@ function dibujar(numeros) {
       rotate(-${midAngle}deg)
     `;
 
-    labels.appendChild(label);
-  });
-}
+   
 
-// 🎡 GIRO
+// GIRO
 window.girar = function() {
 
   const numeros = window.numeros;
