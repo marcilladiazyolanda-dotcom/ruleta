@@ -14,7 +14,6 @@ table { border-collapse: collapse; margin: 20px auto; }
 td, th { border: 1px solid #ccc; padding: 5px 10px; }
 input { width: 60px; }
 
-/* LAYOUT */
 .layout {
   display: flex;
   justify-content: center;
@@ -22,20 +21,21 @@ input { width: 60px; }
   gap: 40px;
 }
 
-/* RULETA */
-.wheel-container {
+/* CONTENEDOR QUE GIRA TODO */
+.wheel-wrapper {
   width: 300px;
   height: 300px;
   position: relative;
+  transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* RULETA */
 .wheel {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   border: 5px solid black;
   position: absolute;
-  transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* NÚMEROS */
@@ -56,7 +56,6 @@ input { width: 60px; }
   transform-origin: center;
 }
 
-/* PANEL */
 .panel {
   display: flex;
   flex-direction: column;
@@ -85,7 +84,8 @@ button {
 <h2>Ruleta</h2>
 
 <div class="layout">
-  <div class="wheel-container">
+
+  <div class="wheel-wrapper" id="wheelWrapper">
     <div id="wheel" class="wheel"></div>
     <div id="labels" class="labels"></div>
   </div>
@@ -94,6 +94,7 @@ button {
     <button onclick="girar()">Girar</button>
     <h3 id="resultado"></h3>
   </div>
+
 </div>
 </div>
 
@@ -103,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
+const wrapper = document.getElementById('wheelWrapper');
 
 let currentRotation = 0;
 
@@ -120,26 +122,19 @@ window.generar = function() {
 
   let numeros = [];
 
-  for (let i = 0; i <= 36; i++) {
+  for (let i = 1; i <= 36; i++) {
     let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
-
-    if (i === 0 && count > 1) count = 1;
 
     for (let j = 0; j < count; j++) {
       numeros.push(i);
     }
   }
 
-  while (numeros.length < 37) {
-    numeros = numeros.concat(numeros);
-  }
+  // aleatorio
+  numeros.sort(() => Math.random() - 0.5);
 
-  numeros = numeros.slice(0, 37);
-
-  const otros = numeros.filter(n => n !== 0);
-  otros.sort(() => Math.random() - 0.5);
-
-  numeros = [0, ...otros.slice(0, 36)];
+  // 🔥 0 SIEMPRE EL PRIMERO
+  numeros = [0, ...numeros.slice(0, 36)];
 
   dibujar(numeros);
 
@@ -151,13 +146,13 @@ window.generar = function() {
 
 function dibujar(numeros) {
 
-  const total = numeros.length;
-  const angle = 360 / total;
+  const angle = 360 / 37;
 
   let gradient = "";
   let toggle = true;
 
   numeros.forEach((num, i) => {
+
     let color;
 
     if (num === 0) {
@@ -176,9 +171,8 @@ function dibujar(numeros) {
 
   labels.innerHTML = "";
 
-  const size = 300;
-  const center = size / 2;
-  const radius = center * 0.85;
+  const center = 150;
+  const radius = 120;
 
   numeros.forEach((num, i) => {
 
@@ -198,7 +192,7 @@ function dibujar(numeros) {
   });
 }
 
-// 🎡 GIRAR CON ANIMACIÓN
+// 🎡 GIRO REAL
 window.girar = function() {
 
   const numeros = window.numeros;
@@ -207,9 +201,9 @@ window.girar = function() {
   const vueltas = 5;
   const extra = Math.random() * 360;
 
-  currentRotation += (vueltas * 360) + extra;
+  currentRotation += vueltas * 360 + extra;
 
-  wheel.style.transform = `rotate(${currentRotation}deg)`;
+  wrapper.style.transform = `rotate(${currentRotation}deg)`;
 
   document.getElementById('resultado').textContent = 'Resultado: ' + result;
 }
