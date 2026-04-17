@@ -91,9 +91,48 @@ function generar() {
   slots = [];
   wheel.innerHTML = '';
 
-  // construir exactamente 36 posiciones
+  let suma = 0;
+
+  // construir slots según inputs
   for (let i = 0; i <= 36; i++) {
     let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
+
+    if (count < 0) count = 0; // seguridad
+
+    suma += count;
+
+    for (let j = 0; j < count; j++) {
+      slots.push(i);
+    }
+  }
+
+  // VALIDACIÓN CLAVE
+  if (suma === 0) {
+    alert('La suma no puede ser 0');
+    return;
+  }
+
+  if (suma > 36) {
+    alert('La suma total no puede superar 36');
+    return;
+  }
+
+  // NORMALIZAR a 36 posiciones manteniendo proporciones
+  let finalSlots = [];
+
+  while (finalSlots.length < 36) {
+    finalSlots.push(...slots);
+  }
+
+  finalSlots = finalSlots.slice(0, 36);
+
+  dibujar(finalSlots);
+
+  window.finalSlots = finalSlots;
+
+  document.getElementById('pantalla1').classList.add('hidden');
+  document.getElementById('pantalla2').classList.remove('hidden');
+}`).value) || 0;
 
     for (let j = 0; j < count; j++) {
       slots.push(i);
@@ -136,7 +175,27 @@ function dibujar(data) {
 
     slice.classList.add(color);
 
+    // posicion geométrica
     slice.style.transform = `rotate(${i * angle}deg) skewY(${90 - angle}deg)`;
+    slice.dataset.num = num;
+
+    // CONTENIDO VISUAL DEL NÚMERO
+    const label = document.createElement('div');
+    label.textContent = num;
+
+    label.style.position = 'absolute';
+    label.style.left = '65%';
+    label.style.top = '10%';
+    label.style.transform = `rotate(${angle / 2}deg) skewY(-${90 - angle}deg)`;
+    label.style.fontSize = '12px';
+    label.style.fontWeight = 'bold';
+    label.style.color = 'white';
+    label.style.pointerEvents = 'none';
+
+    slice.appendChild(label);
+    wheel.appendChild(slice);
+  });
+}deg) skewY(${90 - angle}deg)`;
     slice.dataset.num = num;
 
     const label = document.createElement('span');
