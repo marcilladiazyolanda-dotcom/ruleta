@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 
-// TABLA CON TODOS LOS VALORES EN 1
+// TABLA (todos a 1)
 for (let i = 0; i <= 36; i++) {
   const row = document.createElement('tr');
   row.innerHTML = `
@@ -132,13 +132,12 @@ window.generar = function() {
     return;
   }
 
-  // 🔥 LÍMITE ACTUALIZADO A 37
   if (suma > 37) {
     alert('La suma no puede superar 37');
     return;
   }
 
-  // ORDENAR PARA QUE EL 0 SEA EL PRIMERO
+  // ordenar para que el 0 sea el primero
   config.sort((a, b) => {
     if (a.num === 0) return -1;
     if (b.num === 0) return 1;
@@ -153,7 +152,7 @@ window.generar = function() {
   document.getElementById('pantalla2').classList.remove('hidden');
 }
 
-// DIBUJAR RULETA
+// 🎡 DIBUJAR RULETA
 function dibujar(config, total) {
 
   let gradientParts = [];
@@ -189,6 +188,7 @@ function dibujar(config, total) {
   wheel.innerHTML = "";
 
   let currentAngle = 0;
+  const radius = wheel.offsetWidth / 2;
 
   gradientParts.forEach(part => {
     const angle = (part.weight / total) * 360;
@@ -203,10 +203,13 @@ function dibujar(config, total) {
     label.style.fontSize = "10px";
     label.style.color = "white";
     label.style.fontWeight = "bold";
+    label.style.textAlign = "center";
+    label.style.width = "20px";
+    label.style.marginLeft = "-10px";
 
     label.style.transform = `
       rotate(${currentAngle + angle / 2}deg)
-      translate(75px)
+      translate(${radius * 0.65}px)
       rotate(90deg)
     `;
 
