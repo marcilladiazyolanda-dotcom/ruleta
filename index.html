@@ -12,7 +12,6 @@ table { border-collapse: collapse; margin: 20px auto; }
 td, th { border: 1px solid #ccc; padding: 5px 10px; }
 input { width: 60px; }
 
-/* RUEDA MUCHO MÁS PEQUEÑA */
 .wheel-container {
   width: 220px;
   height: 220px;
@@ -27,7 +26,6 @@ input { width: 60px; }
   border: 4px solid #000;
 }
 
-/* CENTRO */
 .wheel::after {
   content: '';
   position: absolute;
@@ -51,14 +49,13 @@ input { width: 60px; }
 
 .slice span {
   position: absolute;
-  top: 28%;
+  top: 25%;
   left: 60%;
   transform-origin: center;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: bold;
   color: white;
   text-shadow: 0 0 3px black;
-  pointer-events: none;
 }
 
 .red { background: #c62828; }
@@ -67,39 +64,26 @@ input { width: 60px; }
 
 .highlight {
   box-shadow: 0 0 8px gold, 0 0 15px gold;
-  z-index: 2;
 }
 
-button {
-  padding: 10px;
-  margin-top: 15px;
-}
-
+button { padding: 10px; margin-top: 15px; }
 </style>
 </head>
 
 <body>
 
-<!-- PANTALLA 1 -->
 <div id="pantalla1">
 <h2>Configuración</h2>
 <table id="tabla"></table>
 <button onclick="generar()">Generar Ruleta</button>
 </div>
 
-<!-- PANTALLA 2 -->
 <div id="pantalla2" class="hidden">
 <h2>Ruleta</h2>
-
 <div class="wheel-container">
   <div id="wheel" class="wheel"></div>
 </div>
-
-<!-- BOTÓN FUERA DE LA RUEDA -->
-<div>
-  <button onclick="girar()">Girar</button>
-</div>
-
+<button onclick="girar()">Girar</button>
 <h3 id="resultado"></h3>
 </div>
 
@@ -108,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
-let slots = [];
 
 // TABLA
 for (let i = 0; i <= 36; i++) {
@@ -121,21 +104,19 @@ for (let i = 0; i <= 36; i++) {
 }
 
 window.generar = function() {
-  slots = [];
   wheel.innerHTML = '';
 
+  let config = [];
   let suma = 0;
 
   for (let i = 0; i <= 36; i++) {
     let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
 
-    // SOLO UN 0 (regla de ruleta)
     if (i === 0 && count > 1) count = 1;
 
-    suma += count;
-
-    for (let j = 0; j < count; j++) {
-      slots.push(i);
+    if (count > 0) {
+      config.push({ num: i, weight: count });
+      suma += count;
     }
   }
 
@@ -149,45 +130,36 @@ window.generar = function() {
     return;
   }
 
-  let finalSlots = [];
+  window.config = config;
 
-  while (finalSlots.length < 36) {
-    finalSlots.push(...slots);
-  }
-
-  finalSlots = finalSlots.slice(0, 36);
-
-  finalSlots.sort(() => Math.random() - 0.5);
-
-  window.finalSlots = finalSlots;
-
-  dibujar(finalSlots);
+  dibujar(config, suma);
 
   document.getElementById('pantalla1').classList.add('hidden');
   document.getElementById('pantalla2').classList.remove('hidden');
 }
 
-function dibujar(data) {
-  const angle = 360 / 36;
+function dibujar(config, total) {
+  let currentAngle = 0;
+  let toggle = false;
 
-  let toggle = false; // alternar rojo/negro
+  config.forEach(item => {
+    const angle = (item.weight / total) * 360;
 
-  data.forEach((num, i) => {
     const slice = document.createElement('div');
     slice.className = 'slice';
 
-    if (num === 0) {
+    if (item.num === 0) {
       slice.classList.add('green');
     } else {
       toggle = !toggle;
       slice.classList.add(toggle ? 'red' : 'black');
     }
 
-    slice.style.transform = `rotate(${i * angle}deg) skewY(${90 - angle}deg)`;
-    slice.dataset.num = num;
+    slice.style.transform = `rotate(${currentAngle}deg) skewY(${90 - angle}deg)`;
+    slice.dataset.num = item.num;
 
     const label = document.createElement('span');
-    label.textContent = num;
+    label.textContent = item.num;
 
     label.style.transform = `
       skewY(-${90 - angle}deg)
@@ -196,12 +168,27 @@ function dibujar(data) {
 
     slice.appendChild(label);
     wheel.appendChild(slice);
+
+    currentAngle += angle;
   });
 }
 
 window.girar = function() {
-  const data = window.finalSlots;
-  const result = data[Math.floor(Math.random() * data.length)];
+  const config = window.config;
+
+  const total = config.reduce((acc, c) => acc + c.weight, 0);
+  let rand = Math.random() * total;
+
+  let acumulado = 0;
+  let result = null;
+
+  for (let item of config) {
+    acumulado += item.weight;
+    if (rand <= acumulado) {
+      result = item.num;
+      break;
+    }
+  }
 
   document.getElementById('resultado').textContent = 'Resultado: ' + result;
 
