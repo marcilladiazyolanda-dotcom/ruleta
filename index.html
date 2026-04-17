@@ -48,7 +48,7 @@ body { font-family: Arial; }
   text-shadow: 0 0 4px black;
 }
 
-/* 🎯 BOLA */
+/* 🎯 BOLA */ira
 .ball {
   position: absolute;
   width: 12px;
@@ -205,34 +205,23 @@ function girar() {
 
   let ganador = bloques.find(b => b.num === result);
 
-  // 🎯 Ángulo exacto del número
-  let targetAngle = ganador.midAngle;
+  // 🎯 Ángulo REAL del segmento (ajustado a la ruleta)
+  let targetAngle = ganador.midAngle - 90;
 
-  // 🎡 GIRO DE RULETA (más rápido)
-  let vueltas = 6;
-  let rotacionFinal = currentRotation + (vueltas * 360) + (360 - targetAngle);
-
-  // aplicar rotación
-  wrapper.style.transform = `rotate(${rotacionFinal}deg)`;
-
-  // guardar estado
-  currentRotation = rotacionFinal % 360;
-
-  // 🟢 RESET bola (CLAVE)
+  // 🔁 RESET bola (para que siempre anime)
   ball.style.transition = "none";
   ball.style.transform = "rotate(0deg) translate(145px)";
-
-  // forzar reflow
   ball.offsetHeight;
 
-  // 🎯 GIRO BOLA (contrario y preciso)
-  ball.style.transition = "transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1)";
+  // 🎡 GIRO SOLO DE LA BOLA
+  ball.style.transition = "transform 2s cubic-bezier(0.2, 0.8, 0.2, 1)";
 
-  let ballVueltas = 8;
-  let ballFinal = (ballVueltas * 360) + targetAngle;
+  let vueltas = 6;
+
+  let finalAngle = (vueltas * 360) + targetAngle;
 
   ball.style.transform = `
-    rotate(${ballFinal}deg)
+    rotate(${finalAngle}deg)
     translate(145px)
   `;
 
