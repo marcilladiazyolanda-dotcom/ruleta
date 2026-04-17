@@ -203,20 +203,36 @@ function girar() {
 
   let result = bolsa[Math.floor(Math.random() * bolsa.length)];
 
-  // encontrar bloque ganador
   let ganador = bloques.find(b => b.num === result);
 
-  let angle = ganador.midAngle;
+  // 🎯 Ángulo exacto del número
+  let targetAngle = ganador.midAngle;
 
-  // RUEDA (rápida)
-  currentRotation += 360 * 6 + Math.random() * 360;
-  wrapper.style.transform = `rotate(${currentRotation}deg)`;
+  // 🎡 GIRO DE RULETA (más rápido)
+  let vueltas = 6;
+  let rotacionFinal = currentRotation + (vueltas * 360) + (360 - targetAngle);
 
-  // BOLA (sentido contrario + cae en el número)
-  let ballAngle = (360 * 8) - angle;
+  // aplicar rotación
+  wrapper.style.transform = `rotate(${rotacionFinal}deg)`;
+
+  // guardar estado
+  currentRotation = rotacionFinal % 360;
+
+  // 🟢 RESET bola (CLAVE)
+  ball.style.transition = "none";
+  ball.style.transform = "rotate(0deg) translate(145px)";
+
+  // forzar reflow
+  ball.offsetHeight;
+
+  // 🎯 GIRO BOLA (contrario y preciso)
+  ball.style.transition = "transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1)";
+
+  let ballVueltas = 8;
+  let ballFinal = (ballVueltas * 360) + targetAngle;
 
   ball.style.transform = `
-    rotate(${ballAngle}deg)
+    rotate(${ballFinal}deg)
     translate(145px)
   `;
 
