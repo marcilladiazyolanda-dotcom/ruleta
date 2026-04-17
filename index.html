@@ -14,7 +14,6 @@ table { border-collapse: collapse; margin: 20px auto; }
 td, th { border: 1px solid #ccc; padding: 5px 10px; }
 input { width: 60px; }
 
-/* LAYOUT */
 .layout {
   display: flex;
   justify-content: center;
@@ -22,7 +21,6 @@ input { width: 60px; }
   gap: 40px;
 }
 
-/* RULETA */
 .wheel-container {
   width: 220px;
   height: 220px;
@@ -48,7 +46,6 @@ input { width: 60px; }
   transform: translate(-50%, -50%);
 }
 
-/* PANEL */
 .panel {
   display: flex;
   flex-direction: column;
@@ -80,12 +77,10 @@ button {
 
 <div class="layout">
 
-  <!-- IZQUIERDA -->
   <div class="wheel-container">
     <div id="wheel" class="wheel"></div>
   </div>
 
-  <!-- DERECHA -->
   <div class="panel">
     <button onclick="girar()">Girar</button>
     <h3 id="resultado"></h3>
@@ -137,7 +132,7 @@ window.generar = function() {
     return;
   }
 
-  // ordenar para que el 0 sea el primero
+  // Ordenar con 0 primero
   config.sort((a, b) => {
     if (a.num === 0) return -1;
     if (b.num === 0) return 1;
@@ -152,7 +147,7 @@ window.generar = function() {
   document.getElementById('pantalla2').classList.remove('hidden');
 }
 
-// 🎡 DIBUJAR RULETA
+// 🎡 DIBUJAR PERFECTO (CORREGIDO)
 function dibujar(config, total) {
 
   let gradientParts = [];
@@ -188,30 +183,38 @@ function dibujar(config, total) {
   wheel.innerHTML = "";
 
   let currentAngle = 0;
+
   const radius = wheel.offsetWidth / 2;
+  const centerX = radius;
+  const centerY = radius;
 
   gradientParts.forEach(part => {
+
     const angle = (part.weight / total) * 360;
+    const midAngle = currentAngle + angle / 2;
+    const rad = (midAngle - 90) * Math.PI / 180;
+
+    const r = radius * 0.65;
+
+    const x = centerX + r * Math.cos(rad);
+    const y = centerY + r * Math.sin(rad);
 
     const label = document.createElement("div");
     label.textContent = part.num;
 
     label.style.position = "absolute";
-    label.style.left = "50%";
-    label.style.top = "50%";
-    label.style.transformOrigin = "0 0";
-    label.style.fontSize = "10px";
-    label.style.color = "white";
-    label.style.fontWeight = "bold";
-    label.style.textAlign = "center";
-    label.style.width = "20px";
-    label.style.marginLeft = "-10px";
+    label.style.left = x + "px";
+    label.style.top = y + "px";
 
     label.style.transform = `
-      rotate(${currentAngle + angle / 2}deg)
-      translate(${radius * 0.65}px)
-      rotate(90deg)
+      translate(-50%, -50%)
+      rotate(${midAngle}deg)
     `;
+
+    label.style.fontSize = "11px";
+    label.style.color = "white";
+    label.style.fontWeight = "bold";
+    label.style.textShadow = "0 0 3px black";
 
     wheel.appendChild(label);
 
@@ -219,7 +222,7 @@ function dibujar(config, total) {
   });
 }
 
-// GIRAR
+// 🎯 GIRAR
 window.girar = function() {
   const config = window.config;
 
