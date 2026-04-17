@@ -14,16 +14,15 @@ table { border-collapse: collapse; margin: 20px auto; }
 td, th { border: 1px solid #ccc; padding: 5px 10px; }
 input { width: 60px; }
 
-/* LAYOUT PANTALLA 2 */
+/* LAYOUT */
 .layout {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 40px;
-  margin-top: 20px;
 }
 
-/* RUEDA */
+/* RULETA */
 .wheel-container {
   width: 220px;
   height: 220px;
@@ -34,34 +33,33 @@ input { width: 60px; }
   height: 100%;
   border-radius: 50%;
   position: relative;
-  border: 4px solid #000;
+  border: 4px solid black;
 }
 
 .wheel::after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
   width: 12px;
   height: 12px;
   background: black;
   border-radius: 50%;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* PANEL DERECHO */
+/* PANEL */
 .panel {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
+  align-items: center;
 }
 
 button {
   padding: 10px 20px;
   font-size: 16px;
 }
-
 </style>
 </head>
 
@@ -94,7 +92,6 @@ button {
   </div>
 
 </div>
-
 </div>
 
 <script>
@@ -103,12 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
 const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 
-// TABLA
+// TABLA CON TODOS LOS VALORES EN 1
 for (let i = 0; i <= 36; i++) {
   const row = document.createElement('tr');
   row.innerHTML = `
     <td>${i}</td>
-    <td><input type="number" min="0" value="0" id="n-${i}"></td>
+    <td><input type="number" min="0" value="1" id="n-${i}"></td>
   `;
   tabla.appendChild(row);
 }
@@ -135,10 +132,18 @@ window.generar = function() {
     return;
   }
 
-  if (suma > 36) {
-    alert('La suma no puede superar 36');
+  // 🔥 LÍMITE ACTUALIZADO A 37
+  if (suma > 37) {
+    alert('La suma no puede superar 37');
     return;
   }
+
+  // ORDENAR PARA QUE EL 0 SEA EL PRIMERO
+  config.sort((a, b) => {
+    if (a.num === 0) return -1;
+    if (b.num === 0) return 1;
+    return a.num - b.num;
+  });
 
   window.config = config;
 
@@ -148,43 +153,48 @@ window.generar = function() {
   document.getElementById('pantalla2').classList.remove('hidden');
 }
 
-// 👇 AQUÍ ESTÁ TU FUNCIÓN YA INTEGRADA
+// DIBUJAR RULETA
 function dibujar(config, total) {
-  let currentPercent = 0;
-  let gradient = "";
-  let toggle = false;
+
+  let gradientParts = [];
+  let toggle = true;
 
   config.forEach(item => {
     let percent = (item.weight / total) * 100;
-
     let color;
 
     if (item.num === 0) {
       color = "#2e7d32";
+      toggle = true;
     } else {
-      toggle = !toggle;
       color = toggle ? "#c62828" : "#000";
+      toggle = !toggle;
     }
 
-    gradient += `${color} ${currentPercent}% ${currentPercent + percent}%,`;
+    gradientParts.push({ color, percent, num: item.num, weight: item.weight });
+  });
 
-    currentPercent += percent;
+  let currentPercent = 0;
+  let gradient = "";
+
+  gradientParts.forEach(part => {
+    gradient += `${part.color} ${currentPercent}% ${currentPercent + part.percent}%,`;
+    currentPercent += part.percent;
   });
 
   gradient = gradient.slice(0, -1);
 
   wheel.style.background = `conic-gradient(${gradient})`;
 
-  // LIMPIAR Y AÑADIR NÚMEROS
   wheel.innerHTML = "";
 
   let currentAngle = 0;
 
-  config.forEach(item => {
-    const angle = (item.weight / total) * 360;
+  gradientParts.forEach(part => {
+    const angle = (part.weight / total) * 360;
 
     const label = document.createElement("div");
-    label.textContent = item.num;
+    label.textContent = part.num;
 
     label.style.position = "absolute";
     label.style.left = "50%";
@@ -196,7 +206,7 @@ function dibujar(config, total) {
 
     label.style.transform = `
       rotate(${currentAngle + angle / 2}deg)
-      translate(80px)
+      translate(75px)
       rotate(90deg)
     `;
 
@@ -206,6 +216,7 @@ function dibujar(config, total) {
   });
 }
 
+// GIRAR
 window.girar = function() {
   const config = window.config;
 
