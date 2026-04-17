@@ -21,10 +21,10 @@ input { width: 60px; }
   gap: 40px;
 }
 
-/* CONTENEDOR QUE GIRA TODO */
+/* CONTENEDOR QUE GIRA */
 .wheel-wrapper {
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
   position: relative;
   transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -34,7 +34,7 @@ input { width: 60px; }
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 5px solid black;
+  border: 6px solid black;
   position: absolute;
 }
 
@@ -49,11 +49,14 @@ input { width: 60px; }
   position: absolute;
   left: 50%;
   top: 50%;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   color: white;
-  text-shadow: 0 0 3px black;
+  text-shadow: 0 0 4px black;
   transform-origin: center;
+  width: 22px;
+  text-align: center;
+  margin-left: -11px;
 }
 
 .panel {
@@ -129,7 +132,6 @@ window.generar = function() {
     }
   }
 
-  // aleatorio
   otros.sort(() => Math.random() - 0.5);
 
   // 🔥 0 SIEMPRE PRIMERO
@@ -156,7 +158,7 @@ function dibujar(numeros) {
     let color;
 
     if (num === 0) {
-      color = "#2e7d32"; // VERDE
+      color = "#2e7d32";
       toggle = true;
     } else {
       color = toggle ? "#c62828" : "#000";
@@ -171,7 +173,7 @@ function dibujar(numeros) {
 
   labels.innerHTML = "";
 
-  const radius = 120;
+  const radius = 135; // 🔥 CLAVE PARA ALTURA PERFECTA
 
   numeros.forEach((num, i) => {
 
@@ -181,7 +183,7 @@ function dibujar(numeros) {
     label.className = "label";
     label.textContent = num;
 
-    // 🔥 ESTO ES LA CLAVE
+    // 🔥 CENTRADO PERFECTO EN CADA SEGMENTO
     label.style.transform = `
       rotate(${midAngle}deg)
       translate(${radius}px)
