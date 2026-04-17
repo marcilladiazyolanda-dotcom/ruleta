@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Ruleta Dinámica</title>
+<title>Ruleta PRO</title>
 
 <style>
 body { font-family: Arial; }
@@ -19,7 +19,7 @@ body { font-family: Arial; }
   width: 320px;
   height: 320px;
   position: relative;
-  transition: transform 4s ease-out;
+  transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .wheel {
@@ -48,6 +48,20 @@ body { font-family: Arial; }
   text-shadow: 0 0 4px black;
 }
 
+/* 🎯 BOLA */
+.ball {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  box-shadow: 0 0 6px black;
+  transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 table { margin:auto; }
 input { width: 60px; }
 </style>
@@ -70,6 +84,7 @@ input { width: 60px; }
   <div class="wheel-wrapper" id="wrapper">
     <div id="wheel" class="wheel"></div>
     <div id="labels" class="labels"></div>
+    <div id="ball" class="ball"></div>
   </div>
 
   <div>
@@ -85,10 +100,11 @@ const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
 const wrapper = document.getElementById('wrapper');
+const ball = document.getElementById('ball');
 
 let currentRotation = 0;
 
-// TABLA SEGURA
+// TABLA
 for (let i = 0; i <= 36; i++) {
   const row = document.createElement('tr');
   row.innerHTML = `
@@ -100,13 +116,13 @@ for (let i = 0; i <= 36; i++) {
 
 function generar() {
 
-  labels.innerHTML = ""; // 🔥 IMPORTANTE
+  labels.innerHTML = "";
   let bloques = [];
 
   for (let i = 0; i <= 36; i++) {
     let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
 
-    if (i === 0) count = 1; // 🔥 0 fijo
+    if (i === 0) count = 1;
 
     if (count > 0) {
       bloques.push({ num: i, size: count });
@@ -118,9 +134,11 @@ function generar() {
 
   bloques = [{num:0,size:1}, ...otros];
 
+  window.bloques = bloques;
+
   dibujar(bloques);
 
-  // bolsa resultado
+  // bolsa
   window.bolsa = [];
   bloques.forEach(b => {
     for (let i=0;i<b.size;i++) {
@@ -155,7 +173,6 @@ function dibujar(bloques) {
 
     gradient += `${color} ${current}deg ${current + angle}deg,`;
 
-    // etiqueta
     let mid = current + angle / 2;
 
     let label = document.createElement("div");
@@ -170,21 +187,38 @@ function dibujar(bloques) {
 
     labels.appendChild(label);
 
+    b.midAngle = mid;
+
     current += angle;
   });
 
   wheel.style.background = `conic-gradient(${gradient.slice(0,-1)})`;
 }
 
+// 🎡 GIRO CON BOLA
 function girar() {
 
   let bolsa = window.bolsa;
+  let bloques = window.bloques;
 
   let result = bolsa[Math.floor(Math.random() * bolsa.length)];
 
-  currentRotation += 360 * 5 + Math.random() * 360;
+  // encontrar bloque ganador
+  let ganador = bloques.find(b => b.num === result);
 
+  let angle = ganador.midAngle;
+
+  // RUEDA (rápida)
+  currentRotation += 360 * 6 + Math.random() * 360;
   wrapper.style.transform = `rotate(${currentRotation}deg)`;
+
+  // BOLA (sentido contrario + cae en el número)
+  let ballAngle = (360 * 8) - angle;
+
+  ball.style.transform = `
+    rotate(${ballAngle}deg)
+    translate(145px)
+  `;
 
   document.getElementById('resultado').innerText = "Resultado: " + result;
 }
