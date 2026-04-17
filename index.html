@@ -35,6 +35,7 @@ input { width: 60px; }
   border-radius: 50%;
   border: 5px solid black;
   position: absolute;
+  transition: transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* NÚMEROS */
@@ -103,6 +104,8 @@ const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
 
+let currentRotation = 0;
+
 // TABLA
 for (let i = 0; i <= 36; i++) {
   const row = document.createElement('tr');
@@ -151,7 +154,6 @@ function dibujar(numeros) {
   const total = numeros.length;
   const angle = 360 / total;
 
-  // COLORES
   let gradient = "";
   let toggle = true;
 
@@ -196,9 +198,19 @@ function dibujar(numeros) {
   });
 }
 
+// 🎡 GIRAR CON ANIMACIÓN
 window.girar = function() {
+
   const numeros = window.numeros;
   const result = numeros[Math.floor(Math.random() * numeros.length)];
+
+  const vueltas = 5;
+  const extra = Math.random() * 360;
+
+  currentRotation += (vueltas * 360) + extra;
+
+  wheel.style.transform = `rotate(${currentRotation}deg)`;
+
   document.getElementById('resultado').textContent = 'Resultado: ' + result;
 }
 
