@@ -298,19 +298,19 @@ function createLine(cx,cy,angle,r1,r2,color,w){
 // GIRAR
 function girar(){
 
-  // 🎡 GIRO DE RULETA (más suave, tipo casino)
+  // 🎡 GIRO RULETA
   let spinWheel = 360 * 2 + Math.random() * 180;
-  wheelRotation -= spinWheel;
+  wheelRotation = (wheelRotation - spinWheel) % 360;
 
   svg.style.transition = "transform 4s cubic-bezier(0.15,0.7,0.25,1)";
   svg.style.transform = `rotate(${wheelRotation}deg)`;
 
 
-  // ⚪ GIRO DE LA BOLA (más rápido y en sentido contrario)
+  // ⚪ GIRO BOLA
   let spinBall = 360 * 5 + Math.random() * 360;
-  ballRotation += spinBall;
+  ballRotation = (ballRotation + spinBall) % 360;
 
-  ball.style.transition = "transform 3s ease-out";
+  ball.style.transition = "transform 4s ease-out";
   ball.style.transform = `
     translate(-50%,-50%)
     rotate(${ballRotation}deg)
@@ -318,25 +318,33 @@ function girar(){
   `;
 
 
-  // 🎯 CALCULAR RESULTADO REAL
+  // 🎯 RESULTADO REAL (PRECISO)
   setTimeout(()=>{
 
-    // ángulo final de la bola
-    let finalBall = (ballRotation % 360 + 360) % 360;
+    // 1. Ángulo bola (0–360)
+    let ballAngle = (ballRotation % 360 + 360) % 360;
 
-    // compensar giro de la ruleta
-    let relativeAngle = (finalBall - wheelRotation) % 360;
-    if(relativeAngle < 0) relativeAngle += 360;
+    // 2. Ángulo relativo a la ruleta
+    let relative = (ballAngle - wheelRotation) % 360;
+    if (relative < 0) relative += 360;
 
-    // buscar segmento
+    // 3. CORRECCIÓN CLAVE (por cómo dibujas SVG)
+    relative = (relative + 90) % 360;
+
+    // 4. Buscar segmento
     let resultadoFinal = window.bloques.find(b =>
-      relativeAngle >= b.start && relativeAngle < b.end
+      relative >= b.start && relative < b.end
     );
+
+    // 5. Seguridad extra (por si cae justo en borde)
+    if(!resultadoFinal){
+      resultadoFinal = window.bloques[window.bloques.length - 1];
+    }
 
     document.getElementById('resultado').innerText =
       "Resultado: " + resultadoFinal.num;
 
-  }, 4000); // mismo tiempo que la ruleta
+  }, 4000);
 }
 </script>
 
