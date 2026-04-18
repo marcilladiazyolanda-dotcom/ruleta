@@ -15,11 +15,11 @@ body { font-family: Arial; }
   gap: 40px;
 }
 
+/* RULETA */
 .wheel-wrapper {
   width: 320px;
   height: 320px;
   position: relative;
-  transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .wheel {
@@ -30,6 +30,7 @@ body { font-family: Arial; }
   position: absolute;
 }
 
+/* NÚMEROS */
 .labels {
   position: absolute;
   width: 100%;
@@ -48,7 +49,7 @@ body { font-family: Arial; }
   text-shadow: 0 0 4px black;
 }
 
-/* 🎯 BOLA */ira
+/* BOLA */
 .ball {
   position: absolute;
   width: 14px;
@@ -82,7 +83,7 @@ input { width: 60px; }
 <h2 style="text-align:center">Ruleta</h2>
 
 <div class="layout">
-  <div class="wheel-wrapper" id="wrapper">
+  <div class="wheel-wrapper">
     <div id="wheel" class="wheel"></div>
     <div id="labels" class="labels"></div>
     <div id="ball" class="ball"></div>
@@ -100,10 +101,9 @@ input { width: 60px; }
 const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
-const wrapper = document.getElementById('wrapper');
 const ball = document.getElementById('ball');
 
-let currentRotation = 0;
+let ballRotation = 0;
 
 // TABLA
 for (let i = 0; i <= 36; i++) {
@@ -118,6 +118,7 @@ for (let i = 0; i <= 36; i++) {
 function generar() {
 
   labels.innerHTML = "";
+
   let bloques = [];
 
   for (let i = 0; i <= 36; i++) {
@@ -139,7 +140,7 @@ function generar() {
 
   dibujar(bloques);
 
-  // bolsa
+  // bolsa de probabilidades
   window.bolsa = [];
   bloques.forEach(b => {
     for (let i=0;i<b.size;i++) {
@@ -196,9 +197,7 @@ function dibujar(bloques) {
   wheel.style.background = `conic-gradient(${gradient.slice(0,-1)})`;
 }
 
-// 🎡 GIRO CON BOLA
-let ballRotation = 0;
-
+// 🎡 GIRAR SOLO BOLA
 function girar() {
 
   const bolsa = window.bolsa;
@@ -211,12 +210,11 @@ function girar() {
 
   const vueltas = 6;
 
-  // 🎯 acumulación REAL
   ballRotation += (vueltas * 360) + target;
 
   const radio = 130;
 
-  // 🎡 GIRO PRINCIPAL
+  // GIRO
   ball.style.transition = "transform 2s cubic-bezier(0.2, 0.8, 0.2, 1)";
   ball.style.transform = `
     translate(-50%, -50%)
@@ -224,7 +222,7 @@ function girar() {
     translate(${radio}px)
   `;
 
-  // 🟢 EFECTO REBOTE (nivel casino)
+  // REBOTE
   setTimeout(() => {
     ball.style.transition = "transform 0.25s ease-out";
     ball.style.transform = `
