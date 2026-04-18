@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Ruleta precisa</title>
+<title>Ruleta precisa PRO</title>
 <style>
   body {
     background: #0f172a;
@@ -23,12 +23,12 @@
   }
 
   .bola {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background: white;
     border-radius: 50%;
     position: absolute;
-    top: 10px;
+    top: 8px;
     left: 50%;
     transform: translateX(-50%);
   }
@@ -48,11 +48,11 @@
 </head>
 <body>
 
-<h1>Ruleta 🎡</h1>
+<h1>Ruleta 🎯</h1>
 
 <div class="contenedor">
   <canvas id="ruleta" width="400" height="400"></canvas>
-  <div class="bola" id="bola"></div>
+  <div class="bola"></div>
 </div>
 
 <button onclick="girar()">Girar</button>
@@ -74,24 +74,52 @@ const numeros = [
 const total = numeros.length;
 const anguloSegmento = (2 * Math.PI) / total;
 
+// 🎨 DIBUJAR RULETA
 function dibujarRuleta() {
+
+  // SEGMENTOS
   for (let i = 0; i < total; i++) {
-    const anguloInicio = i * anguloSegmento;
-    const anguloFin = anguloInicio + anguloSegmento;
+    const inicio = i * anguloSegmento;
+    const fin = inicio + anguloSegmento;
 
     ctx.beginPath();
     ctx.moveTo(200, 200);
-    ctx.arc(200, 200, 200, anguloInicio, anguloFin);
-    ctx.fillStyle = i % 2 === 0 ? "#16a34a" : "#dc2626";
+    ctx.arc(200, 200, 200, inicio, fin);
+    ctx.closePath();
+
+    // colores
+    if (numeros[i] === 0) {
+      ctx.fillStyle = "#16a34a";
+    } else {
+      ctx.fillStyle = i % 2 === 0 ? "#dc2626" : "#000000";
+    }
+
     ctx.fill();
 
+    // TEXTO centrado en el segmento
     ctx.save();
     ctx.translate(200, 200);
-    ctx.rotate(anguloInicio + anguloSegmento / 2);
+    ctx.rotate(inicio + anguloSegmento / 2);
     ctx.fillStyle = "white";
     ctx.font = "14px Arial";
     ctx.fillText(numeros[i], 140, 5);
     ctx.restore();
+  }
+
+  // 🔥 SEPARADORES (CORRECTOS EN LOS BORDES)
+  ctx.strokeStyle = "#e5e7eb";
+  ctx.lineWidth = 2;
+
+  for (let i = 0; i < total; i++) {
+    const angulo = i * anguloSegmento;
+
+    const x = 200 + Math.cos(angulo) * 200;
+    const y = 200 + Math.sin(angulo) * 200;
+
+    ctx.beginPath();
+    ctx.moveTo(200, 200);
+    ctx.lineTo(x, y);
+    ctx.stroke();
   }
 }
 
@@ -99,9 +127,10 @@ dibujarRuleta();
 
 let anguloRuleta = 0;
 
+// 🎯 GIRAR
 function girar() {
   const vueltas = Math.random() * 5 + 5;
-  const anguloFinalRuleta = anguloRuleta + vueltas * 360;
+  const destino = anguloRuleta + vueltas * 360;
 
   const duracion = 3000;
   const inicio = performance.now();
@@ -110,15 +139,12 @@ function girar() {
     const progreso = (tiempo - inicio) / duracion;
 
     if (progreso < 1) {
-      anguloRuleta = anguloFinalRuleta * easeOut(progreso);
-
+      anguloRuleta = destino * easeOut(progreso);
       canvas.style.transform = `rotate(${anguloRuleta}deg)`;
-
       requestAnimationFrame(animar);
     } else {
-      anguloRuleta = anguloFinalRuleta % 360;
+      anguloRuleta = destino % 360;
       canvas.style.transform = `rotate(${anguloRuleta}deg)`;
-
       calcularResultado();
     }
   }
@@ -130,18 +156,15 @@ function easeOut(t) {
   return 1 - Math.pow(1 - t, 3);
 }
 
-// 🔥 AQUÍ ESTÁ LA CLAVE REAL
+// 🧠 RESULTADO EXACTO
 function calcularResultado() {
-  const totalNumeros = numeros.length;
-  const anguloPorSegmento = 360 / totalNumeros;
+  const anguloPorSegmento = 360 / total;
 
-  // La bola está fija arriba → usamos el ángulo de la ruleta invertido
   const anguloNormalizado = (360 - anguloRuleta % 360) % 360;
 
-  // Ajuste fino para centrar bien el segmento
   const offset = anguloPorSegmento / 2;
 
-  const index = Math.floor((anguloNormalizado + offset) / anguloPorSegmento) % totalNumeros;
+  const index = Math.floor((anguloNormalizado + offset) / anguloPorSegmento) % total;
 
   const numeroGanador = numeros[index];
 
