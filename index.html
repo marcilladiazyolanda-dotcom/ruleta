@@ -5,17 +5,14 @@
 <title>Ruleta PRO</title>
 
 <style>
-body { font-family: Arial; }
-.hidden { display: none; }
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Ruleta PRO</title>
+body {
+  font-family: Arial;
+  text-align: center;
+}
 
-<style>
-body { font-family: Arial; }
-.hidden { display: none; }
+.hidden {
+  display: none;
+}
 
 .layout {
   display: flex;
@@ -29,6 +26,7 @@ body { font-family: Arial; }
   width: 320px;
   height: 320px;
   position: relative;
+  transition: transform 3.2s cubic-bezier(0.25, 0.7, 0.3, 1);
 }
 
 .wheel {
@@ -73,37 +71,47 @@ body { font-family: Arial; }
   z-index: 10;
 }
 
-table { margin:auto; }
-input { width: 60px; }
+/* TABLA */
+table {
+  margin: auto;
+}
+
+input {
+  width: 60px;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 16px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- PANTALLA 1 -->
 <div id="pantalla1">
-<h2 style="text-align:center">Configuración</h2>
-<table id="tabla"></table>
-<div style="text-align:center">
-<button onclick="generar()">Generar Ruleta</button>
-</div>
+  <h2>Configuración</h2>
+  <table id="tabla"></table>
+  <button onclick="generar()">Generar Ruleta</button>
 </div>
 
+<!-- PANTALLA 2 -->
 <div id="pantalla2" class="hidden">
-<h2 style="text-align:center">Ruleta</h2>
+  <h2>Ruleta</h2>
 
-<div class="layout">
-  <div class="wheel-wrapper">
-    <div id="wheel" class="wheel"></div>
-    <div id="labels" class="labels"></div>
-    <div id="ball" class="ball"></div>
+  <div class="layout">
+    <div class="wheel-wrapper" id="wrapper">
+      <div id="wheel" class="wheel"></div>
+      <div id="labels" class="labels"></div>
+      <div id="ball" class="ball"></div>
+    </div>
+
+    <div>
+      <button onclick="girar()">Girar</button>
+      <h3 id="resultado"></h3>
+    </div>
   </div>
-
-  <div>
-    <button onclick="girar()">Girar</button>
-    <h3 id="resultado"></h3>
-  </div>
-</div>
-
 </div>
 
 <script>
@@ -111,10 +119,12 @@ const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
 const ball = document.getElementById('ball');
+const wrapper = document.getElementById('wrapper');
 
 let ballRotation = 0;
+let wheelRotation = 0;
 
-// TABLA
+// CREAR TABLA
 for (let i = 0; i <= 36; i++) {
   const row = document.createElement('tr');
   row.innerHTML = `
@@ -124,6 +134,7 @@ for (let i = 0; i <= 36; i++) {
   tabla.appendChild(row);
 }
 
+// GENERAR RULETA
 function generar() {
 
   labels.innerHTML = "";
@@ -149,10 +160,9 @@ function generar() {
 
   dibujar(bloques);
 
-  // bolsa de probabilidades
   window.bolsa = [];
   bloques.forEach(b => {
-    for (let i=0;i<b.size;i++) {
+    for (let i = 0; i < b.size; i++) {
       window.bolsa.push(b.num);
     }
   });
@@ -161,6 +171,7 @@ function generar() {
   document.getElementById('pantalla2').classList.remove('hidden');
 }
 
+// DIBUJAR RULETA
 function dibujar(bloques) {
 
   let total = bloques.reduce((a,b)=>a+b.size,0);
@@ -206,7 +217,7 @@ function dibujar(bloques) {
   wheel.style.background = `conic-gradient(${gradient.slice(0,-1)})`;
 }
 
-// 🎡 GIRAR SOLO BOLA
+// GIRAR RULETA + BOLA
 function girar() {
 
   const bolsa = window.bolsa;
@@ -217,14 +228,18 @@ function girar() {
 
   const target = ganador.midAngle - 90;
 
-  const vueltas = 6;
-
-  ballRotation += (vueltas * 360) + target;
-
+  const vueltasBola = 7;
+  const vueltasRuleta = 3;
   const radio = 130;
 
-  // GIRO
-  ball.style.transition = "transform 2s cubic-bezier(0.2, 0.8, 0.2, 1)";
+  // RULETA
+  wheelRotation -= (vueltasRuleta * 360 + Math.random() * 180);
+  wrapper.style.transform = `rotate(${wheelRotation}deg)`;
+
+  // BOLA
+  ballRotation += (vueltasBola * 360) + target - wheelRotation;
+
+  ball.style.transition = "transform 2.4s cubic-bezier(0.2, 0.9, 0.3, 1)";
   ball.style.transform = `
     translate(-50%, -50%)
     rotate(${ballRotation}deg)
@@ -239,7 +254,7 @@ function girar() {
       rotate(${ballRotation}deg)
       translate(${radio - 10}px)
     `;
-  }, 2000);
+  }, 2400);
 
   setTimeout(() => {
     ball.style.transition = "transform 0.2s ease-in";
@@ -248,260 +263,7 @@ function girar() {
       rotate(${ballRotation}deg)
       translate(${radio}px)
     `;
-  }, 2250);
-
-  document.getElementById('resultado').innerText = "Resultado: " + result;
-}
-</script>
-
-</body>
-</html>
-.layout {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-}
-
-/* RULETA */
-.wheel-wrapper {
-  width: 320px;
-  height: 320px;
-  position: relative;
-}
-
-.wheel {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 6px solid black;
-  position: absolute;
-}
-
-/* NÚMEROS */
-.labels {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.label {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 30px;
-  margin-left: -15px;
-  text-align: center;
-  font-weight: bold;
-  color: white;
-  text-shadow: 0 0 4px black;
-}
-
-/* BOLA */
-.ball {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  background: white;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(0deg) translate(130px);
-  transform-origin: center;
-  box-shadow: 0 0 6px black;
-  z-index: 10;
-}
-
-table { margin:auto; }
-input { width: 60px; }
-</style>
-</head>
-
-<body>
-
-<div id="pantalla1">
-<h2 style="text-align:center">Configuración</h2>
-<table id="tabla"></table>
-<div style="text-align:center">
-<button onclick="generar()">Generar Ruleta</button>
-</div>
-</div>
-
-<div id="pantalla2" class="hidden">
-<h2 style="text-align:center">Ruleta</h2>
-
-<div class="layout">
-  <div class="wheel-wrapper">
-    <div id="wheel" class="wheel"></div>
-    <div id="labels" class="labels"></div>
-    <div id="ball" class="ball"></div>
-  </div>
-
-  <div>
-    <button onclick="girar()">Girar</button>
-    <h3 id="resultado"></h3>
-  </div>
-</div>
-
-</div>
-
-<script>
-const tabla = document.getElementById('tabla');
-const wheel = document.getElementById('wheel');
-const labels = document.getElementById('labels');
-const ball = document.getElementById('ball');
-
-let ballRotation = 0;
-
-// TABLA
-for (let i = 0; i <= 36; i++) {
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>${i}</td>
-    <td><input type="number" value="1" id="n-${i}"></td>
-  `;
-  tabla.appendChild(row);
-}
-
-function generar() {
-
-  labels.innerHTML = "";
-
-  let bloques = [];
-
-  for (let i = 0; i <= 36; i++) {
-    let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
-
-    if (i === 0) count = 1;
-
-    if (count > 0) {
-      bloques.push({ num: i, size: count });
-    }
-  }
-
-  let otros = bloques.filter(b => b.num !== 0);
-  otros.sort(() => Math.random() - 0.5);
-
-  bloques = [{num:0,size:1}, ...otros];
-
-  window.bloques = bloques;
-
-  dibujar(bloques);
-
-  // bolsa de probabilidades
-  window.bolsa = [];
-  bloques.forEach(b => {
-    for (let i=0;i<b.size;i++) {
-      window.bolsa.push(b.num);
-    }
-  });
-
-  document.getElementById('pantalla1').classList.add('hidden');
-  document.getElementById('pantalla2').classList.remove('hidden');
-}
-
-function dibujar(bloques) {
-
-  let total = bloques.reduce((a,b)=>a+b.size,0);
-  let current = 0;
-  let gradient = "";
-  let toggle = true;
-
-  bloques.forEach(b => {
-
-    let angle = (b.size / total) * 360;
-
-    let color;
-
-    if (b.num === 0) {
-      color = "#2e7d32";
-      toggle = true;
-    } else {
-      color = toggle ? "#c62828" : "#000";
-      toggle = !toggle;
-    }
-
-    gradient += `${color} ${current}deg ${current + angle}deg,`;
-
-    let mid = current + angle / 2;
-
-    let label = document.createElement("div");
-    label.className = "label";
-    label.textContent = b.num;
-
-    label.style.transform = `
-      rotate(${mid - 90}deg)
-      translate(130px)
-      rotate(${90 - mid}deg)
-    `;
-
-    labels.appendChild(label);
-
-    b.midAngle = mid;
-
-    current += angle;
-  });
-
-  wheel.style.background = `conic-gradient(${gradient.slice(0,-1)})`;
-}
-
-// 🎡 GIRAR SOLO BOLA
-let ballRotation = 0;
-let wheelRotation = 0;
-
-function girar() {
-
-  const bolsa = window.bolsa;
-  const bloques = window.bloques;
-
-  const result = bolsa[Math.floor(Math.random() * bolsa.length)];
-  const ganador = bloques.find(b => b.num === result);
-
-  // 🎯 ángulo base del número
-  const target = ganador.midAngle - 90;
-
-  // 🎡 parámetros
-  const vueltasBola = 6;
-  const vueltasRuleta = 3;
-
-  const radio = 130;
-
-  // 🎡 ROTACIÓN DE LA RULETA (sentido contrario)
-  wheelRotation -= (vueltasRuleta * 360 + Math.random() * 360);
-
-  const wrapper = document.querySelector(".wheel-wrapper");
-
-  wrapper.style.transition = "transform 2.2s cubic-bezier(0.2, 0.8, 0.2, 1)";
-  wrapper.style.transform = `rotate(${wheelRotation}deg)`;
-
-  // ⚪ ROTACIÓN DE LA BOLA (compensada)
-  ballRotation += (vueltasBola * 360) + target - wheelRotation;
-
-  ball.style.transition = "transform 2.2s cubic-bezier(0.2, 0.8, 0.2, 1)";
-  ball.style.transform = `
-    translate(-50%, -50%)
-    rotate(${ballRotation}deg)
-    translate(${radio}px)
-  `;
-
-  // 🟢 REBOTE FINAL
-  setTimeout(() => {
-    ball.style.transition = "transform 0.25s ease-out";
-    ball.style.transform = `
-      translate(-50%, -50%)
-      rotate(${ballRotation}deg)
-      translate(${radio - 10}px)
-    `;
-  }, 2200);
-
-  setTimeout(() => {
-    ball.style.transition = "transform 0.2s ease-in";
-    ball.style.transform = `
-      translate(-50%, -50%)
-      rotate(${ballRotation}deg)
-      translate(${radio}px)
-    `;
-  }, 2450);
+  }, 2650);
 
   document.getElementById('resultado').innerText = "Resultado: " + result;
 }
