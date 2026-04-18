@@ -7,6 +7,8 @@
 <style>
 body { font-family: Arial; text-align: center; }
 
+.hidden { display:none; }
+
 .layout{
   display:flex;
   justify-content:center;
@@ -85,18 +87,24 @@ body { font-family: Arial; text-align: center; }
 table{ margin:auto; }
 input{ width:60px; }
 
+button{
+  margin-top:10px;
+  padding:8px 16px;
+}
 </style>
 </head>
 
 <body>
 
+<!-- PANTALLA 1 -->
 <div id="pantalla1">
 <h2>Configuración</h2>
 <table id="tabla"></table>
 <button onclick="generar()">Generar Ruleta</button>
 </div>
 
-<div id="pantalla2" style="display:none;">
+<!-- PANTALLA 2 -->
+<div id="pantalla2" class="hidden">
 <h2>Ruleta</h2>
 
 <div class="layout">
@@ -110,6 +118,7 @@ input{ width:60px; }
 
   <div>
     <button onclick="girar()">Girar</button>
+    <button onclick="volver()">← Volver</button>
     <h3 id="resultado"></h3>
   </div>
 </div>
@@ -137,6 +146,13 @@ for(let i=0;i<=36;i++){
   tabla.appendChild(row);
 }
 
+// VOLVER A CONFIG
+function volver(){
+  document.getElementById('pantalla1').classList.remove('hidden');
+  document.getElementById('pantalla2').classList.add('hidden');
+}
+
+// GENERAR
 function generar(){
 
   labels.innerHTML="";
@@ -163,10 +179,11 @@ function generar(){
     for(let i=0;i<b.size;i++) window.bolsa.push(b);
   });
 
-  document.getElementById('pantalla1').style.display="none";
-  document.getElementById('pantalla2').style.display="block";
+  document.getElementById('pantalla1').classList.add('hidden');
+  document.getElementById('pantalla2').classList.remove('hidden');
 }
 
+// DIBUJAR
 function dibujar(bloques){
 
   let total=bloques.reduce((a,b)=>a+b.size,0);
@@ -216,7 +233,7 @@ function dibujar(bloques){
   wheel.style.background=`conic-gradient(${gradient.slice(0,-1)})`;
 }
 
-// GIRO
+// GIRAR
 function girar(){
 
   const elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
@@ -227,7 +244,7 @@ function girar(){
   wheelRotation -= (180 + Math.random()*120);
   wheel.style.transform=`rotate(${wheelRotation}deg)`;
 
-  // bola EXACTA
+  // 🔥 BOLA (CORREGIDO)
   ballRotation += 6*360 + target - wheelRotation;
 
   ball.style.transition="transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
@@ -237,7 +254,6 @@ function girar(){
     translate(130px)
   `;
 
-  // resultado SIEMPRE correcto
   document.getElementById('resultado').innerText = "Resultado: " + elegido.num;
 }
 </script>
