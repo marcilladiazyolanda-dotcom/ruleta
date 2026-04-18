@@ -17,33 +17,27 @@ body { font-family: Arial; text-align: center; }
   margin:auto;
 }
 
-/* CONTENEDOR */
 .wheel-wrapper{
   width:320px;
   height:320px;
   position:relative;
 }
 
-/* RULETA (rota todo: fondo + números) */
 .wheel{
   width:100%;
   height:100%;
   border-radius:50%;
-  border:6px solid #000;
+  border:6px solid black;
   position:absolute;
   transform-origin:50% 50%;
-  transition:transform 4s cubic-bezier(0.15,0.7,0.25,1);
-  overflow:hidden;
+  transition: transform 4s cubic-bezier(0.15,0.7,0.25,1);
 }
 
-/* CAPA DE NÚMEROS (dentro de la rueda) */
 .labels{
   position:absolute;
-  inset:0;           /* top/right/bottom/left:0 */
-  pointer-events:none;
+  inset:0;
 }
 
-/* NÚMERO */
 .label{
   position:absolute;
   left:50%;
@@ -52,210 +46,181 @@ body { font-family: Arial; text-align: center; }
   margin-left:-14px;
   text-align:center;
   font-weight:bold;
-  color:#fff;
-  text-shadow:0 0 4px #000;
+  color:white;
+  text-shadow:0 0 4px black;
   font-size:12px;
-  will-change:transform;
 }
 
-/* BOLA */
 .ball{
   position:absolute;
   width:14px;
   height:14px;
-  background:#fff;
+  background:white;
   border-radius:50%;
   top:50%;
   left:50%;
-  transform:translate(-50%,-50%) rotate(0deg) translate(130px);
-  transform-origin:center;
-  box-shadow:0 0 6px #000;
+  transform: translate(-50%,-50%) rotate(0deg) translate(130px);
+  box-shadow:0 0 6px black;
   z-index:10;
 }
 
 table{ margin:auto; }
 input{ width:60px; }
-button{ margin-top:10px; padding:8px 16px; }
 </style>
 </head>
 
 <body>
 
-<!-- PANTALLA 1 -->
 <div id="pantalla1">
-  <h2>Configuración</h2>
-  <table id="tabla"></table>
-  <button onclick="generar()">Generar Ruleta</button>
+<h2>Configuración</h2>
+<table id="tabla"></table>
+<button onclick="generar()">Generar Ruleta</button>
 </div>
 
-<!-- PANTALLA 2 -->
 <div id="pantalla2" class="hidden">
-  <h2>Ruleta</h2>
+<h2>Ruleta</h2>
 
-  <div class="layout">
-    <div class="wheel-wrapper">
-      <div id="wheel" class="wheel">
-        <div id="labels" class="labels"></div>
-      </div>
-      <div id="ball" class="ball"></div>
+<div class="layout">
+  <div class="wheel-wrapper">
+    <div id="wheel" class="wheel">
+      <div id="labels" class="labels"></div>
     </div>
-
-    <div>
-      <button onclick="girar()">Girar</button>
-      <h3 id="resultado"></h3>
-    </div>
+    <div id="ball" class="ball"></div>
   </div>
+
+  <div>
+    <button onclick="girar()">Girar</button>
+    <h3 id="resultado"></h3>
+  </div>
+</div>
 </div>
 
 <script>
-const tabla  = document.getElementById('tabla');
-const wheel  = document.getElementById('wheel');
+const tabla = document.getElementById('tabla');
+const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
-const ball   = document.getElementById('ball');
+const ball = document.getElementById('ball');
 
 let ballRotation = 0;
 let wheelRotation = 0;
 
-// RADIO donde van los números (ajústalo fino si quieres)
-const R_LABEL = 110; // dentro del segmento
+const R_LABEL = 110;
 
-// TABLA
-for (let i=0;i<=36;i++){
-  const row = document.createElement('tr');
-  row.innerHTML = `
+// tabla
+for(let i=0;i<=36;i++){
+  const row=document.createElement('tr');
+  row.innerHTML=`
     <td>${i}</td>
     <td><input type="number" value="1" id="n-${i}"></td>
   `;
   tabla.appendChild(row);
 }
 
-// GENERAR
 function generar(){
-  labels.innerHTML = "";
 
-  let bloques = [];
-  for (let i=0;i<=36;i++){
-    let count = parseInt(document.getElementById(`n-${i}`).value) || 0;
-    if (i===0) count = 1;
-    if (count>0) bloques.push({num:i, size:count});
+  labels.innerHTML="";
+  let bloques=[];
+
+  for(let i=0;i<=36;i++){
+    let count=parseInt(document.getElementById(`n-${i}`).value)||0;
+    if(i===0) count=1;
+    if(count>0) bloques.push({num:i,size:count});
   }
 
-  // barajar excepto el 0
-  let otros = bloques.filter(b=>b.num!==0);
+  let otros=bloques.filter(b=>b.num!==0);
   otros.sort(()=>Math.random()-0.5);
-  bloques = [{num:0,size:1}, ...otros];
 
-  window.bloques = bloques;
+  bloques=[{num:0,size:1},...otros];
+  window.bloques=bloques;
+
   dibujar(bloques);
-
-  // bolsa probabilidades
-  window.bolsa = [];
-  bloques.forEach(b=>{
-    for(let i=0;i<b.size;i++) window.bolsa.push(b.num);
-  });
 
   document.getElementById('pantalla1').classList.add('hidden');
   document.getElementById('pantalla2').classList.remove('hidden');
 }
 
-// DIBUJAR (mismo ángulo para fondo y label)
 function dibujar(bloques){
-  let total = bloques.reduce((a,b)=>a+b.size,0);
-  let current = 0;
-  let gradient = "";
-  let toggle = true;
+
+  let total=bloques.reduce((a,b)=>a+b.size,0);
+  let current=0;
+  let gradient="";
+  let toggle=true;
 
   bloques.forEach(b=>{
-    const angle = (b.size/total)*360;
+
+    let angle=(b.size/total)*360;
 
     let color;
-    if (b.num===0){
+    if(b.num===0){
       color="#2e7d32";
       toggle=true;
     } else {
-      color = toggle ? "#c62828" : "#000";
-      toggle = !toggle;
+      color=toggle?"#c62828":"#000";
+      toggle=!toggle;
     }
 
-    gradient += `${color} ${current}deg ${current+angle}deg,`;
+    gradient+=`${color} ${current}deg ${current+angle}deg,`;
 
-    const mid = current + angle/2;
+    let mid=current+angle/2;
 
-    // LABEL centrado en el segmento:
-    // 1) rota hasta el ángulo medio
-    // 2) avanza radialmente (R_LABEL)
-    // 3) contra-rotación para dejar el texto horizontal
-    const label = document.createElement('div');
-    label.className = 'label';
-    label.textContent = b.num;
+    let label=document.createElement("div");
+    label.className="label";
+    label.textContent=b.num;
 
-    label.style.transform = `
-      rotate(${mid - 90}deg)
+    label.style.transform=`
+      rotate(${mid-90}deg)
       translate(${R_LABEL}px)
-      rotate(${90 - mid}deg)
+      rotate(${90-mid}deg)
     `;
 
     labels.appendChild(label);
 
-    // guardar ángulo medio para la bola
-    b.midAngle = mid;
+    b.start=current;
+    b.end=current+angle;
 
-    current += angle;
+    current+=angle;
   });
 
-  wheel.style.background = `conic-gradient(${gradient.slice(0,-1)})`;
+  wheel.style.background=`conic-gradient(${gradient.slice(0,-1)})`;
 }
 
-// GIRAR
-function girar() {
+function girar(){
 
-  const bloques = window.bloques;
+  const bloques=window.bloques;
 
-  // 🎡 impulso ruleta
-  const impulso = 180 + Math.random() * 120;
-  wheelRotation -= impulso;
+  // giro ruleta
+  const impulso=180+Math.random()*120;
+  wheelRotation-=impulso;
+  wheel.style.transform=`rotate(${wheelRotation}deg)`;
 
-  wheel.style.transform = `rotate(${wheelRotation}deg)`;
+  // giro bola
+  const vueltas=6;
+  const randomAngle=Math.random()*360;
+  ballRotation+=vueltas*360+randomAngle;
 
-  // ⚪ bola gira libre (sin objetivo prefijado)
-  const vueltasBola = 6;
-  const radio = 130;
-
-  const giroAleatorio = Math.random() * 360;
-
-  ballRotation += (vueltasBola * 360) + giroAleatorio;
-
-  ball.style.transition = "transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
-  ball.style.transform = `
+  ball.style.transition="transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
+  ball.style.transform=`
     translate(-50%,-50%)
     rotate(${ballRotation}deg)
-    translate(${radio}px)
+    translate(130px)
   `;
 
-  // 🧠 CALCULAR RESULTADO AL FINAL
-  setTimeout(() => {
+  setTimeout(()=>{
 
-    // ángulo real de la bola respecto a la ruleta
-    let angle = (ballRotation + wheelRotation) % 360;
+    // 🎯 NORMALIZAR ÁNGULO REAL
+    let angle = (ballRotation % 360) - (wheelRotation % 360);
 
-    if (angle < 0) angle += 360;
+    angle = ((angle % 360) + 360) % 360;
 
-    // encontrar segmento
-    let acumulado = 0;
-    let total = bloques.reduce((a,b)=>a+b.size,0);
-
-    for (let b of bloques) {
-      let anguloSegmento = (b.size / total) * 360;
-
-      if (angle >= acumulado && angle < acumulado + anguloSegmento) {
+    // encontrar segmento EXACTO
+    for(let b of bloques){
+      if(angle >= b.start && angle < b.end){
         document.getElementById('resultado').innerText = "Resultado: " + b.num;
         break;
       }
-
-      acumulado += anguloSegmento;
     }
 
-  }, 2400);
+  },2400);
 }
 </script>
 
