@@ -2,15 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Ruleta Casino PRO</title>
+<title>Ruleta PRO</title>
 
 <style>
-body {
-  font-family: Arial;
-  text-align: center;
-  background: #ddd;
-}
-
+body { font-family: Arial; text-align: center; background:#ddd; }
 .hidden { display:none; }
 
 .layout {
@@ -30,7 +25,6 @@ body {
   width:100%;
   height:100%;
   transition: transform 4s cubic-bezier(0.15,0.7,0.25,1);
-  transform-origin: 50% 50%;
 }
 
 .ball {
@@ -87,9 +81,9 @@ let wheelRotation = 0;
 let ballRotation = 0;
 
 // TABLA
-for (let i = 0; i <= 36; i++) {
-  let row = document.createElement('tr');
-  row.innerHTML = `<td>${i}</td><td><input value="1" id="n-${i}"></td>`;
+for(let i=0;i<=36;i++){
+  let row=document.createElement('tr');
+  row.innerHTML=`<td>${i}</td><td><input value="1" id="n-${i}"></td>`;
   tabla.appendChild(row);
 }
 
@@ -132,7 +126,6 @@ function generar(){
 function dibujar(bloques){
 
   const cx=210, cy=210;
-
   const rOuter=200;
   const rMid=150;
   const rInner=110;
@@ -141,16 +134,7 @@ function dibujar(bloques){
   let angleStart=0;
   let toggle=true;
 
-  // 🟡 degradado dorado
-  let defs=document.createElementNS("http://www.w3.org/2000/svg","defs");
-  defs.innerHTML=`
-    <radialGradient id="gold">
-      <stop offset="0%" stop-color="#fff3b0"/>
-      <stop offset="50%" stop-color="#d4af37"/>
-      <stop offset="100%" stop-color="#8c6b00"/>
-    </radialGradient>
-  `;
-  svg.appendChild(defs);
+  let separadoresInternos=[];
 
   bloques.forEach(b=>{
 
@@ -167,17 +151,17 @@ function dibujar(bloques){
       toggle=!toggle;
     }
 
-    // SEGMENTO
+    // segmentos
     let path=document.createElementNS("http://www.w3.org/2000/svg","path");
     path.setAttribute("d",arc(cx,cy,rOuter,start,end,rMid));
     path.setAttribute("fill",color);
     svg.appendChild(path);
 
-    // 🔩 separador exterior (gris metálico)
+    // separador exterior
     svg.appendChild(createLine(cx,cy,start,rMid,rOuter,"silver",2));
 
-    // 🔩 separador interior (MISMO COLOR)
-    svg.appendChild(createLine(cx,cy,start,rInner,rMid,"silver",1));
+    // guardamos separador interno
+    separadoresInternos.push(start);
 
     // número
     let mid=start+angle/2;
@@ -194,12 +178,13 @@ function dibujar(bloques){
     text.setAttribute("text-anchor","middle");
     text.setAttribute("dominant-baseline","middle");
     text.textContent=b.num;
+
     svg.appendChild(text);
 
     angleStart=end;
   });
 
-  // 🖤 ANILLO NEGRO (lo que faltaba)
+  // 🖤 círculo negro
   let ring=document.createElementNS("http://www.w3.org/2000/svg","circle");
   ring.setAttribute("cx",cx);
   ring.setAttribute("cy",cy);
@@ -207,18 +192,23 @@ function dibujar(bloques){
   ring.setAttribute("fill","black");
   svg.appendChild(ring);
 
-  // 🟡 CENTRO DORADO
+  // 🔩 REDIBUJAR separadores internos encima del negro
+  separadoresInternos.forEach(angle=>{
+    svg.appendChild(createLine(cx,cy,angle,rInner,rMid,"silver",1));
+  });
+
+  // 🟡 centro
   let center=document.createElementNS("http://www.w3.org/2000/svg","circle");
   center.setAttribute("cx",cx);
   center.setAttribute("cy",cy);
   center.setAttribute("r",80);
-  center.setAttribute("fill","url(#gold)");
+  center.setAttribute("fill","#d4af37");
   svg.appendChild(center);
-
 }
 
 // ARCOS
 function arc(cx,cy,rOuter,start,end,rInner){
+
   let s=(start-90)*Math.PI/180;
   let e=(end-90)*Math.PI/180;
 
