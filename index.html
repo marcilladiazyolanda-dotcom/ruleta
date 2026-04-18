@@ -120,6 +120,16 @@ function generar(){
 
   pantalla1.classList.add('hidden');
   pantalla2.classList.remove('hidden');
+  // CALCULAR ANGULOS REALES
+let total = bloques.reduce((a,b)=>a+b.size,0);
+let current = 0;
+
+bloques.forEach(b=>{
+  let angle = (b.size / total) * 360;
+  b.start = current;
+  b.end = current + angle;
+  current += angle;
+});
 }
 
 // DIBUJAR
@@ -288,22 +298,37 @@ function createLine(cx,cy,angle,r1,r2,color,w){
 // GIRAR
 function girar(){
 
-  let elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
-  let target = elegido.mid - 90;
+  // giro libre de la bola
+  let spin = 360 * 5 + Math.random() * 360;
 
-  wheelRotation -= 200;
-  svg.style.transform = `rotate(${wheelRotation}deg)`;
+  ballRotation += spin;
 
-  ballRotation += 6*360 + target - wheelRotation;
-
-  ball.style.transition="transform 2.4s ease-out";
+  ball.style.transition = "transform 3s ease-out";
   ball.style.transform = `
     translate(-50%,-50%)
     rotate(${ballRotation}deg)
     translate(180px)
   `;
 
-  resultado.innerText = "Resultado: " + elegido.num;
+  // calcular resultado cuando termina
+  setTimeout(()=>{
+
+    // ángulo final de la bola
+    let finalAngle = (ballRotation % 360 + 360) % 360;
+
+    // compensar giro de la ruleta
+    let relativeAngle = (finalAngle - wheelRotation) % 360;
+    if (relativeAngle < 0) relativeAngle += 360;
+
+    // buscar segmento correcto
+    let resultadoFinal = window.bloques.find(b =>
+      relativeAngle >= b.start && relativeAngle < b.end
+    );
+
+    document.getElementById('resultado').innerText =
+      "Resultado: " + resultadoFinal.num;
+
+  }, 3000);
 }
 </script>
 
