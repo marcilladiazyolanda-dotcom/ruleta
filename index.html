@@ -38,13 +38,14 @@ body { font-family: Arial; text-align: center; }
   position:absolute;
   width:100%;
   height:100%;
+  pointer-events:none;
 }
 
 .divider{
   position:absolute;
   width:2px;
   height:50%;
-  background: silver;
+  background: linear-gradient(to bottom, #ddd, #888);
   top:50%;
   left:50%;
   transform-origin:0% 0%;
@@ -146,7 +147,7 @@ for(let i=0;i<=36;i++){
   tabla.appendChild(row);
 }
 
-// VOLVER A CONFIG
+// VOLVER
 function volver(){
   document.getElementById('pantalla1').classList.remove('hidden');
   document.getElementById('pantalla2').classList.add('hidden');
@@ -173,7 +174,6 @@ function generar(){
 
   dibujar(bloques);
 
-  // bolsa ponderada
   window.bolsa=[];
   bloques.forEach(b=>{
     for(let i=0;i<b.size;i++) window.bolsa.push(b);
@@ -195,6 +195,10 @@ function dibujar(bloques){
 
     let angle=(b.size/total)*360;
 
+    // guardar inicio exacto del segmento
+    b.start = current;
+    b.end = current + angle;
+
     let color;
     if(b.num===0){
       color="#2e7d32";
@@ -204,9 +208,9 @@ function dibujar(bloques){
       toggle=!toggle;
     }
 
-    gradient+=`${color} ${current}deg ${current+angle}deg,`;
+    gradient+=`${color} ${b.start}deg ${b.end}deg,`;
 
-    let mid=current+angle/2;
+    let mid=b.start+angle/2;
     b.mid=mid;
 
     // número
@@ -221,10 +225,10 @@ function dibujar(bloques){
     `;
     labels.appendChild(label);
 
-    // separador
+    // 🔥 SEPARADOR EXACTO EN BORDE
     let divider=document.createElement("div");
     divider.className="divider";
-    divider.style.transform=`rotate(${current}deg)`;
+    divider.style.transform=`rotate(${b.start}deg)`;
     dividers.appendChild(divider);
 
     current+=angle;
@@ -237,14 +241,11 @@ function dibujar(bloques){
 function girar(){
 
   const elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
-
   const target = elegido.mid - 90;
 
-  // ruleta
   wheelRotation -= (180 + Math.random()*120);
   wheel.style.transform=`rotate(${wheelRotation}deg)`;
 
-  // 🔥 BOLA (CORREGIDO)
   ballRotation += 6*360 + target - wheelRotation;
 
   ball.style.transition="transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
