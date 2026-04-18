@@ -96,6 +96,7 @@ function volver(){
 function generar(){
 
   svg.innerHTML="";
+
   let bloques=[];
 
   for(let i=0;i<=36;i++){
@@ -110,68 +111,47 @@ function generar(){
   bloques=[{num:0,size:1},...otros];
   window.bloques=bloques;
 
-  // CALCULAR ANGULOS
-  let total=bloques.reduce((a,b)=>a+b.size,0);
-  let current=0;
-
-  bloques.forEach(b=>{
-    let angle=(b.size/total)*360;
-    b.start=current;
-    b.end=current+angle;
-    current+=angle;
-  });
-
   dibujar(bloques);
+
+  window.bolsa=[];
+  bloques.forEach(b=>{
+    for(let i=0;i<b.size;i++) window.bolsa.push(b);
+  });
 
   pantalla1.classList.add('hidden');
   pantalla2.classList.remove('hidden');
 }
 
-// GIRAR (NUEVA LÓGICA REAL)
-function girar(){
-
-  // giro libre
-  let spin = 360*5 + Math.random()*360;
-
-  ballRotation += spin;
-
-  ball.style.transition="transform 3s ease-out";
-  ball.style.transform = `
-    translate(-50%,-50%)
-    rotate(${ballRotation}deg)
-    translate(180px)
-  `;
-
-  // esperar a que termine animación
-  setTimeout(()=>{
-
-    let finalAngle = (ballRotation % 360 + 360) % 360;
-
-    // compensar rotación de ruleta
-    let relativeAngle = (finalAngle - wheelRotation) % 360;
-    if(relativeAngle < 0) relativeAngle += 360;
-
-    // buscar segmento
-    let resultadoFinal = window.bloques.find(b =>
-      relativeAngle >= b.start && relativeAngle < b.end
-    );
-
-    document.getElementById('resultado').innerText =
-      "Resultado: " + resultadoFinal.num;
-
-  },3000);
-}
-
-// DIBUJO (igual que antes)
+// DIBUJAR
 function dibujar(bloques){
 
   const cx=210, cy=210;
   const rOuter=200;
   const rMid=150;
+  const rInner=110;
 
+  let total=bloques.reduce((a,b)=>a+b.size,0);
+  let angleStart=0;
   let toggle=true;
 
+  let separadoresInternos=[];
+
+  // DEGRADADO ORO
+  let defs=document.createElementNS("http://www.w3.org/2000/svg","defs");
+  defs.innerHTML=`
+    <radialGradient id="gold">
+      <stop offset="0%" stop-color="#fff3b0"/>
+      <stop offset="50%" stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#8c6b00"/>
+    </radialGradient>
+  `;
+  svg.appendChild(defs);
+
   bloques.forEach(b=>{
+
+    let angle=(b.size/total)*360;
+    let start=angleStart;
+    let end=start+angle;
 
     let color;
     if(b.num===0){
@@ -183,13 +163,15 @@ function dibujar(bloques){
     }
 
     let path=document.createElementNS("http://www.w3.org/2000/svg","path");
-    path.setAttribute("d",arc(cx,cy,rOuter,b.start,b.end,rMid));
+    path.setAttribute("d",arc(cx,cy,rOuter,start,end,rMid));
     path.setAttribute("fill",color);
     svg.appendChild(path);
 
-    svg.appendChild(createLine(cx,cy,b.start,rMid,rOuter,"silver",2));
+    svg.appendChild(createLine(cx,cy,start,rMid,rOuter,"silver",2));
+    separadoresInternos.push(start);
 
-    let mid=(b.start+b.end)/2;
+    let mid=start+angle/2;
+    b.mid=mid;
 
     let tx=cx+Math.cos((mid-90)*Math.PI/180)*175;
     let ty=cy+Math.sin((mid-90)*Math.PI/180)*175;
@@ -203,7 +185,65 @@ function dibujar(bloques){
     text.textContent=b.num;
 
     svg.appendChild(text);
+
+    angleStart=end;
   });
+
+  // ANILLO NEGRO
+  let ring=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  ring.setAttribute("cx",cx);
+  ring.setAttribute("cy",cy);
+  ring.setAttribute("r",rMid);
+  ring.setAttribute("fill","black");
+  svg.appendChild(ring);
+
+  // separadores internos encima
+  separadoresInternos.forEach(a=>{
+    svg.appendChild(createLine(cx,cy,a,rInner,rMid,"silver",1));
+  });
+
+  // 🟡 CENTRO
+  let center=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  center.setAttribute("cx",cx);
+  center.setAttribute("cy",cy);
+  center.setAttribute("r",80);
+  center.setAttribute("fill","url(#gold)");
+  svg.appendChild(center);
+
+  // 🔥 BRAZOS (LO NUEVO)
+  for(let i=0;i<4;i++){
+    let angle=i*90;
+
+    let group=document.createElementNS("http://www.w3.org/2000/svg","g");
+    group.setAttribute("transform",`rotate(${angle} ${cx} ${cy})`);
+
+    // barra
+    let rect=document.createElementNS("http://www.w3.org/2000/svg","rect");
+    rect.setAttribute("x",cx-3);
+    rect.setAttribute("y",cy-70);
+    rect.setAttribute("width",6);
+    rect.setAttribute("height",50);
+    rect.setAttribute("fill","#c9a227");
+
+    // bola final
+    let circle=document.createElementNS("http://www.w3.org/2000/svg","circle");
+    circle.setAttribute("cx",cx);
+    circle.setAttribute("cy",cy-75);
+    circle.setAttribute("r",6);
+    circle.setAttribute("fill","#e6c65c");
+
+    group.appendChild(rect);
+    group.appendChild(circle);
+    svg.appendChild(group);
+  }
+
+  // núcleo
+  let hub=document.createElementNS("http://www.w3.org/2000/svg","circle");
+  hub.setAttribute("cx",cx);
+  hub.setAttribute("cy",cy);
+  hub.setAttribute("r",12);
+  hub.setAttribute("fill","#e6c65c");
+  svg.appendChild(hub);
 }
 
 // ARCOS
@@ -243,6 +283,27 @@ function createLine(cx,cy,angle,r1,r2,color,w){
   line.setAttribute("stroke-width",w);
 
   return line;
+}
+
+// GIRAR
+function girar(){
+
+  let elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
+  let target = elegido.mid - 90;
+
+  wheelRotation -= 200;
+  svg.style.transform = `rotate(${wheelRotation}deg)`;
+
+  ballRotation += 6*360 + target - wheelRotation;
+
+  ball.style.transition="transform 2.4s ease-out";
+  ball.style.transform = `
+    translate(-50%,-50%)
+    rotate(${ballRotation}deg)
+    translate(180px)
+  `;
+
+  resultado.innerText = "Resultado: " + elegido.num;
 }
 </script>
 
