@@ -2,173 +2,243 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Ruleta precisa PRO</title>
+<title>Ruleta PRO</title>
+
 <style>
-  body {
-    background: #0f172a;
-    color: white;
-    font-family: Arial;
-    text-align: center;
-  }
+body { font-family: Arial; text-align: center; }
 
-  .contenedor {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    margin: 40px auto;
-  }
+.layout{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+}
 
-  canvas {
-    border-radius: 50%;
-  }
+.wheel-wrapper{
+  width:320px;
+  height:320px;
+  position:relative;
+}
 
-  .bola {
-    width: 14px;
-    height: 14px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+/* RULETA */
+.wheel{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:6px solid black;
+  position:absolute;
+  transform-origin:50% 50%;
+  transition: transform 4s cubic-bezier(0.15,0.7,0.25,1);
+}
 
-  button {
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-  }
+/* SEPARADORES */
+.dividers{
+  position:absolute;
+  width:100%;
+  height:100%;
+}
 
-  #resultado {
-    margin-top: 20px;
-    font-size: 28px;
-    font-weight: bold;
-  }
+.divider{
+  position:absolute;
+  width:2px;
+  height:50%;
+  background: silver;
+  top:50%;
+  left:50%;
+  transform-origin:0% 0%;
+}
+
+/* NÚMEROS */
+.labels{
+  position:absolute;
+  width:100%;
+  height:100%;
+}
+
+.label{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:28px;
+  margin-left:-14px;
+  text-align:center;
+  font-weight:bold;
+  color:white;
+  text-shadow:0 0 4px black;
+  font-size:12px;
+}
+
+/* BOLA */
+.ball{
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:white;
+  border-radius:50%;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%) rotate(0deg) translate(130px);
+  box-shadow:0 0 6px black;
+  z-index:10;
+}
+
+table{ margin:auto; }
+input{ width:60px; }
+
 </style>
 </head>
+
 <body>
 
-<h1>Ruleta 🎯</h1>
-
-<div class="contenedor">
-  <canvas id="ruleta" width="400" height="400"></canvas>
-  <div class="bola"></div>
+<div id="pantalla1">
+<h2>Configuración</h2>
+<table id="tabla"></table>
+<button onclick="generar()">Generar Ruleta</button>
 </div>
 
-<button onclick="girar()">Girar</button>
+<div id="pantalla2" style="display:none;">
+<h2>Ruleta</h2>
 
-<div id="resultado">Resultado: -</div>
+<div class="layout">
+  <div class="wheel-wrapper">
+    <div id="wheel" class="wheel">
+      <div id="dividers" class="dividers"></div>
+      <div id="labels" class="labels"></div>
+    </div>
+    <div id="ball" class="ball"></div>
+  </div>
+
+  <div>
+    <button onclick="girar()">Girar</button>
+    <h3 id="resultado"></h3>
+  </div>
+</div>
+</div>
 
 <script>
-const canvas = document.getElementById("ruleta");
-const ctx = canvas.getContext("2d");
+const tabla = document.getElementById('tabla');
+const wheel = document.getElementById('wheel');
+const labels = document.getElementById('labels');
+const dividers = document.getElementById('dividers');
+const ball = document.getElementById('ball');
 
-const numeros = [
-  0, 32, 15, 19, 4, 21, 2, 25,
-  17, 34, 6, 27, 13, 36, 11, 30,
-  8, 23, 10, 5, 24, 16, 33, 1,
-  20, 14, 31, 9, 22, 18, 29, 7,
-  28, 12, 35, 3, 26
-];
+let ballRotation = 0;
+let wheelRotation = 0;
 
-const total = numeros.length;
-const anguloSegmento = (2 * Math.PI) / total;
+const R_LABEL = 110;
 
-// 🎨 DIBUJAR RULETA
-function dibujarRuleta() {
+// TABLA
+for(let i=0;i<=36;i++){
+  const row=document.createElement('tr');
+  row.innerHTML=`
+    <td>${i}</td>
+    <td><input type="number" value="1" id="n-${i}"></td>
+  `;
+  tabla.appendChild(row);
+}
 
-  // SEGMENTOS
-  for (let i = 0; i < total; i++) {
-    const inicio = i * anguloSegmento;
-    const fin = inicio + anguloSegmento;
+function generar(){
 
-    ctx.beginPath();
-    ctx.moveTo(200, 200);
-    ctx.arc(200, 200, 200, inicio, fin);
-    ctx.closePath();
+  labels.innerHTML="";
+  dividers.innerHTML="";
+  let bloques=[];
 
-    // colores
-    if (numeros[i] === 0) {
-      ctx.fillStyle = "#16a34a";
+  for(let i=0;i<=36;i++){
+    let count=parseInt(document.getElementById(`n-${i}`).value)||0;
+    if(i===0) count=1;
+    if(count>0) bloques.push({num:i,size:count});
+  }
+
+  let otros=bloques.filter(b=>b.num!==0);
+  otros.sort(()=>Math.random()-0.5);
+
+  bloques=[{num:0,size:1},...otros];
+  window.bloques=bloques;
+
+  dibujar(bloques);
+
+  // bolsa ponderada
+  window.bolsa=[];
+  bloques.forEach(b=>{
+    for(let i=0;i<b.size;i++) window.bolsa.push(b);
+  });
+
+  document.getElementById('pantalla1').style.display="none";
+  document.getElementById('pantalla2').style.display="block";
+}
+
+function dibujar(bloques){
+
+  let total=bloques.reduce((a,b)=>a+b.size,0);
+  let current=0;
+  let gradient="";
+  let toggle=true;
+
+  bloques.forEach(b=>{
+
+    let angle=(b.size/total)*360;
+
+    let color;
+    if(b.num===0){
+      color="#2e7d32";
+      toggle=true;
     } else {
-      ctx.fillStyle = i % 2 === 0 ? "#dc2626" : "#000000";
+      color=toggle?"#c62828":"#000";
+      toggle=!toggle;
     }
 
-    ctx.fill();
+    gradient+=`${color} ${current}deg ${current+angle}deg,`;
 
-    // TEXTO centrado en el segmento
-    ctx.save();
-    ctx.translate(200, 200);
-    ctx.rotate(inicio + anguloSegmento / 2);
-    ctx.fillStyle = "white";
-    ctx.font = "14px Arial";
-    ctx.fillText(numeros[i], 140, 5);
-    ctx.restore();
-  }
+    let mid=current+angle/2;
+    b.mid=mid;
 
-  // 🔥 SEPARADORES (CORRECTOS EN LOS BORDES)
-  ctx.strokeStyle = "#e5e7eb";
-  ctx.lineWidth = 2;
+    // número
+    let label=document.createElement("div");
+    label.className="label";
+    label.textContent=b.num;
 
-  for (let i = 0; i < total; i++) {
-    const angulo = i * anguloSegmento;
+    label.style.transform=`
+      rotate(${mid-90}deg)
+      translate(${R_LABEL}px)
+      rotate(${90-mid}deg)
+    `;
+    labels.appendChild(label);
 
-    const x = 200 + Math.cos(angulo) * 200;
-    const y = 200 + Math.sin(angulo) * 200;
+    // separador
+    let divider=document.createElement("div");
+    divider.className="divider";
+    divider.style.transform=`rotate(${current}deg)`;
+    dividers.appendChild(divider);
 
-    ctx.beginPath();
-    ctx.moveTo(200, 200);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
+    current+=angle;
+  });
+
+  wheel.style.background=`conic-gradient(${gradient.slice(0,-1)})`;
 }
 
-dibujarRuleta();
+// GIRO
+function girar(){
 
-let anguloRuleta = 0;
+  const elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
 
-// 🎯 GIRAR
-function girar() {
-  const vueltas = Math.random() * 5 + 5;
-  const destino = anguloRuleta + vueltas * 360;
+  const target = elegido.mid - 90;
 
-  const duracion = 3000;
-  const inicio = performance.now();
+  // ruleta
+  wheelRotation -= (180 + Math.random()*120);
+  wheel.style.transform=`rotate(${wheelRotation}deg)`;
 
-  function animar(tiempo) {
-    const progreso = (tiempo - inicio) / duracion;
+  // bola EXACTA
+  ballRotation += 6*360 + target - wheelRotation;
 
-    if (progreso < 1) {
-      anguloRuleta = destino * easeOut(progreso);
-      canvas.style.transform = `rotate(${anguloRuleta}deg)`;
-      requestAnimationFrame(animar);
-    } else {
-      anguloRuleta = destino % 360;
-      canvas.style.transform = `rotate(${anguloRuleta}deg)`;
-      calcularResultado();
-    }
-  }
+  ball.style.transition="transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
+  ball.style.transform=`
+    translate(-50%,-50%)
+    rotate(${ballRotation}deg)
+    translate(130px)
+  `;
 
-  requestAnimationFrame(animar);
-}
-
-function easeOut(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-// 🧠 RESULTADO EXACTO
-function calcularResultado() {
-  const anguloPorSegmento = 360 / total;
-
-  const anguloNormalizado = (360 - anguloRuleta % 360) % 360;
-
-  const offset = anguloPorSegmento / 2;
-
-  const index = Math.floor((anguloNormalizado + offset) / anguloPorSegmento) % total;
-
-  const numeroGanador = numeros[index];
-
-  document.getElementById("resultado").innerText = "Resultado: " + numeroGanador;
+  // resultado SIEMPRE correcto
+  document.getElementById('resultado').innerText = "Resultado: " + elegido.num;
 }
 </script>
 
