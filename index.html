@@ -217,7 +217,7 @@ function girar(){
   const target = ganador.midAngle - 90;
 
   // impulso corto (ruleta “pesada”)
-  const impulso = 180 + Math.random()*120;
+  const impulso = 180 + Math.random()*90;
   wheelRotation -= impulso;
   wheel.style.transform = `rotate(${wheelRotation}deg)`;
 
