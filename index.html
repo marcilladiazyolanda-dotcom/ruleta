@@ -298,10 +298,17 @@ function createLine(cx,cy,angle,r1,r2,color,w){
 // GIRAR
 function girar(){
 
-  // giro libre de la bola
-  let spin = 360 * 5 + Math.random() * 360;
+  // 🎡 GIRO DE RULETA (más suave, tipo casino)
+  let spinWheel = 360 * 2 + Math.random() * 180;
+  wheelRotation -= spinWheel;
 
-  ballRotation += spin;
+  svg.style.transition = "transform 4s cubic-bezier(0.15,0.7,0.25,1)";
+  svg.style.transform = `rotate(${wheelRotation}deg)`;
+
+
+  // ⚪ GIRO DE LA BOLA (más rápido y en sentido contrario)
+  let spinBall = 360 * 5 + Math.random() * 360;
+  ballRotation += spinBall;
 
   ball.style.transition = "transform 3s ease-out";
   ball.style.transform = `
@@ -310,17 +317,18 @@ function girar(){
     translate(180px)
   `;
 
-  // calcular resultado cuando termina
+
+  // 🎯 CALCULAR RESULTADO REAL
   setTimeout(()=>{
 
     // ángulo final de la bola
-    let finalAngle = (ballRotation % 360 + 360) % 360;
+    let finalBall = (ballRotation % 360 + 360) % 360;
 
     // compensar giro de la ruleta
-    let relativeAngle = (finalAngle - wheelRotation) % 360;
-    if (relativeAngle < 0) relativeAngle += 360;
+    let relativeAngle = (finalBall - wheelRotation) % 360;
+    if(relativeAngle < 0) relativeAngle += 360;
 
-    // buscar segmento correcto
+    // buscar segmento
     let resultadoFinal = window.bloques.find(b =>
       relativeAngle >= b.start && relativeAngle < b.end
     );
@@ -328,7 +336,7 @@ function girar(){
     document.getElementById('resultado').innerText =
       "Resultado: " + resultadoFinal.num;
 
-  }, 3000);
+  }, 4000); // mismo tiempo que la ruleta
 }
 </script>
 
