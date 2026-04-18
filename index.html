@@ -45,37 +45,22 @@ body {
   box-shadow:0 0 6px black;
 }
 
-table {
-  margin:auto;
-  border-collapse: collapse;
-}
+table { margin:auto; border-collapse: collapse; }
+td { border:1px solid #999; padding:5px; }
+input { width:50px; }
+button { padding:10px; margin-top:10px; }
 
-td {
-  border:1px solid #999;
-  padding:5px;
-}
-
-input {
-  width:50px;
-}
-
-button {
-  padding:10px;
-  margin-top:10px;
-}
 </style>
 </head>
 
 <body>
 
-<!-- PANTALLA 1 -->
 <div id="pantalla1">
 <h2>Configuración</h2>
 <table id="tabla"></table>
 <button onclick="generar()">Generar Ruleta</button>
 </div>
 
-<!-- PANTALLA 2 -->
 <div id="pantalla2" class="hidden">
 <h2>Ruleta</h2>
 
@@ -104,20 +89,7 @@ let ballRotation = 0;
 // TABLA
 for (let i = 0; i <= 36; i++) {
   let row = document.createElement('tr');
-
-  let td1 = document.createElement('td');
-  td1.textContent = i;
-
-  let td2 = document.createElement('td');
-  let input = document.createElement('input');
-  input.value = 1;
-  input.id = "n-" + i;
-
-  td2.appendChild(input);
-
-  row.appendChild(td1);
-  row.appendChild(td2);
-
+  row.innerHTML = `<td>${i}</td><td><input value="1" id="n-${i}"></td>`;
   tabla.appendChild(row);
 }
 
@@ -156,7 +128,7 @@ function generar(){
   pantalla2.classList.remove('hidden');
 }
 
-// DIBUJAR RULETA COMPLETA
+// DIBUJAR
 function dibujar(bloques){
 
   const cx=210, cy=210;
@@ -169,7 +141,7 @@ function dibujar(bloques){
   let angleStart=0;
   let toggle=true;
 
-  // 🎨 DEGRADADO DORADO
+  // 🟡 degradado dorado
   let defs=document.createElementNS("http://www.w3.org/2000/svg","defs");
   defs.innerHTML=`
     <radialGradient id="gold">
@@ -195,21 +167,19 @@ function dibujar(bloques){
       toggle=!toggle;
     }
 
-    // SEGMENTOS
+    // SEGMENTO
     let path=document.createElementNS("http://www.w3.org/2000/svg","path");
     path.setAttribute("d",arc(cx,cy,rOuter,start,end,rMid));
     path.setAttribute("fill",color);
     svg.appendChild(path);
 
-    // 🔩 SEPARADORES EXTERIORES
-    let line=createLine(cx,cy,start,rMid,rOuter,"silver",2);
-    svg.appendChild(line);
+    // 🔩 separador exterior (gris metálico)
+    svg.appendChild(createLine(cx,cy,start,rMid,rOuter,"silver",2));
 
-    // 🔩 SEPARADORES INTERIORES
-    let line2=createLine(cx,cy,start,rInner,rMid,"#ffcc00",1);
-    svg.appendChild(line2);
+    // 🔩 separador interior (MISMO COLOR)
+    svg.appendChild(createLine(cx,cy,start,rInner,rMid,"silver",1));
 
-    // NÚMEROS
+    // número
     let mid=start+angle/2;
     b.mid=mid;
 
@@ -229,11 +199,11 @@ function dibujar(bloques){
     angleStart=end;
   });
 
-  // ⚫ ANILLO NEGRO INTERIOR
+  // 🖤 ANILLO NEGRO (lo que faltaba)
   let ring=document.createElementNS("http://www.w3.org/2000/svg","circle");
   ring.setAttribute("cx",cx);
   ring.setAttribute("cy",cy);
-  ring.setAttribute("r",rInner);
+  ring.setAttribute("r",rMid);
   ring.setAttribute("fill","black");
   svg.appendChild(ring);
 
@@ -249,7 +219,6 @@ function dibujar(bloques){
 
 // ARCOS
 function arc(cx,cy,rOuter,start,end,rInner){
-
   let s=(start-90)*Math.PI/180;
   let e=(end-90)*Math.PI/180;
 
