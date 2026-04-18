@@ -51,15 +51,16 @@ body { font-family: Arial; }
 /* 🎯 BOLA */ira
 .ball {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: white;
   border-radius: 50%;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg) translate(130px);
   transform-origin: center;
   box-shadow: 0 0 6px black;
-  transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 10;
 }
 
 table { margin:auto; }
@@ -206,22 +207,41 @@ function girar() {
   const result = bolsa[Math.floor(Math.random() * bolsa.length)];
   const ganador = bloques.find(b => b.num === result);
 
-  // 🎯 ángulo correcto del segmento
   const target = ganador.midAngle - 90;
 
   const vueltas = 6;
 
-  // 🎡 acumulación REAL (sin modulo)
+  // 🎯 acumulación REAL
   ballRotation += (vueltas * 360) + target;
 
-  // 📏 radio correcto (ajústalo si quieres más dentro/fuera)
-  const radio = 125;
+  const radio = 130;
 
-  ball.style.transition = "transform 2.2s cubic-bezier(0.2, 0.8, 0.2, 1)";
+  // 🎡 GIRO PRINCIPAL
+  ball.style.transition = "transform 2s cubic-bezier(0.2, 0.8, 0.2, 1)";
   ball.style.transform = `
+    translate(-50%, -50%)
     rotate(${ballRotation}deg)
     translate(${radio}px)
   `;
+
+  // 🟢 EFECTO REBOTE (nivel casino)
+  setTimeout(() => {
+    ball.style.transition = "transform 0.25s ease-out";
+    ball.style.transform = `
+      translate(-50%, -50%)
+      rotate(${ballRotation}deg)
+      translate(${radio - 10}px)
+    `;
+  }, 2000);
+
+  setTimeout(() => {
+    ball.style.transition = "transform 0.2s ease-in";
+    ball.style.transform = `
+      translate(-50%, -50%)
+      rotate(${ballRotation}deg)
+      translate(${radio}px)
+    `;
+  }, 2250);
 
   document.getElementById('resultado').innerText = "Resultado: " + result;
 }
