@@ -10,32 +10,34 @@ body {
   text-align: center;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
+/* LAYOUT MÁS COMPACTO */
 .layout {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 20px;
+  max-width: 600px;
+  margin: auto;
 }
 
-/* RULETA */
+/* CONTENEDOR */
 .wheel-wrapper {
   width: 320px;
   height: 320px;
   position: relative;
-  margin: auto;
-  transform-origin: 50% 50%; /* 🔥 CLAVE */
 }
 
+/* RULETA */
 .wheel {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   border: 6px solid black;
   position: absolute;
+  transform-origin: 50% 50%;
+  transition: transform 4s cubic-bezier(0.15, 0.7, 0.25, 1);
 }
 
 /* NÚMEROS */
@@ -73,18 +75,9 @@ body {
 }
 
 /* TABLA */
-table {
-  margin: auto;
-}
-
-input {
-  width: 60px;
-}
-
-button {
-  margin-top: 10px;
-  padding: 8px 16px;
-}
+table { margin: auto; }
+input { width: 60px; }
+button { margin-top: 10px; padding: 8px 16px; }
 </style>
 </head>
 
@@ -102,7 +95,7 @@ button {
   <h2>Ruleta</h2>
 
   <div class="layout">
-    <div class="wheel-wrapper" id="wrapper">
+    <div class="wheel-wrapper">
       <div id="wheel" class="wheel"></div>
       <div id="labels" class="labels"></div>
       <div id="ball" class="ball"></div>
@@ -120,12 +113,11 @@ const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
 const ball = document.getElementById('ball');
-const wrapper = document.getElementById('wrapper');
 
 let ballRotation = 0;
 let wheelRotation = 0;
 
-// CREAR TABLA
+// TABLA
 for (let i = 0; i <= 36; i++) {
   const row = document.createElement('tr');
   row.innerHTML = `
@@ -218,7 +210,7 @@ function dibujar(bloques) {
   wheel.style.background = `conic-gradient(${gradient.slice(0,-1)})`;
 }
 
-// GIRAR RULETA + BOLA
+// GIRAR (REALISTA)
 function girar() {
 
   const bolsa = window.bolsa;
@@ -230,16 +222,15 @@ function girar() {
   const target = ganador.midAngle - 90;
 
   const vueltasBola = 7;
-const vueltasRuleta = 1.2; // 🔥 mucho más realista
-const radio = 130;
+  const radio = 130;
 
-// RULETA (más lenta y pesada)
-wheelRotation -= (vueltasRuleta * 360 + Math.random() * 90);
+  // 🎡 RULETA (impulso corto y realista)
+  const impulso = 180 + Math.random() * 120;
+  wheelRotation -= impulso;
 
-wrapper.style.transition = "transform 4.5s cubic-bezier(0.1, 0.7, 0.2, 1)";
-wrapper.style.transform = `rotate(${wheelRotation}deg)`;
+  wheel.style.transform = `rotate(${wheelRotation}deg)`;
 
-  // BOLA
+  // ⚪ BOLA (compensada)
   ballRotation += (vueltasBola * 360) + target - wheelRotation;
 
   ball.style.transition = "transform 2.4s cubic-bezier(0.2, 0.9, 0.3, 1)";
