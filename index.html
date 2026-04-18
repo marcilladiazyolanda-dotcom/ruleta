@@ -26,7 +26,8 @@ body {
   width: 320px;
   height: 320px;
   position: relative;
-  transition: transform 3.2s cubic-bezier(0.25, 0.7, 0.3, 1);
+  margin: auto;
+  transform-origin: 50% 50%; /* 🔥 CLAVE */
 }
 
 .wheel {
@@ -229,12 +230,14 @@ function girar() {
   const target = ganador.midAngle - 90;
 
   const vueltasBola = 7;
-  const vueltasRuleta = 3;
-  const radio = 130;
+const vueltasRuleta = 1.2; // 🔥 mucho más realista
+const radio = 130;
 
-  // RULETA
-  wheelRotation -= (vueltasRuleta * 360 + Math.random() * 180);
-  wrapper.style.transform = `rotate(${wheelRotation}deg)`;
+// RULETA (más lenta y pesada)
+wheelRotation -= (vueltasRuleta * 360 + Math.random() * 90);
+
+wrapper.style.transition = "transform 4.5s cubic-bezier(0.1, 0.7, 0.2, 1)";
+wrapper.style.transform = `rotate(${wheelRotation}deg)`;
 
   // BOLA
   ballRotation += (vueltasBola * 360) + target - wheelRotation;
