@@ -81,7 +81,7 @@ input{ width:60px; }
 <h2>Ruleta</h2>
 
 <div class="layout">
-  <div class="wheel-wrapper" id="wrapper">
+  <div class="wheel-wrapper">
     <div id="wheel" class="wheel">
       <div id="labels" class="labels"></div>
     </div>
@@ -100,7 +100,6 @@ const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
 const ball = document.getElementById('ball');
-const wrapper = document.getElementById('wrapper');
 
 let ballRotation = 0;
 let wheelRotation = 0;
@@ -136,6 +135,14 @@ function generar(){
 
   dibujar(bloques);
 
+  // bolsa de probabilidad
+  window.bolsa=[];
+  bloques.forEach(b=>{
+    for(let i=0;i<b.size;i++){
+      window.bolsa.push(b);
+    }
+  });
+
   document.getElementById('pantalla1').classList.add('hidden');
   document.getElementById('pantalla2').classList.remove('hidden');
 }
@@ -163,6 +170,7 @@ function dibujar(bloques){
     gradient+=`${color} ${current}deg ${current+angle}deg,`;
 
     let mid=current+angle/2;
+    b.mid=mid;
 
     let label=document.createElement("div");
     label.className="label";
@@ -176,9 +184,6 @@ function dibujar(bloques){
 
     labels.appendChild(label);
 
-    b.start=current;
-    b.end=current+angle;
-
     current+=angle;
   });
 
@@ -187,51 +192,32 @@ function dibujar(bloques){
 
 function girar(){
 
-  const bloques=window.bloques;
+  const bloques = window.bloques;
+  const elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
 
-  // RUEDA
+  // 🎯 ángulo exacto del segmento
+  const target = elegido.mid - 90;
+
+  // 🎡 ruleta
   const impulso=180+Math.random()*120;
   wheelRotation-=impulso;
   wheel.style.transform=`rotate(${wheelRotation}deg)`;
 
-  // BOLA
+  // ⚪ bola (exacta)
   const vueltas=6;
-  ballRotation+=vueltas*360 + Math.random()*360;
+  const radio=130;
+
+  ballRotation += vueltas*360 + target - wheelRotation;
 
   ball.style.transition="transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
   ball.style.transform=`
     translate(-50%,-50%)
     rotate(${ballRotation}deg)
-    translate(130px)
+    translate(${radio}px)
   `;
 
-  setTimeout(()=>{
-
-    // 📍 POSICIÓN REAL DE LA BOLA
-    const ballRect = ball.getBoundingClientRect();
-    const wrapperRect = wrapper.getBoundingClientRect();
-
-    const cx = wrapperRect.left + wrapperRect.width / 2;
-    const cy = wrapperRect.top + wrapperRect.height / 2;
-
-    const bx = ballRect.left + ballRect.width / 2;
-    const by = ballRect.top + ballRect.height / 2;
-
-    const dx = bx - cx;
-    const dy = by - cy;
-
-    let angle = Math.atan2(dy, dx) * (180 / Math.PI);
-    angle = (angle + 360) % 360;
-
-    // 🎯 BUSCAR SEGMENTO REAL
-    for(let b of bloques){
-      if(angle >= b.start && angle < b.end){
-        document.getElementById('resultado').innerText = "Resultado: " + b.num;
-        break;
-      }
-    }
-
-  },2400);
+  // resultado SIEMPRE correcto
+  document.getElementById('resultado').innerText = "Resultado: " + elegido.num;
 }
 </script>
 
