@@ -2,243 +2,150 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Ruleta PRO</title>
-
+<title>Ruleta precisa</title>
 <style>
-body { font-family: Arial; text-align: center; }
-
-.layout{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:20px;
-}
-
-.wheel-wrapper{
-  width:320px;
-  height:320px;
-  position:relative;
-}
-
-/* RULETA */
-.wheel{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  border:6px solid black;
-  position:absolute;
-  transform-origin:50% 50%;
-  transition: transform 4s cubic-bezier(0.15,0.7,0.25,1);
-}
-
-/* SEPARADORES */
-.dividers{
-  position:absolute;
-  width:100%;
-  height:100%;
-}
-
-.divider{
-  position:absolute;
-  width:2px;
-  height:50%;
-  background: silver;
-  top:50%;
-  left:50%;
-  transform-origin:0% 0%;
-}
-
-/* NÚMEROS */
-.labels{
-  position:absolute;
-  width:100%;
-  height:100%;
-}
-
-.label{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:28px;
-  margin-left:-14px;
-  text-align:center;
-  font-weight:bold;
-  color:white;
-  text-shadow:0 0 4px black;
-  font-size:12px;
-}
-
-/* BOLA */
-.ball{
-  position:absolute;
-  width:14px;
-  height:14px;
-  background:white;
-  border-radius:50%;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%) rotate(0deg) translate(130px);
-  box-shadow:0 0 6px black;
-  z-index:10;
-}
-
-table{ margin:auto; }
-input{ width:60px; }
-
-</style>
-</head>
-
-<body>
-
-<div id="pantalla1">
-<h2>Configuración</h2>
-<table id="tabla"></table>
-<button onclick="generar()">Generar Ruleta</button>
-</div>
-
-<div id="pantalla2" style="display:none;">
-<h2>Ruleta</h2>
-
-<div class="layout">
-  <div class="wheel-wrapper">
-    <div id="wheel" class="wheel">
-      <div id="dividers" class="dividers"></div>
-      <div id="labels" class="labels"></div>
-    </div>
-    <div id="ball" class="ball"></div>
-  </div>
-
-  <div>
-    <button onclick="girar()">Girar</button>
-    <h3 id="resultado"></h3>
-  </div>
-</div>
-</div>
-
-<script>
-const tabla = document.getElementById('tabla');
-const wheel = document.getElementById('wheel');
-const labels = document.getElementById('labels');
-const dividers = document.getElementById('dividers');
-const ball = document.getElementById('ball');
-
-let ballRotation = 0;
-let wheelRotation = 0;
-
-const R_LABEL = 110;
-
-// TABLA
-for(let i=0;i<=36;i++){
-  const row=document.createElement('tr');
-  row.innerHTML=`
-    <td>${i}</td>
-    <td><input type="number" value="1" id="n-${i}"></td>
-  `;
-  tabla.appendChild(row);
-}
-
-function generar(){
-
-  labels.innerHTML="";
-  dividers.innerHTML="";
-  let bloques=[];
-
-  for(let i=0;i<=36;i++){
-    let count=parseInt(document.getElementById(`n-${i}`).value)||0;
-    if(i===0) count=1;
-    if(count>0) bloques.push({num:i,size:count});
+  body {
+    background: #0f172a;
+    color: white;
+    font-family: Arial;
+    text-align: center;
   }
 
-  let otros=bloques.filter(b=>b.num!==0);
-  otros.sort(()=>Math.random()-0.5);
+  .contenedor {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin: 40px auto;
+  }
 
-  bloques=[{num:0,size:1},...otros];
-  window.bloques=bloques;
+  canvas {
+    border-radius: 50%;
+  }
 
-  dibujar(bloques);
+  .bola {
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
-  // bolsa ponderada
-  window.bolsa=[];
-  bloques.forEach(b=>{
-    for(let i=0;i<b.size;i++) window.bolsa.push(b);
-  });
+  button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+  }
 
-  document.getElementById('pantalla1').style.display="none";
-  document.getElementById('pantalla2').style.display="block";
+  #resultado {
+    margin-top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h1>Ruleta 🎡</h1>
+
+<div class="contenedor">
+  <canvas id="ruleta" width="400" height="400"></canvas>
+  <div class="bola" id="bola"></div>
+</div>
+
+<button onclick="girar()">Girar</button>
+
+<div id="resultado">Resultado: -</div>
+
+<script>
+const canvas = document.getElementById("ruleta");
+const ctx = canvas.getContext("2d");
+
+const numeros = [
+  0, 32, 15, 19, 4, 21, 2, 25,
+  17, 34, 6, 27, 13, 36, 11, 30,
+  8, 23, 10, 5, 24, 16, 33, 1,
+  20, 14, 31, 9, 22, 18, 29, 7,
+  28, 12, 35, 3, 26
+];
+
+const total = numeros.length;
+const anguloSegmento = (2 * Math.PI) / total;
+
+function dibujarRuleta() {
+  for (let i = 0; i < total; i++) {
+    const anguloInicio = i * anguloSegmento;
+    const anguloFin = anguloInicio + anguloSegmento;
+
+    ctx.beginPath();
+    ctx.moveTo(200, 200);
+    ctx.arc(200, 200, 200, anguloInicio, anguloFin);
+    ctx.fillStyle = i % 2 === 0 ? "#16a34a" : "#dc2626";
+    ctx.fill();
+
+    ctx.save();
+    ctx.translate(200, 200);
+    ctx.rotate(anguloInicio + anguloSegmento / 2);
+    ctx.fillStyle = "white";
+    ctx.font = "14px Arial";
+    ctx.fillText(numeros[i], 140, 5);
+    ctx.restore();
+  }
 }
 
-function dibujar(bloques){
+dibujarRuleta();
 
-  let total=bloques.reduce((a,b)=>a+b.size,0);
-  let current=0;
-  let gradient="";
-  let toggle=true;
+let anguloRuleta = 0;
 
-  bloques.forEach(b=>{
+function girar() {
+  const vueltas = Math.random() * 5 + 5;
+  const anguloFinalRuleta = anguloRuleta + vueltas * 360;
 
-    let angle=(b.size/total)*360;
+  const duracion = 3000;
+  const inicio = performance.now();
 
-    let color;
-    if(b.num===0){
-      color="#2e7d32";
-      toggle=true;
+  function animar(tiempo) {
+    const progreso = (tiempo - inicio) / duracion;
+
+    if (progreso < 1) {
+      anguloRuleta = anguloFinalRuleta * easeOut(progreso);
+
+      canvas.style.transform = `rotate(${anguloRuleta}deg)`;
+
+      requestAnimationFrame(animar);
     } else {
-      color=toggle?"#c62828":"#000";
-      toggle=!toggle;
+      anguloRuleta = anguloFinalRuleta % 360;
+      canvas.style.transform = `rotate(${anguloRuleta}deg)`;
+
+      calcularResultado();
     }
+  }
 
-    gradient+=`${color} ${current}deg ${current+angle}deg,`;
-
-    let mid=current+angle/2;
-    b.mid=mid;
-
-    // número
-    let label=document.createElement("div");
-    label.className="label";
-    label.textContent=b.num;
-
-    label.style.transform=`
-      rotate(${mid-90}deg)
-      translate(${R_LABEL}px)
-      rotate(${90-mid}deg)
-    `;
-    labels.appendChild(label);
-
-    // separador
-    let divider=document.createElement("div");
-    divider.className="divider";
-    divider.style.transform=`rotate(${current}deg)`;
-    dividers.appendChild(divider);
-
-    current+=angle;
-  });
-
-  wheel.style.background=`conic-gradient(${gradient.slice(0,-1)})`;
+  requestAnimationFrame(animar);
 }
 
-// GIRO
-function girar(){
+function easeOut(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
 
-  const elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
+// 🔥 AQUÍ ESTÁ LA CLAVE REAL
+function calcularResultado() {
+  const totalNumeros = numeros.length;
+  const anguloPorSegmento = 360 / totalNumeros;
 
-  const target = elegido.mid - 90;
+  // La bola está fija arriba → usamos el ángulo de la ruleta invertido
+  const anguloNormalizado = (360 - anguloRuleta % 360) % 360;
 
-  // ruleta
-  wheelRotation -= (180 + Math.random()*120);
-  wheel.style.transform=`rotate(${wheelRotation}deg)`;
+  // Ajuste fino para centrar bien el segmento
+  const offset = anguloPorSegmento / 2;
 
-  // bola EXACTA
-  ballRotation += 6*360 + target - wheelRotation;
+  const index = Math.floor((anguloNormalizado + offset) / anguloPorSegmento) % totalNumeros;
 
-  ball.style.transition="transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
-  ball.style.transform=`
-    translate(-50%,-50%)
-    rotate(${ballRotation}deg)
-    translate(130px)
-  `;
+  const numeroGanador = numeros[index];
 
-  // resultado SIEMPRE correcto
-  document.getElementById('resultado').innerText = "Resultado: " + elegido.num;
+  document.getElementById("resultado").innerText = "Resultado: " + numeroGanador;
 }
 </script>
 
