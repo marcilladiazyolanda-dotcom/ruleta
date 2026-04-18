@@ -81,7 +81,7 @@ input{ width:60px; }
 <h2>Ruleta</h2>
 
 <div class="layout">
-  <div class="wheel-wrapper">
+  <div class="wheel-wrapper" id="wrapper">
     <div id="wheel" class="wheel">
       <div id="labels" class="labels"></div>
     </div>
@@ -100,13 +100,14 @@ const tabla = document.getElementById('tabla');
 const wheel = document.getElementById('wheel');
 const labels = document.getElementById('labels');
 const ball = document.getElementById('ball');
+const wrapper = document.getElementById('wrapper');
 
 let ballRotation = 0;
 let wheelRotation = 0;
 
 const R_LABEL = 110;
 
-// tabla
+// TABLA
 for(let i=0;i<=36;i++){
   const row=document.createElement('tr');
   row.innerHTML=`
@@ -188,15 +189,14 @@ function girar(){
 
   const bloques=window.bloques;
 
-  // giro ruleta
+  // RUEDA
   const impulso=180+Math.random()*120;
   wheelRotation-=impulso;
   wheel.style.transform=`rotate(${wheelRotation}deg)`;
 
-  // giro bola
+  // BOLA
   const vueltas=6;
-  const randomAngle=Math.random()*360;
-  ballRotation+=vueltas*360+randomAngle;
+  ballRotation+=vueltas*360 + Math.random()*360;
 
   ball.style.transition="transform 2.4s cubic-bezier(0.2,0.9,0.3,1)";
   ball.style.transform=`
@@ -207,12 +207,23 @@ function girar(){
 
   setTimeout(()=>{
 
-    // 🎯 NORMALIZAR ÁNGULO REAL
-    let angle = (ballRotation % 360) - (wheelRotation % 360);
+    // 📍 POSICIÓN REAL DE LA BOLA
+    const ballRect = ball.getBoundingClientRect();
+    const wrapperRect = wrapper.getBoundingClientRect();
 
-    angle = ((angle % 360) + 360) % 360;
+    const cx = wrapperRect.left + wrapperRect.width / 2;
+    const cy = wrapperRect.top + wrapperRect.height / 2;
 
-    // encontrar segmento EXACTO
+    const bx = ballRect.left + ballRect.width / 2;
+    const by = ballRect.top + ballRect.height / 2;
+
+    const dx = bx - cx;
+    const dy = by - cy;
+
+    let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    angle = (angle + 360) % 360;
+
+    // 🎯 BUSCAR SEGMENTO REAL
     for(let b of bloques){
       if(angle >= b.start && angle < b.end){
         document.getElementById('resultado').innerText = "Resultado: " + b.num;
