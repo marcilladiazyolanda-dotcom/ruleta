@@ -20,14 +20,12 @@ body {
   gap:30px;
 }
 
-/* CONTENEDOR */
 .wheel-wrapper {
   width:400px;
   height:400px;
   position:relative;
 }
 
-/* SVG */
 #wheelSVG {
   width:100%;
   height:100%;
@@ -35,7 +33,6 @@ body {
   transform-origin: 50% 50%;
 }
 
-/* BOLA */
 .ball {
   position:absolute;
   width:12px;
@@ -48,6 +45,20 @@ body {
   box-shadow:0 0 6px black;
 }
 
+table {
+  margin:auto;
+  border-collapse: collapse;
+}
+
+td {
+  border:1px solid #999;
+  padding:5px;
+}
+
+input {
+  width:50px;
+}
+
 button {
   padding:10px;
   margin-top:10px;
@@ -57,173 +68,171 @@ button {
 
 <body>
 
+<!-- PANTALLA 1 -->
 <div id="pantalla1">
-<h2>Configuración</h2>
-<table id="tabla"></table>
-<button onclick="generar()">Generar Ruleta</button>
+  <h2>Configuración</h2>
+  <table id="tabla"></table>
+  <button onclick="generar()">Generar Ruleta</button>
 </div>
 
+<!-- PANTALLA 2 -->
 <div id="pantalla2" class="hidden">
-<h2>Ruleta</h2>
+  <h2>Ruleta</h2>
 
-<div class="layout">
-  <div class="wheel-wrapper">
-    <svg id="wheelSVG" viewBox="0 0 400 400"></svg>
-    <div id="ball" class="ball"></div>
-  </div>
+  <div class="layout">
+    <div class="wheel-wrapper">
+      <svg id="wheelSVG" viewBox="0 0 400 400"></svg>
+      <div id="ball" class="ball"></div>
+    </div>
 
-  <div>
-    <button onclick="girar()">Girar</button>
-    <button onclick="volver()">← Volver</button>
-    <h3 id="resultado"></h3>
+    <div>
+      <button onclick="girar()">Girar</button>
+      <button onclick="volver()">← Volver</button>
+      <h3 id="resultado"></h3>
+    </div>
   </div>
-</div>
 </div>
 
 <script>
 const tabla = document.getElementById('tabla');
 const svg = document.getElementById('wheelSVG');
 const ball = document.getElementById('ball');
+const pantalla1 = document.getElementById('pantalla1');
+const pantalla2 = document.getElementById('pantalla2');
+const resultado = document.getElementById('resultado');
 
 let wheelRotation = 0;
 let ballRotation = 0;
 
-// TABLA
-for(let i=0;i<=36;i++){
-  let row=document.createElement('tr');
-  row.innerHTML=`<td>${i}</td><td><input value="1" id="n-${i}"></td>`;
+// 🔥 CREAR TABLA 0–36 (CORRECTO)
+for (let i = 0; i <= 36; i++) {
+  let row = document.createElement('tr');
+
+  let td1 = document.createElement('td');
+  td1.textContent = i;
+
+  let td2 = document.createElement('td');
+  let input = document.createElement('input');
+  input.type = "number";
+  input.value = 1;
+  input.id = "n-" + i;
+
+  td2.appendChild(input);
+
+  row.appendChild(td1);
+  row.appendChild(td2);
+
   tabla.appendChild(row);
 }
 
-function volver(){
+// VOLVER
+function volver() {
   pantalla1.classList.remove('hidden');
   pantalla2.classList.add('hidden');
 }
 
 // GENERAR
-function generar(){
+function generar() {
 
-  svg.innerHTML="";
+  svg.innerHTML = "";
 
-  let bloques=[];
+  let bloques = [];
 
-  for(let i=0;i<=36;i++){
-    let val=parseInt(document.getElementById(`n-${i}`).value)||0;
-    if(i===0) val=1;
-    if(val>0) bloques.push({num:i,size:val});
+  for (let i = 0; i <= 36; i++) {
+    let val = parseInt(document.getElementById(`n-${i}`).value) || 0;
+    if (i === 0) val = 1;
+    if (val > 0) bloques.push({ num: i, size: val });
   }
 
-  let otros=bloques.filter(b=>b.num!==0);
-  otros.sort(()=>Math.random()-0.5);
+  let otros = bloques.filter(b => b.num !== 0);
+  otros.sort(() => Math.random() - 0.5);
 
-  bloques=[{num:0,size:1},...otros];
-  window.bloques=bloques;
+  bloques = [{ num: 0, size: 1 }, ...otros];
+  window.bloques = bloques;
 
   dibujarSVG(bloques);
 
-  // bolsa
-  window.bolsa=[];
-  bloques.forEach(b=>{
-    for(let i=0;i<b.size;i++) window.bolsa.push(b);
+  window.bolsa = [];
+  bloques.forEach(b => {
+    for (let i = 0; i < b.size; i++) window.bolsa.push(b);
   });
 
   pantalla1.classList.add('hidden');
   pantalla2.classList.remove('hidden');
 }
 
-// DIBUJO SVG REAL
-function dibujarSVG(bloques){
+// DIBUJAR RULETA SVG
+function dibujarSVG(bloques) {
 
-  let total=bloques.reduce((a,b)=>a+b.size,0);
-  let angleStart=0;
+  let total = bloques.reduce((a, b) => a + b.size, 0);
+  let angleStart = 0;
 
-  const cx=200, cy=200;
-  const rOuter=190;
-  const rInner=130;
+  const cx = 200, cy = 200;
+  const rOuter = 190;
+  const rInner = 130;
 
-  let toggle=true;
+  let toggle = true;
 
-  bloques.forEach(b=>{
+  bloques.forEach(b => {
 
-    let angle=(b.size/total)*360;
-    let start=angleStart;
-    let end=start+angle;
+    let angle = (b.size / total) * 360;
+    let start = angleStart;
+    let end = start + angle;
 
     let color;
-    if(b.num===0){
-      color="#2e7d32";
-      toggle=true;
+    if (b.num === 0) {
+      color = "#2e7d32";
+      toggle = true;
     } else {
-      color=toggle?"#c62828":"#000";
-      toggle=!toggle;
+      color = toggle ? "#c62828" : "#000";
+      toggle = !toggle;
     }
 
-    // arco
-    let path=document.createElementNS("http://www.w3.org/2000/svg","path");
-
-    let d = describeArc(cx,cy,rOuter,start,end,rInner);
-
-    path.setAttribute("d",d);
-    path.setAttribute("fill",color);
-
+    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", describeArc(cx, cy, rOuter, start, end, rInner));
+    path.setAttribute("fill", color);
     svg.appendChild(path);
 
-    // 🔩 SEPARADOR REAL (BORDE)
-    let line=document.createElementNS("http://www.w3.org/2000/svg","line");
+    // 🔩 separador en borde REAL
+    let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    let rad = (start - 90) * Math.PI / 180;
 
-    let rad = (start-90) * Math.PI/180;
-
-    let x1=cx+Math.cos(rad)*rInner;
-    let y1=cy+Math.sin(rad)*rInner;
-
-    let x2=cx+Math.cos(rad)*rOuter;
-    let y2=cy+Math.sin(rad)*rOuter;
-
-    line.setAttribute("x1",x1);
-    line.setAttribute("y1",y1);
-    line.setAttribute("x2",x2);
-    line.setAttribute("y2",y2);
-    line.setAttribute("stroke","silver");
-    line.setAttribute("stroke-width","2");
+    line.setAttribute("x1", cx + Math.cos(rad) * rInner);
+    line.setAttribute("y1", cy + Math.sin(rad) * rInner);
+    line.setAttribute("x2", cx + Math.cos(rad) * rOuter);
+    line.setAttribute("y2", cy + Math.sin(rad) * rOuter);
+    line.setAttribute("stroke", "silver");
+    line.setAttribute("stroke-width", "2");
 
     svg.appendChild(line);
 
     // número
-    let mid=start+angle/2;
-    b.mid=mid;
+    let mid = start + angle / 2;
+    b.mid = mid;
 
-    let tx=cx+Math.cos((mid-90)*Math.PI/180)*160;
-    let ty=cy+Math.sin((mid-90)*Math.PI/180)*160;
+    let tx = cx + Math.cos((mid - 90) * Math.PI / 180) * 160;
+    let ty = cy + Math.sin((mid - 90) * Math.PI / 180) * 160;
 
-    let text=document.createElementNS("http://www.w3.org/2000/svg","text");
-
-    text.setAttribute("x",tx);
-    text.setAttribute("y",ty);
-    text.setAttribute("fill","white");
-    text.setAttribute("font-size","14");
-    text.setAttribute("text-anchor","middle");
-    text.setAttribute("dominant-baseline","middle");
-    text.textContent=b.num;
+    let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", tx);
+    text.setAttribute("y", ty);
+    text.setAttribute("fill", "white");
+    text.setAttribute("font-size", "14");
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("dominant-baseline", "middle");
+    text.textContent = b.num;
 
     svg.appendChild(text);
 
-    angleStart=end;
+    angleStart = end;
   });
-
-  // centro dorado
-  let center=document.createElementNS("http://www.w3.org/2000/svg","circle");
-  center.setAttribute("cx",200);
-  center.setAttribute("cy",200);
-  center.setAttribute("r",100);
-  center.setAttribute("fill","url(#gold)");
-  svg.appendChild(center);
 }
 
 // ARCO
 function describeArc(cx, cy, rOuter, start, end, rInner) {
 
-  let startRad = (start-90) * Math.PI/180;
-  let endRad = (end-90) * Math.PI/180;
+  let startRad = (start - 90) * Math.PI / 180;
+  let endRad = (end - 90) * Math.PI / 180;
 
   let x1 = cx + rOuter * Math.cos(startRad);
   let y1 = cy + rOuter * Math.sin(startRad);
@@ -247,17 +256,17 @@ function describeArc(cx, cy, rOuter, start, end, rInner) {
 }
 
 // GIRAR
-function girar(){
+function girar() {
 
-  let elegido = window.bolsa[Math.floor(Math.random()*window.bolsa.length)];
+  let elegido = window.bolsa[Math.floor(Math.random() * window.bolsa.length)];
   let target = elegido.mid - 90;
 
   wheelRotation -= 200;
   svg.style.transform = `rotate(${wheelRotation}deg)`;
 
-  ballRotation += 6*360 + target - wheelRotation;
+  ballRotation += 6 * 360 + target - wheelRotation;
 
-  ball.style.transition="transform 2.4s ease-out";
+  ball.style.transition = "transform 2.4s ease-out";
   ball.style.transform = `
     translate(-50%,-50%)
     rotate(${ballRotation}deg)
