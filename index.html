@@ -27,90 +27,73 @@
 
     .casino-logo {
       font-family: 'Playfair Display', serif;
-      font-size: 42px; letter-spacing: 6px;
-      color: #d4af37;
-      text-shadow: 0 0 40px rgba(212,175,55,0.3);
-      margin-bottom: 0.3rem;
+      font-size: 42px; letter-spacing: 6px; color: #d4af37;
+      text-shadow: 0 0 40px rgba(212,175,55,0.3); margin-bottom: 0.3rem;
     }
 
     .casino-sub {
-      font-size: 13px; letter-spacing: 4px;
-      color: #8a7040; margin-bottom: 2.5rem;
-      text-transform: uppercase;
+      font-size: 13px; letter-spacing: 4px; color: #8a7040;
+      margin-bottom: 2.5rem; text-transform: uppercase;
     }
 
     .s1-card {
       background: linear-gradient(160deg, #2a1a0c, #1e1208);
       border: 1px solid #5a3e1b; border-radius: 12px;
-      padding: 2.5rem 3rem; width: 100%; max-width: 520px;
+      padding: 2.5rem 3rem; width: 100%; max-width: 460px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.6), inset 0 1px 0 rgba(212,175,55,0.15);
+      text-align: center;
     }
 
     .s1-label {
       font-size: 12px; letter-spacing: 3px; color: #8a7040;
-      text-transform: uppercase; text-align: center; margin-bottom: 1.8rem;
+      text-transform: uppercase; margin-bottom: 1.4rem;
     }
 
-    .coin-sel {
-      display: flex; align-items: center; justify-content: center;
-      gap: 16px; flex-wrap: wrap; margin-bottom: 1.8rem;
+    /* Ficha decorativa grande en el lobby */
+    .lobby-chip-wrap {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      margin-bottom: 1.8rem;
     }
 
-    .coin-opt { display: flex; flex-direction: column; align-items: center; gap: 7px; cursor: pointer; }
-    .coin-opt input { display: none; }
-
-    .chip {
-      width: 60px; height: 60px; border-radius: 50%;
+    .lobby-chip {
+      width: 90px; height: 90px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-family: 'Playfair Display', serif;
-      font-size: 13px; font-weight: 700; color: #fff;
-      border: 4px dashed rgba(255,255,255,0.45);
-      cursor: pointer; transition: transform .18s, box-shadow .18s;
+      font-size: 28px; font-weight: 700; color: #fff;
+      border: 6px dashed rgba(255,255,255,0.45);
+      background: radial-gradient(circle at 35% 30%, #ff6b6b, #c62828, #8b0000);
       position: relative;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.15);
+      box-shadow: 0 6px 20px rgba(0,0,0,.5), inset 0 2px 6px rgba(255,255,255,0.15);
     }
 
-    .chip::before {
-      content: ''; position: absolute; inset: 5px;
-      border-radius: 50%; border: 2px solid rgba(255,255,255,.3);
+    .lobby-chip::before {
+      content: ''; position: absolute; inset: 7px;
+      border-radius: 50%; border: 2.5px solid rgba(255,255,255,.3);
     }
 
-    .chip.c1   { background: radial-gradient(circle at 35% 30%, #ff6b6b, #c62828, #8b0000); }
-    .chip.c5   { background: radial-gradient(circle at 35% 30%, #6b8fff, #1565c0, #0a2d6b); }
-    .chip.c10  { background: radial-gradient(circle at 35% 30%, #6bff8f, #2e7d32, #0a3d0d); }
-    .chip.c25  { background: radial-gradient(circle at 35% 30%, #ffcc55, #e65100, #8b2e00); }
-    .chip.c50  { background: radial-gradient(circle at 35% 30%, #e06bff, #6a1b9a, #3a0a5a); }
-    .chip.c100 { background: radial-gradient(circle at 35% 30%, #888, #333, #111); }
-
-    .chip.sel {
-      transform: scale(1.22) translateY(-5px);
-      box-shadow: 0 8px 24px rgba(0,0,0,.6), 0 0 0 2px #d4af37, inset 0 2px 4px rgba(255,255,255,.2);
+    .lobby-chip-desc {
+      font-size: 13px; color: #8a7040; letter-spacing: 1px;
     }
 
-    .coin-lbl { font-size: 11px; color: #8a7040; letter-spacing: 1px; }
-
-    .custom-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 10px; margin-bottom: 1.5rem;
+    .rules-box {
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(90,62,27,.4);
+      border-radius: 8px; padding: 14px 18px;
+      margin-bottom: 1.8rem; text-align: left;
     }
 
-    .custom-row input {
-      width: 100px; text-align: center;
-      font-size: 20px; padding: 6px 10px;
-      background: #0e0805; border: 1px solid #5a3e1b;
-      border-radius: 5px; color: #e8d5b0;
-      font-family: 'Playfair Display', serif;
+    .rules-box p {
+      font-size: 12px; color: #8a7040; line-height: 1.8;
+      letter-spacing: .3px;
     }
 
-    .custom-row label { font-size: 13px; color: #8a7040; letter-spacing: 2px; }
+    .rules-box p span { color: #d4af37; font-weight: 600; }
 
     .btn-gold {
       display: block; width: 100%;
       background: linear-gradient(135deg, #d4af37 0%, #a0821e 50%, #d4af37 100%);
-      background-size: 200% auto;
-      color: #1a0f07; border: none; padding: 14px 0;
-      font-family: 'Playfair Display', serif;
-      font-size: 16px; letter-spacing: 3px;
+      background-size: 200% auto; color: #1a0f07; border: none; padding: 14px 0;
+      font-family: 'Playfair Display', serif; font-size: 16px; letter-spacing: 3px;
       border-radius: 5px; cursor: pointer; font-weight: 700;
       transition: background-position .4s, transform .15s;
     }
@@ -119,23 +102,21 @@
 
     /* ══════════ PANTALLA 2: JUEGO ══════════ */
     #pantalla2 {
-      padding: 1rem 1rem 3rem;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 16px;
+      padding: 1rem 1rem 3rem; display: flex;
+      flex-direction: column; align-items: center; gap: 14px;
     }
 
-    /* ── HUD RONDA (barra superior) ── */
+    /* ── HUD ── */
     .hud-bar {
       width: 100%; max-width: 1100px;
-      display: flex; gap: 8px; align-items: stretch;
-      flex-wrap: wrap;
+      display: flex; gap: 8px; align-items: stretch; flex-wrap: wrap;
     }
 
     .hud-box {
-      flex: 1; min-width: 90px;
+      flex: 1; min-width: 80px;
       background: linear-gradient(160deg, #2a1a0c, #1e1208);
       border: 1px solid #5a3e1b; border-radius: 8px;
-      padding: 8px 12px;
+      padding: 7px 10px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
 
@@ -143,109 +124,142 @@
 
     .hud-lbl {
       font-size: 9px; color: #8a7040;
-      text-transform: uppercase; letter-spacing: 1.5px;
-      margin-bottom: 2px;
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 2px;
     }
 
     .hud-val {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px; color: #d4af37;
-      line-height: 1;
+      font-family: 'Playfair Display', serif; font-size: 20px; color: #d4af37; line-height: 1;
     }
 
-    .hud-val.green  { color: #6bff8f; }
-    .hud-val.red    { color: #ff6b6b; }
-    .hud-val.white  { color: #e8d5b0; }
+    .hud-val.green { color: #6bff8f; }
+    .hud-val.red   { color: #ff6b6b; }
+    .hud-val.white { color: #e8d5b0; }
+    .hud-val.amber { color: #ffcc55; }
 
-    /* barra de progreso del objetivo */
+    /* barra objetivo */
     .obj-bar-wrap {
-      flex: 2; min-width: 160px;
+      flex: 2; min-width: 150px;
       background: linear-gradient(160deg, #2a1a0c, #1e1208);
-      border: 1px solid #5a3e1b; border-radius: 8px;
-      padding: 8px 14px;
+      border: 1px solid #5a3e1b; border-radius: 8px; padding: 7px 14px;
     }
 
     .obj-bar-top {
       display: flex; justify-content: space-between;
-      font-size: 10px; color: #8a7040; margin-bottom: 5px;
+      font-size: 10px; color: #8a7040; margin-bottom: 4px;
       text-transform: uppercase; letter-spacing: 1px;
     }
 
     .obj-bar-track {
-      height: 8px; background: rgba(0,0,0,.4);
-      border-radius: 4px; overflow: hidden;
+      height: 7px; background: rgba(0,0,0,.4); border-radius: 4px; overflow: hidden;
       border: 1px solid rgba(90,62,27,.5);
     }
 
     .obj-bar-fill {
       height: 100%; background: linear-gradient(90deg, #d4af37, #6bff8f);
-      border-radius: 4px; transition: width .4s ease;
-      min-width: 4px;
+      border-radius: 4px; transition: width .4s ease; min-width: 3px;
     }
+
+    /* ── BARRA MULTIPLICADOR ── */
+    .mult-bar-wrap {
+      width: 100%; max-width: 1100px;
+      background: linear-gradient(160deg, #2a1a0c, #1e1208);
+      border: 1px solid #5a3e1b; border-radius: 8px; padding: 8px 14px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .mult-bar-label {
+      font-size: 10px; color: #8a7040; text-transform: uppercase;
+      letter-spacing: 1.5px; white-space: nowrap; flex-shrink: 0;
+    }
+
+    .mult-bar-track {
+      flex: 1; height: 10px; position: relative;
+      background: rgba(0,0,0,.4); border-radius: 5px;
+      border: 1px solid rgba(90,62,27,.5);
+    }
+
+    /* línea central */
+    .mult-bar-center {
+      position: absolute; left: 50%; top: -2px; bottom: -2px;
+      width: 2px; background: rgba(212,175,55,.5); border-radius: 1px;
+    }
+
+    /* fill que crece desde el centro */
+    .mult-bar-fill {
+      position: absolute; top: 0; height: 100%; border-radius: 5px;
+      transition: left .35s ease, width .35s ease, background .35s;
+    }
+
+    .mult-bar-fill.pos { background: linear-gradient(90deg, #2e7d32, #6bff8f); }
+    .mult-bar-fill.neg { background: linear-gradient(90deg, #c62828, #ff6b6b); }
+
+    /* indicador puntero */
+    .mult-bar-thumb {
+      position: absolute; top: 50%; width: 14px; height: 14px;
+      border-radius: 50%; background: #d4af37;
+      border: 2px solid #1a0f07;
+      transform: translate(-50%, -50%);
+      transition: left .35s ease;
+      box-shadow: 0 0 6px rgba(212,175,55,.5);
+    }
+
+    .mult-val-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      flex-shrink: 0; min-width: 56px;
+    }
+
+    .mult-val {
+      font-family: 'Playfair Display', serif; font-size: 18px; color: #d4af37; line-height: 1;
+    }
+
+    .mult-val.pos { color: #6bff8f; }
+    .mult-val.neg { color: #ff6b6b; }
+
+    .mult-val-sub { font-size: 9px; color: #8a7040; letter-spacing: 1px; text-transform: uppercase; }
 
     /* mejoras activas */
     .perks-bar {
       width: 100%; max-width: 1100px;
+      display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
     }
 
-    .perks-list {
-      display: flex; gap: 6px; flex-wrap: wrap;
-    }
+    .perks-bar-lbl { font-size: 10px; color: #8a7040; text-transform: uppercase; letter-spacing: 1px; }
 
     .perk-badge {
-      font-size: 11px; padding: 4px 10px;
+      font-size: 11px; padding: 3px 10px;
       background: linear-gradient(135deg, #2a1a0c, #1e1208);
-      border: 1px solid #d4af37;
-      border-radius: 20px; color: #d4af37;
-      letter-spacing: .5px;
-    }
-
-    .p2-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px; letter-spacing: 5px;
-      color: #d4af37; text-align: center;
+      border: 1px solid #d4af37; border-radius: 20px; color: #d4af37; letter-spacing: .5px;
     }
 
     .top-row {
-      display: flex; gap: 24px;
-      align-items: flex-start; justify-content: center;
-      flex-wrap: wrap; width: 100%; max-width: 1100px;
+      display: flex; gap: 24px; align-items: flex-start;
+      justify-content: center; flex-wrap: wrap; width: 100%; max-width: 1100px;
     }
 
-    /* ── MADERA Y RULETA ── */
+    /* ── MADERA Y RULETA (sin cambios) ── */
     .roulette-scene { position: relative; flex-shrink: 0; }
 
     .wood-outer {
       width: 530px; height: 530px; border-radius: 50%;
-      background:
-        conic-gradient(from 0deg,
-          #8B5E2A 0deg, #6B3D15 20deg, #4A2510 40deg,
-          #8B5E2A 60deg, #5C3310 80deg, #3B1F08 100deg,
-          #7A4820 120deg, #5C3310 140deg, #4A2510 160deg,
-          #8B5E2A 180deg, #6B3D15 200deg, #4A2510 220deg,
-          #8B5E2A 240deg, #5C3310 260deg, #3B1F08 280deg,
-          #7A4820 300deg, #5C3310 320deg, #4A2510 340deg,
-          #8B5E2A 360deg);
-      box-shadow:
-        0 0 0 5px #6B3D15, 0 0 0 9px #3B1F08, 0 0 0 12px #8B5E2A,
+      background: conic-gradient(from 0deg,
+        #8B5E2A 0deg, #6B3D15 20deg, #4A2510 40deg, #8B5E2A 60deg, #5C3310 80deg,
+        #3B1F08 100deg, #7A4820 120deg, #5C3310 140deg, #4A2510 160deg,
+        #8B5E2A 180deg, #6B3D15 200deg, #4A2510 220deg, #8B5E2A 240deg, #5C3310 260deg,
+        #3B1F08 280deg, #7A4820 300deg, #5C3310 320deg, #4A2510 340deg, #8B5E2A 360deg);
+      box-shadow: 0 0 0 5px #6B3D15, 0 0 0 9px #3B1F08, 0 0 0 12px #8B5E2A,
         0 12px 50px rgba(0,0,0,.9), inset 0 3px 10px rgba(255,200,100,.08);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
+      display: flex; align-items: center; justify-content: center; position: relative;
     }
 
     .wood-track {
       width: 476px; height: 476px; border-radius: 50%;
-      background:
-        radial-gradient(circle at 50% 50%,
-          #C4883A 0%, #A0681A 8%, #7A4820 15%, #5C3310 22%,
-          #8B5E2A 28%, #6B3D15 35%, #4A2510 42%, #3B1F08 50%,
-          #5C3310 58%, #4A2510 65%, #6B3D15 72%, #8B5E2A 80%,
-          #5C3310 88%, #3B1F08 100%);
-      box-shadow:
-        inset 0 0 30px rgba(0,0,0,.7), inset 0 2px 6px rgba(255,180,60,.1),
+      background: radial-gradient(circle at 50% 50%,
+        #C4883A 0%, #A0681A 8%, #7A4820 15%, #5C3310 22%, #8B5E2A 28%, #6B3D15 35%,
+        #4A2510 42%, #3B1F08 50%, #5C3310 58%, #4A2510 65%, #6B3D15 72%, #8B5E2A 80%,
+        #5C3310 88%, #3B1F08 100%);
+      box-shadow: inset 0 0 30px rgba(0,0,0,.7), inset 0 2px 6px rgba(255,180,60,.1),
         0 0 0 2px #6B3D15, 0 0 0 4px #3B1F08;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
+      display: flex; align-items: center; justify-content: center; position: relative;
     }
 
     .wood-track::before {
@@ -261,52 +275,32 @@
 
     .wheel-wrapper { width: 420px; height: 420px; position: relative; }
 
-    #wheelSVG {
-      width: 100%; height: 100%;
-      filter: drop-shadow(0 6px 20px rgba(0,0,0,.8));
-    }
+    #wheelSVG { width: 100%; height: 100%; filter: drop-shadow(0 6px 20px rgba(0,0,0,.8)); }
 
     #ball {
-      position: absolute;
-      width: 14px; height: 14px;
+      position: absolute; width: 14px; height: 14px;
       background: radial-gradient(circle at 33% 28%, #ffffff, #d0d0d0, #888);
       border-radius: 50%;
       box-shadow: 0 0 10px rgba(255,255,255,0.5), 1px 2px 4px rgba(0,0,0,.6);
-      pointer-events: none; z-index: 20;
-      left: 50%; top: 50%;
+      pointer-events: none; z-index: 20; left: 50%; top: 50%;
       transform: translate(-50%,-50%);
     }
 
     .chips-layer {
       position: absolute; top: 0; left: 0;
-      width: 420px; height: 420px;
-      pointer-events: none; z-index: 15;
+      width: 420px; height: 420px; pointer-events: none; z-index: 15;
     }
 
     .indicator {
-      position: absolute; top: -4px; left: 50%;
-      transform: translateX(-50%);
+      position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
       width: 0; height: 0;
-      border-left: 9px solid transparent;
-      border-right: 9px solid transparent;
+      border-left: 9px solid transparent; border-right: 9px solid transparent;
       border-top: 20px solid #d4af37;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,.6));
-      z-index: 30;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.6)); z-index: 30;
     }
 
     /* ── PANEL ── */
     .panel { width: 285px; display: flex; flex-direction: column; gap: 12px; }
-
-    .stats-row { display: flex; gap: 8px; }
-
-    .stat-box {
-      flex: 1;
-      background: linear-gradient(160deg, #2a1a0c, #1e1208);
-      border: 1px solid #5a3e1b; border-radius: 7px; padding: 8px 10px;
-    }
-
-    .stat-box .lbl { font-size: 10px; color: #8a7040; text-transform: uppercase; letter-spacing: 1px; }
-    .stat-box .val { font-family: 'Playfair Display', serif; font-size: 22px; color: #d4af37; }
 
     .bets-card {
       background: linear-gradient(160deg, #2a1a0c, #1e1208);
@@ -314,8 +308,8 @@
     }
 
     .section-lbl {
-      font-size: 10px; color: #8a7040;
-      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;
+      font-size: 10px; color: #8a7040; text-transform: uppercase;
+      letter-spacing: 2px; margin-bottom: 10px;
     }
 
     .bet-row {
@@ -372,16 +366,14 @@
     .add-btn {
       background: none; border: 1px solid #5a3e1b; color: #8a7040;
       font-size: 12px; padding: 6px 0; border-radius: 5px;
-      cursor: pointer; width: 100%; margin-top: 3px; letter-spacing: 1px;
-      transition: all .12s;
+      cursor: pointer; width: 100%; margin-top: 3px; letter-spacing: 1px; transition: all .12s;
     }
     .add-btn:hover { background: #1e1208; color: #d4af37; border-color: #d4af37; }
 
     .spin-btn {
       background: linear-gradient(135deg, #2e7d32, #1b5e20);
       color: #fff; border: none; padding: 11px 0;
-      font-family: 'Playfair Display', serif;
-      font-size: 15px; letter-spacing: 2px;
+      font-family: 'Playfair Display', serif; font-size: 15px; letter-spacing: 2px;
       border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px;
       transition: all .15s; box-shadow: 0 4px 12px rgba(0,0,0,.4);
     }
@@ -391,20 +383,18 @@
     .back-btn {
       background: none; border: 1px solid #5a3e1b; color: #8a7040;
       font-size: 12px; padding: 6px 0; border-radius: 5px;
-      cursor: pointer; width: 100%; margin-top: 6px;
-      transition: all .12s; letter-spacing: 1px;
+      cursor: pointer; width: 100%; margin-top: 6px; transition: all .12s; letter-spacing: 1px;
     }
     .back-btn:hover { color: #d4af37; border-color: #d4af37; }
 
     .result-box {
       background: linear-gradient(160deg, #2a1a0c, #1e1208);
-      border: 1px solid #5a3e1b; border-radius: 7px;
-      padding: 10px 14px; min-height: 52px;
+      border: 1px solid #5a3e1b; border-radius: 7px; padding: 10px 14px; min-height: 52px;
     }
 
     #mensaje { font-size: 13px; color: #8a7040; line-height: 1.6; }
 
-    /* ══════════ TAPETE ══════════ */
+    /* ══════════ TAPETE (sin cambios) ══════════ */
     .felt-section { width: 100%; max-width: 1100px; }
 
     .felt-title {
@@ -421,16 +411,13 @@
     }
 
     .felt-layout { display: flex; gap: 6px; min-width: 640px; }
-
     .zero-col { display: flex; align-items: stretch; }
 
     .cell-zero {
-      width: 44px; background: #2e7d32;
-      border: 1px solid rgba(255,255,255,.25);
+      width: 44px; background: #2e7d32; border: 1px solid rgba(255,255,255,.25);
       border-radius: 4px 0 0 4px;
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 22px; font-weight: 700; color: #fff;
+      font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff;
       writing-mode: vertical-rl; text-orientation: mixed;
       letter-spacing: 4px; position: relative; transition: filter .2s;
     }
@@ -438,18 +425,14 @@
     .felt-right { display: flex; flex-direction: column; gap: 3px; flex: 1; }
 
     .nums-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: repeat(3, 40px);
-      gap: 2px;
+      display: grid; grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(3, 40px); gap: 2px;
     }
 
     .cell-num {
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 14px; font-weight: 700; color: #fff;
-      border: 1px solid rgba(255,255,255,.18);
-      position: relative; transition: filter .2s; cursor: default;
+      font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #fff;
+      border: 1px solid rgba(255,255,255,.18); position: relative; transition: filter .2s; cursor: default;
     }
 
     .cell-num.red   { background: #c62828; }
@@ -458,13 +441,10 @@
     .ext-row { display: flex; gap: 2px; }
 
     .cell-ext {
-      flex: 1; height: 32px;
-      display: flex; align-items: center; justify-content: center;
+      flex: 1; height: 32px; display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 600; color: rgba(255,255,255,.9);
-      border: 1px solid rgba(255,255,255,.18);
-      background: rgba(0,0,0,.28); border-radius: 2px;
-      position: relative; transition: filter .2s;
-      cursor: default; letter-spacing: .4px;
+      border: 1px solid rgba(255,255,255,.18); background: rgba(0,0,0,.28); border-radius: 2px;
+      position: relative; transition: filter .2s; cursor: default; letter-spacing: .4px;
     }
 
     .cell-ext.red-bg   { background: #b71c1c; }
@@ -472,14 +452,12 @@
     .cell-ext.span4    { flex: 4; }
 
     .felt-chip {
-      position: absolute;
-      width: 22px; height: 22px; border-radius: 50%;
+      position: absolute; width: 22px; height: 22px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 7px; font-weight: 700; color: #fff;
       border: 2px dashed rgba(255,255,255,.5);
       box-shadow: 0 2px 6px rgba(0,0,0,.6);
-      pointer-events: none; z-index: 10;
-      top: 50%; left: 50%;
+      pointer-events: none; z-index: 10; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
     }
 
@@ -492,16 +470,14 @@
 
     .win-highlight { outline: 2px solid #d4af37 !important; filter: brightness(1.5) !important; }
 
-    /* ══════════ PANTALLA 3: MEJORAS ROGUELIKE ══════════ */
+    /* ══════════ PANTALLA 3: MEJORAS ══════════ */
     #pantallaPerks {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 100vh; padding: 2rem; gap: 24px;
     }
 
     .perks-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 30px; letter-spacing: 4px; color: #d4af37;
+      font-family: 'Playfair Display', serif; font-size: 30px; letter-spacing: 4px; color: #d4af37;
       text-align: center;
     }
 
@@ -510,88 +486,59 @@
       text-align: center; text-transform: uppercase;
     }
 
-    .perks-grid {
-      display: flex; gap: 16px; flex-wrap: wrap;
-      justify-content: center; max-width: 800px;
-    }
+    .perks-grid { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; max-width: 800px; }
 
     .perk-card {
-      width: 220px;
-      background: linear-gradient(160deg, #2a1a0c, #1e1208);
-      border: 1px solid #5a3e1b; border-radius: 12px;
-      padding: 1.8rem 1.4rem;
-      cursor: pointer; transition: all .2s;
-      text-align: center;
+      width: 220px; background: linear-gradient(160deg, #2a1a0c, #1e1208);
+      border: 1px solid #5a3e1b; border-radius: 12px; padding: 1.8rem 1.4rem;
+      cursor: pointer; transition: all .2s; text-align: center;
     }
 
     .perk-card:hover {
-      border-color: #d4af37;
-      transform: translateY(-4px);
+      border-color: #d4af37; transform: translateY(-4px);
       box-shadow: 0 12px 30px rgba(0,0,0,.5), 0 0 20px rgba(212,175,55,.15);
     }
 
-    .perk-icon {
-      font-size: 38px; margin-bottom: 12px; line-height: 1;
-    }
-
-    .perk-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 16px; color: #d4af37; margin-bottom: 8px;
-    }
-
-    .perk-desc {
-      font-size: 13px; color: #8a7040; line-height: 1.5;
-    }
+    .perk-icon  { font-size: 36px; margin-bottom: 10px; line-height: 1; }
+    .perk-name  { font-family: 'Playfair Display', serif; font-size: 15px; color: #d4af37; margin-bottom: 7px; }
+    .perk-desc  { font-size: 12px; color: #8a7040; line-height: 1.5; }
 
     /* ══════════ PANTALLA 4: GAME OVER ══════════ */
     #pantallaGameOver {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 100vh; padding: 2rem; gap: 20px;
     }
 
     .go-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 54px; letter-spacing: 6px; color: #c62828;
+      font-family: 'Playfair Display', serif; font-size: 54px; letter-spacing: 6px; color: #c62828;
       text-shadow: 0 0 40px rgba(198,40,40,0.4);
     }
 
-    .go-sub {
-      font-size: 14px; color: #8a7040; letter-spacing: 3px; text-transform: uppercase;
-    }
+    .go-sub { font-size: 14px; color: #8a7040; letter-spacing: 3px; text-transform: uppercase; }
 
     .go-stats {
       background: linear-gradient(160deg, #2a1a0c, #1e1208);
-      border: 1px solid #5a3e1b; border-radius: 12px;
-      padding: 2rem 3rem; text-align: center; min-width: 280px;
+      border: 1px solid #5a3e1b; border-radius: 12px; padding: 2rem 3rem;
+      text-align: center; min-width: 280px;
     }
 
     .go-stat-row { margin: 8px 0; font-size: 15px; color: #e8d5b0; }
     .go-stat-row span { color: #d4af37; font-family: 'Playfair Display', serif; font-size: 18px; }
-
-    .go-perks {
-      margin-top: 12px; font-size: 12px; color: #8a7040;
-    }
-
+    .go-perks { margin-top: 12px; font-size: 12px; color: #8a7040; }
     .go-perks-list { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
 
-    /* ══════════ PANTALLA 5: VICTORIA DE RONDA ══════════ */
+    /* ══════════ PANTALLA 5: RONDA SUPERADA ══════════ */
     #pantallaVictoria {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 100vh; padding: 2rem; gap: 20px;
     }
 
     .vic-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 40px; letter-spacing: 5px; color: #6bff8f;
-      text-shadow: 0 0 30px rgba(107,255,143,0.3);
-      text-align: center;
+      font-family: 'Playfair Display', serif; font-size: 40px; letter-spacing: 5px; color: #6bff8f;
+      text-shadow: 0 0 30px rgba(107,255,143,0.3); text-align: center;
     }
 
-    .vic-sub {
-      font-size: 14px; color: #8a7040; letter-spacing: 3px; text-transform: uppercase;
-    }
+    .vic-sub { font-size: 14px; color: #8a7040; letter-spacing: 3px; text-transform: uppercase; }
 
   </style>
 </head>
@@ -603,23 +550,22 @@
   <div class="casino-sub">Balatro meets Casino · Ruleta Europea</div>
 
   <div class="s1-card">
-    <div class="s1-label">Selecciona tus fichas de inicio</div>
-    <div class="coin-sel">
-      <label class="coin-opt"><input type="radio" name="pre" value="10" checked>
-        <div class="chip c1 sel" id="p10">10</div><div class="coin-lbl">10</div></label>
-      <label class="coin-opt"><input type="radio" name="pre" value="25">
-        <div class="chip c25" id="p25">25</div><div class="coin-lbl">25</div></label>
-      <label class="coin-opt"><input type="radio" name="pre" value="50">
-        <div class="chip c10" id="p50">50</div><div class="coin-lbl">50</div></label>
-      <label class="coin-opt"><input type="radio" name="pre" value="100">
-        <div class="chip c5" id="p100">100</div><div class="coin-lbl">100</div></label>
-      <label class="coin-opt"><input type="radio" name="pre" value="custom">
-        <div class="chip c100" id="pC">?</div><div class="coin-lbl">custom</div></label>
+    <div class="s1-label">Fichas de inicio</div>
+
+    <div class="lobby-chip-wrap">
+      <div class="lobby-chip">10</div>
+      <div class="lobby-chip-desc">Empiezas con <strong style="color:#d4af37">10 monedas</strong> fijas</div>
     </div>
-    <div id="customBox" class="custom-row" style="display:none;">
-      <label>Cantidad:</label>
-      <input type="number" id="customVal" min="1" max="99999" value="200">
+
+    <div class="rules-box">
+      <p>
+        <span>Objetivo:</span> supera cada ronda acumulando el beneficio mínimo.<br>
+        <span>Multiplicador:</span> ganar sube la barra · perder la baja.<br>
+        <span>Perks:</span> elige una mejora al terminar cada ronda.<br>
+        <span>Game Over:</span> si llegas a 0 monedas o no alcanzas el objetivo.
+      </p>
     </div>
+
     <button class="btn-gold" onclick="startGame()">COMENZAR PARTIDA</button>
   </div>
 </div>
@@ -627,7 +573,7 @@
 <!-- ══════════════════ PANTALLA 2: JUEGO ══════════════════ -->
 <div id="pantalla2" class="hidden">
 
-  <!-- HUD RONDA -->
+  <!-- HUD ronda -->
   <div class="hud-bar">
     <div class="hud-box highlight">
       <div class="hud-lbl">Ronda</div>
@@ -635,7 +581,7 @@
     </div>
     <div class="hud-box">
       <div class="hud-lbl">Monedas</div>
-      <div class="hud-val" id="monedas">10</div>
+      <div class="hud-val" id="hudMonedas">10</div>
     </div>
     <div class="hud-box">
       <div class="hud-lbl">Beneficio</div>
@@ -643,7 +589,7 @@
     </div>
     <div class="obj-bar-wrap">
       <div class="obj-bar-top">
-        <span>Objetivo</span>
+        <span>Objetivo ronda</span>
         <span id="hudObjLabel">+0</span>
       </div>
       <div class="obj-bar-track">
@@ -660,15 +606,28 @@
     </div>
   </div>
 
+  <!-- Barra multiplicador -->
+  <div class="mult-bar-wrap">
+    <div class="mult-bar-label">Multiplicador</div>
+    <div class="mult-bar-track" id="multBarTrack">
+      <div class="mult-bar-center"></div>
+      <div class="mult-bar-fill pos" id="multBarFill" style="left:50%;width:0%"></div>
+      <div class="mult-bar-thumb" id="multBarThumb" style="left:50%"></div>
+    </div>
+    <div class="mult-val-wrap">
+      <div class="mult-val" id="multVal">x1.0</div>
+      <div class="mult-val-sub" id="multSub">neutro</div>
+    </div>
+  </div>
+
   <!-- Mejoras activas -->
   <div class="perks-bar" id="perksBar" style="display:none;">
-    <div class="section-lbl" style="margin-bottom:6px;">Mejoras activas</div>
-    <div class="perks-list" id="perksList"></div>
+    <div class="perks-bar-lbl">Mejoras:</div>
+    <div id="perksList"></div>
   </div>
 
   <div class="top-row">
-
-    <!-- RULETA (intacta) -->
+    <!-- RULETA — intacta, cero cambios -->
     <div class="roulette-scene">
       <div class="wood-outer">
         <div class="wood-track">
@@ -682,7 +641,7 @@
       <div class="indicator"></div>
     </div>
 
-    <!-- Panel -->
+    <!-- Panel apuestas -->
     <div class="panel">
       <div class="bets-card">
         <div class="section-lbl">Líneas de apuesta</div>
@@ -691,21 +650,18 @@
         <button class="spin-btn" id="spinBtn" onclick="girar()">GIRAR</button>
         <button class="back-btn" onclick="volver()">← Abandonar</button>
       </div>
-
       <div class="result-box">
         <div id="mensaje">Elige tipo de apuesta, ficha y gira.</div>
       </div>
     </div>
   </div>
 
-  <!-- TAPETE -->
+  <!-- TAPETE — intacto -->
   <div class="felt-section">
     <div class="felt-title">Tapete de apuestas</div>
     <div class="felt-wrap">
       <div class="felt-layout">
-        <div class="zero-col">
-          <div class="cell-zero" id="fc-zero">0</div>
-        </div>
+        <div class="zero-col"><div class="cell-zero" id="fc-zero">0</div></div>
         <div class="felt-right">
           <div class="nums-grid" id="numsGrid"></div>
           <div class="ext-row" id="colRow"></div>
@@ -717,7 +673,7 @@
   </div>
 </div>
 
-<!-- ══════════════════ PANTALLA 3: ELECCIÓN DE MEJORA ══════════════════ -->
+<!-- ══════════════════ PANTALLA 3: MEJORAS ══════════════════ -->
 <div id="pantallaPerks" class="hidden">
   <div class="perks-title">¡Ronda Superada!</div>
   <div class="perks-sub" id="perksRondaSub">Ronda 1 completada · Elige una mejora</div>
@@ -739,16 +695,16 @@
   <button class="btn-gold" style="max-width:300px;" onclick="resetToLobby()">VOLVER AL LOBBY</button>
 </div>
 
-<!-- ══════════════════ PANTALLA 5: VICTORIA DE RONDA (intro) ══════════════════ -->
+<!-- ══════════════════ PANTALLA 5: VICTORIA RONDA ══════════════════ -->
 <div id="pantallaVictoria" class="hidden">
   <div class="vic-title" id="vicTitle">¡Ronda 1 Superada!</div>
   <div class="vic-sub" id="vicSub"></div>
 </div>
 
 <script>
-// ════════════════════════════════════════════════════════════════
-// ── CONSTANTES RULETA (no tocar) ─────────────────────────────
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// ── CONSTANTES RULETA  ❌ NO TOCAR ───────────────────────
+// ════════════════════════════════════════════════════════════
 const CHIP_DEFS = [
   {v:1,   cls:'c1',  hex:'#c62828'},
   {v:5,   cls:'c5',  hex:'#1565c0'},
@@ -783,9 +739,9 @@ const FELT_ROWS = [
   [1,4,7,10,13,16,19,22,25,28,31,34],
 ];
 
-// ════════════════════════════════════════════════════════════════
-// ── ESTADO RULETA (no tocar) ─────────────────────────────────
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// ── ESTADO RULETA  ❌ NO TOCAR ───────────────────────────
+// ════════════════════════════════════════════════════════════
 let monedas     = 10;
 let bloques     = [];
 let betRowCount = 0;
@@ -793,254 +749,231 @@ let isSpinning  = false;
 let animId      = null;
 let phase       = 'idle';
 
-let wheelAngle = 0;
-let ballAngle  = 0;
-let ballRadius = 0;
-let wheelVel   = 0;
-let ballVel    = 0;
+let wheelAngle = 0, ballAngle = 0, ballRadius = 0, wheelVel = 0, ballVel = 0;
 
 const CX = 210, CY = 210;
 const BALL_R_START = 196;
 const BALL_R_END   = 166;
 
-// ════════════════════════════════════════════════════════════════
-// ── ESTADO ROGUELIKE (NUEVO) ─────────────────────────────────
-// ════════════════════════════════════════════════════════════════
-let ronda          = 1;
-let monedasInicioRonda = 0;  // monedas al empezar la ronda
-let beneficioRonda = 0;      // beneficio acumulado en la ronda actual
-let activePerks    = [];     // array de ids de mejoras activas
+// ════════════════════════════════════════════════════════════
+// ── ESTADO ROGUELIKE ────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+let ronda              = 1;
+let monedasInicioRonda = 10;
+let activePerks        = [];
 
-// Objetivos por ronda: índice = ronda-1, valor = beneficio mínimo requerido
-const ROUND_GOALS = [0, 10, 25, 50, 80, 120, 170, 230, 300, 400];
+// ── BARRA MULTIPLICADOR ──────────────────────────────────
+// multBar ∈ [-1.0, +1.0] en pasos de ±0.2
+// multiplicador real = 1 + multBar   → [0.0 … 2.0]
+// si multBar < 0 el multiplicador es penalizador (< 1)
+// si multBar ≥ 0 aplica bonus (≥ 1)
+let multBar = 0.0;          // valor actual, clamp [-1, +1]
+
+const MULT_STEP_WIN  =  0.2;   // cuánto sube al ganar
+const MULT_STEP_LOSE = -0.2;   // cuánto baja al perder
+const MULT_MIN = -1.0;
+const MULT_MAX =  1.0;
+
+// Objetivos rebalanceados: Ronda 1→0, 2→5, 3→10, 4→20, 5→35, 6→55, 7→80…
+const ROUND_GOALS = [0, 5, 10, 20, 35, 55, 80, 110, 145, 185];
 
 function getRoundGoal(r) {
-  return r <= ROUND_GOALS.length ? ROUND_GOALS[r - 1] : 100 * (r - 1);
+  if (r <= ROUND_GOALS.length) return ROUND_GOALS[r - 1];
+  return 185 + (r - ROUND_GOALS.length) * 45;
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── CATÁLOGO DE MEJORAS ROGUELIKE ────────────────────────────
-// ════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+// ── CATÁLOGO PERKS (nerfeado) ─────────────────────────────
+// ════════════════════════════════════════════════════════════
+// Todos los efectos reducidos aproximadamente a la mitad.
+// apply(bet, won, basePrize, wn) → nuevo basePrize
 const ALL_PERKS = [
   {
-    id: 'double_red',
-    icon: '♦',
-    name: 'Fiebre Roja',
-    desc: 'Las apuestas a Rojo pagan x4 en vez de x2.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won && bet.type === 'red') return basePrize * 2;
-      return basePrize;
+    id:'boost_red', icon:'♦', name:'Tinte Rojo',
+    desc:'Apuestas a Rojo: x1.5 (antes x2) → ahora pagan x3.',
+    apply:(bet,won,p)=> won && bet.type==='red'  ? Math.floor(p*1.5) : p
+  },
+  {
+    id:'boost_black', icon:'♠', name:'Sombra Negra',
+    desc:'Apuestas a Negro: pagan x3 en vez de x2.',
+    apply:(bet,won,p)=> won && bet.type==='black' ? Math.floor(p*1.5) : p
+  },
+  {
+    id:'sharpshooter', icon:'⊙', name:'Francotirador',
+    desc:'Números exactos pagan x1.25 extra sobre el premio base.',
+    apply:(bet,won,p)=> won && bet.type==='num'  ? Math.floor(p*1.25) : p
+  },
+  {
+    id:'refund_quarter', icon:'↩', name:'Amortiguador',
+    desc:'Recuperas el 25% de cada apuesta perdida.',
+    apply:(bet,won,p)=> p   // lógica especial en resolveResult
+  },
+  {
+    id:'bonus_coin', icon:'⊕', name:'Propina',
+    desc:'+1 moneda extra por cada línea ganada.',
+    apply:(bet,won,p)=> won ? p+1 : p
+  },
+  {
+    id:'dozen_boost', icon:'▦', name:'Maestro de Docenas',
+    desc:'Docenas y columnas pagan x1.5 sobre su premio base.',
+    apply:(bet,won,p)=>{
+      if(won && ['doz1','doz2','doz3','col1','col2','col3'].includes(bet.type))
+        return Math.floor(p*1.5);
+      return p;
     }
   },
   {
-    id: 'double_black',
-    icon: '♠',
-    name: 'Noche Negra',
-    desc: 'Las apuestas a Negro pagan x4 en vez de x2.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won && bet.type === 'black') return basePrize * 2;
-      return basePrize;
-    }
+    id:'zero_shield', icon:'0', name:'Escudo del Cero',
+    desc:'Si sale el 0, recuperas el 50% de lo apostado esa tirada.',
+    apply:(bet,won,p)=> p   // lógica especial en resolveResult
   },
   {
-    id: 'bonus_exact',
-    icon: '🎯',
-    name: 'Francotirador',
-    desc: 'Los números exactos pagan x54 en vez de x36.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won && bet.type === 'num') return Math.floor(basePrize * 1.5);
-      return basePrize;
-    }
+    id:'even_odd_up', icon:'⚖', name:'Balance',
+    desc:'Par e Impar pagan x1.5 sobre su premio base (x3 total).',
+    apply:(bet,won,p)=>
+      won && ['even','odd'].includes(bet.type) ? Math.floor(p*1.5) : p
   },
   {
-    id: 'refund_half',
-    icon: '↩',
-    name: 'Red de Seguridad',
-    desc: 'Recuperas el 50% de lo apostado en tiradas perdidas.',
-    apply: (bet, won, basePrize, wn) => basePrize  // lógica especial en resolveResult
+    id:'high_stakes', icon:'↑', name:'Gran Apuesta',
+    desc:'Fichas de 25+ pagan +25% extra si ganas.',
+    apply:(bet,won,p)=>
+      won && bet.chip>=25 ? Math.floor(p*1.25) : p
   },
   {
-    id: 'bonus_coin',
-    icon: '⊕',
-    name: 'Moneda Extra',
-    desc: '+3 monedas extra por cada apuesta ganada.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won) return basePrize + 3;
-      return basePrize;
-    }
-  },
-  {
-    id: 'double_dozen',
-    icon: '🃏',
-    name: 'Maestro de Docenas',
-    desc: 'Las docenas pagan x6 en vez de x3.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won && ['doz1','doz2','doz3'].includes(bet.type)) return basePrize * 2;
-      return basePrize;
-    }
-  },
-  {
-    id: 'zero_hero',
-    icon: '0',
-    name: 'Héroe del Cero',
-    desc: 'Si sale el 0, recuperas todas las apuestas perdidas.',
-    apply: (bet, won, basePrize, wn) => basePrize // lógica especial en resolveResult
-  },
-  {
-    id: 'lucky_even',
-    icon: '⚖',
-    name: 'Equilibrio Perfecto',
-    desc: 'Par e Impar pagan x3 en vez de x2.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won && ['even','odd'].includes(bet.type)) return Math.floor(basePrize * 1.5);
-      return basePrize;
-    }
-  },
-  {
-    id: 'column_king',
-    icon: '▦',
-    name: 'Rey de Columnas',
-    desc: 'Las columnas pagan x5 en vez de x3.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won && ['col1','col2','col3'].includes(bet.type)) return Math.floor(basePrize * 5 / 3);
-      return basePrize;
-    }
-  },
-  {
-    id: 'high_roller',
-    icon: '↑',
-    name: 'Alto Riesgo',
-    desc: 'Las apuestas de 25+ fichas pagan el doble.',
-    apply: (bet, won, basePrize, wn) => {
-      if (won && bet.chip >= 25) return basePrize * 2;
-      return basePrize;
-    }
+    id:'mult_boost', icon:'★', name:'Impulso',
+    desc:'La barra de multiplicador sube el doble al ganar (+0.4 por victoria).',
+    apply:(bet,won,p)=> p   // lógica especial: se aplica al actualizar multBar
   },
 ];
 
-function getPerkById(id) { return ALL_PERKS.find(p => p.id === id); }
+function getPerkById(id){ return ALL_PERKS.find(p=>p.id===id); }
 
-// Saca 3 mejoras aleatorias que el jugador no tiene aún
-function getRandomPerkOptions() {
-  const available = ALL_PERKS.filter(p => !activePerks.includes(p.id));
-  const shuffled  = available.sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.min(3, shuffled.length));
+function getRandomPerkOptions(){
+  const avail = ALL_PERKS.filter(p=>!activePerks.includes(p.id));
+  return avail.sort(()=>Math.random()-0.5).slice(0, Math.min(3, avail.length));
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── LOBBY / INICIO ───────────────────────────────────────────
-// ════════════════════════════════════════════════════════════════
-document.querySelectorAll('input[name="pre"]').forEach(r => {
-  r.addEventListener('change', () => {
-    document.querySelectorAll('#pantalla1 .chip').forEach(c => c.classList.remove('sel'));
-    const map = {10:'p10',25:'p25',50:'p50',100:'p100',custom:'pC'};
-    document.getElementById(map[r.value])?.classList.add('sel');
-    document.getElementById('customBox').style.display = r.value === 'custom' ? 'flex' : 'none';
-  });
-});
-
-function startGame() {
-  const sel = document.querySelector('input[name="pre"]:checked');
-  monedas = sel?.value === 'custom'
-    ? (parseInt(document.getElementById('customVal').value) || 10)
-    : parseInt(sel?.value || 10);
-
-  // Reset roguelike
-  ronda = 1;
-  activePerks = [];
-  beneficioRonda = 0;
-  monedasInicioRonda = monedas;
+// ════════════════════════════════════════════════════════════
+// ── PANTALLA 1 ───────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+function startGame(){
+  monedas            = 10;   // siempre 10, no hay selector
+  ronda              = 1;
+  activePerks        = [];
+  multBar            = 0.0;
+  monedasInicioRonda = 10;
 
   buildWheel();
   buildFelt();
   initRonda();
-
   showScreen('pantalla2');
-  document.getElementById('betRows').innerHTML = '';
-  betRowCount = 0;
+
+  document.getElementById('betRows').innerHTML='';
+  betRowCount=0;
   addBetRow();
   updateTotalBet();
 }
 
-function volver() {
-  if (animId) { cancelAnimationFrame(animId); animId = null; }
-  phase = 'idle'; isSpinning = false;
+function volver(){
+  if(animId){ cancelAnimationFrame(animId); animId=null; }
+  phase='idle'; isSpinning=false;
   resetToLobby();
 }
 
-function resetToLobby() {
-  showScreen('pantalla1');
-}
+function resetToLobby(){ showScreen('pantalla1'); }
 
-function showScreen(id) {
-  ['pantalla1','pantalla2','pantallaPerks','pantallaGameOver','pantallaVictoria'].forEach(s => {
-    document.getElementById(s).classList.add('hidden');
-  });
+function showScreen(id){
+  ['pantalla1','pantalla2','pantallaPerks','pantallaGameOver','pantallaVictoria']
+    .forEach(s=>document.getElementById(s).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── HUD ROGUELIKE ────────────────────────────────────────────
-// ════════════════════════════════════════════════════════════════
-function initRonda() {
+// ════════════════════════════════════════════════════════════
+// ── HUD ──────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+function initRonda(){
   monedasInicioRonda = monedas;
-  beneficioRonda = 0;
   updateHUD();
+  updateMultBar();
   updatePerksBar();
 }
 
-function updateHUD() {
-  const goal = getRoundGoal(ronda);
+function updateHUD(){
+  const goal  = getRoundGoal(ronda);
   const benef = monedas - monedasInicioRonda;
-  beneficioRonda = benef;
 
-  document.getElementById('hudRonda').textContent = ronda;
-  document.getElementById('monedas').textContent  = monedas;
-  document.getElementById('hudObjLabel').textContent = (goal >= 0 ? '+' : '') + goal;
+  document.getElementById('hudRonda').textContent   = ronda;
+  document.getElementById('hudMonedas').textContent = monedas;
+  document.getElementById('hudObjLabel').textContent= (goal>=0?'+':'')+goal;
 
-  const benefEl = document.getElementById('hudBenef');
-  benefEl.textContent = (benef >= 0 ? '+' : '') + benef;
-  benefEl.className   = 'hud-val ' + (benef >= goal ? 'green' : benef >= 0 ? 'white' : 'red');
+  const bEl = document.getElementById('hudBenef');
+  bEl.textContent = (benef>=0?'+':'')+benef;
+  bEl.className   = 'hud-val '+(benef>=goal?'green': benef>=0?'white':'red');
 
-  // Barra de progreso
-  let pct;
-  if (goal === 0) {
-    pct = 100;
+  const pct = goal===0 ? 100 : Math.min(100, Math.max(0, (benef/goal)*100));
+  document.getElementById('objBarFill').style.width = pct+'%';
+}
+
+// ── Barra multiplicador ──────────────────────────────────
+function updateMultBar(){
+  // multBar ∈ [-1, +1] → posición 0%…100% en la barra
+  const pct50   = 50;                          // centro
+  const barPct  = (multBar + 1) / 2 * 100;    // 0→0%, 0→50%, +1→100%
+  const thumbPct= barPct;
+
+  const fill   = document.getElementById('multBarFill');
+  const thumb  = document.getElementById('multBarThumb');
+  const valEl  = document.getElementById('multVal');
+  const subEl  = document.getElementById('multSub');
+
+  // Fill desde el centro hasta el thumb
+  if(multBar >= 0){
+    fill.style.left  = pct50+'%';
+    fill.style.width = (barPct - pct50)+'%';
+    fill.className   = 'mult-bar-fill pos';
   } else {
-    pct = Math.min(100, Math.max(0, (benef / goal) * 100));
+    fill.style.left  = barPct+'%';
+    fill.style.width = (pct50 - barPct)+'%';
+    fill.className   = 'mult-bar-fill neg';
   }
-  document.getElementById('objBarFill').style.width = pct + '%';
+
+  thumb.style.left = thumbPct+'%';
+
+  const multiplier = 1 + multBar;         // 0.0 … 2.0
+  valEl.textContent = 'x'+multiplier.toFixed(1);
+  valEl.className   = 'mult-val '+(multBar>0?'pos':multBar<0?'neg':'');
+  subEl.textContent = multBar>0?'bonus':multBar<0?'penaliz':'neutro';
 }
 
-function updatePerksBar() {
+function updatePerksBar(){
   const bar = document.getElementById('perksBar');
-  if (activePerks.length === 0) { bar.style.display = 'none'; return; }
-  bar.style.display = 'block';
-  const list = document.getElementById('perksList');
-  list.innerHTML = activePerks.map(id => {
-    const p = getPerkById(id);
-    return `<div class="perk-badge">${p.icon} ${p.name}</div>`;
-  }).join('');
+  if(activePerks.length===0){ bar.style.display='none'; return; }
+  bar.style.display='flex';
+  document.getElementById('perksList').innerHTML =
+    activePerks.map(id=>{
+      const p=getPerkById(id);
+      return `<div class="perk-badge">${p.icon} ${p.name}</div>`;
+    }).join('');
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── APUESTAS (no tocar) ──────────────────────────────────────
-// ════════════════════════════════════════════════════════════════
-function addBetRow() {
-  const id = betRowCount++;
-  const div = document.createElement('div');
-  div.className = 'bet-row'; div.id = 'br' + id;
-  div.dataset.type = 'num'; div.dataset.chip = '1';
-  div.innerHTML = `
+// ════════════════════════════════════════════════════════════
+// ── APUESTAS  ❌ NO TOCAR ────────────────────────────────
+// ════════════════════════════════════════════════════════════
+function addBetRow(){
+  const id=betRowCount++;
+  const div=document.createElement('div');
+  div.className='bet-row'; div.id='br'+id;
+  div.dataset.type='num'; div.dataset.chip='1';
+  div.innerHTML=`
     <div class="bet-type-sel" id="bts${id}">
-      ${BET_TYPES.map(t =>
+      ${BET_TYPES.map(t=>
         `<div class="btype${t.id==='num'?' sel':''}" onclick="selType(${id},'${t.id}',this)">${t.label}</div>`
       ).join('')}
     </div>
     <div class="bet-row-bottom">
       <input class="num-inp" type="number" id="bn${id}" placeholder="0-36" min="0" max="36" oninput="updateTotalBet()">
       <div style="display:flex;gap:3px;" id="bc${id}">
-        ${CHIP_DEFS.map(c =>
+        ${CHIP_DEFS.map(c=>
           `<div class="bchip ${c.cls}${c.v===1?' sel':''}" data-v="${c.v}" onclick="selChip(${id},${c.v},this)">${c.v}</div>`
         ).join('')}
       </div>
@@ -1050,38 +983,38 @@ function addBetRow() {
   updateTotalBet();
 }
 
-function selType(id, tid, el) {
-  document.querySelectorAll(`#bts${id} .btype`).forEach(b => b.classList.remove('sel','red-sel','blk-sel'));
-  if (tid==='red') el.classList.add('red-sel');
-  else if (tid==='black') el.classList.add('blk-sel');
+function selType(id,tid,el){
+  document.querySelectorAll(`#bts${id} .btype`).forEach(b=>b.classList.remove('sel','red-sel','blk-sel'));
+  if(tid==='red') el.classList.add('red-sel');
+  else if(tid==='black') el.classList.add('blk-sel');
   else el.classList.add('sel');
-  document.getElementById('br'+id).dataset.type = tid;
-  document.getElementById('bn'+id).style.display = tid==='num' ? 'inline-block' : 'none';
+  document.getElementById('br'+id).dataset.type=tid;
+  document.getElementById('bn'+id).style.display=tid==='num'?'inline-block':'none';
   updateTotalBet();
 }
 
-function selChip(id, v, el) {
-  document.querySelectorAll(`#bc${id} .bchip`).forEach(b => b.classList.remove('sel'));
+function selChip(id,v,el){
+  document.querySelectorAll(`#bc${id} .bchip`).forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel');
-  document.getElementById('br'+id).dataset.chip = v;
+  document.getElementById('br'+id).dataset.chip=v;
   updateTotalBet();
 }
 
-function delRow(id) { document.getElementById('br'+id)?.remove(); updateTotalBet(); }
+function delRow(id){ document.getElementById('br'+id)?.remove(); updateTotalBet(); }
 
-function updateTotalBet() {
-  document.getElementById('totBet').textContent = getBets().reduce((a,b) => a+b.chip, 0);
+function updateTotalBet(){
+  document.getElementById('totBet').textContent=getBets().reduce((a,b)=>a+b.chip,0);
 }
 
-function getBets() {
-  const bets = [];
-  document.querySelectorAll('.bet-row').forEach(row => {
-    const id   = row.id.replace('br','');
-    const type = row.dataset.type || 'num';
-    const chip = parseInt(row.dataset.chip || '1');
-    if (type === 'num') {
-      const num = parseInt(document.getElementById('bn'+id)?.value);
-      if (!isNaN(num) && num>=0 && num<=36) bets.push({type,num,chip});
+function getBets(){
+  const bets=[];
+  document.querySelectorAll('.bet-row').forEach(row=>{
+    const id=row.id.replace('br','');
+    const type=row.dataset.type||'num';
+    const chip=parseInt(row.dataset.chip||'1');
+    if(type==='num'){
+      const num=parseInt(document.getElementById('bn'+id)?.value);
+      if(!isNaN(num)&&num>=0&&num<=36) bets.push({type,num,chip});
     } else {
       bets.push({type,chip});
     }
@@ -1089,48 +1022,47 @@ function getBets() {
   return bets;
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── LÓGICA DE VICTORIA (no tocar) ────────────────────────────
-// ════════════════════════════════════════════════════════════════
-function checkWin(bet, wn) {
-  const t = bet.type;
-  if (t==='num')   return wn === bet.num;
-  if (wn===0)      return false;
-  if (t==='red')   return RED_NUMS.has(wn);
-  if (t==='black') return !RED_NUMS.has(wn);
-  if (t==='even')  return wn%2===0;
-  if (t==='odd')   return wn%2!==0;
-  if (t==='low')   return wn>=1  && wn<=18;
-  if (t==='high')  return wn>=19 && wn<=36;
-  if (t==='doz1')  return wn>=1  && wn<=12;
-  if (t==='doz2')  return wn>=13 && wn<=24;
-  if (t==='doz3')  return wn>=25 && wn<=36;
-  if (t==='col1')  return wn%3===1;
-  if (t==='col2')  return wn%3===2;
-  if (t==='col3')  return wn%3===0;
+// ════════════════════════════════════════════════════════════
+// ── LÓGICA VICTORIA  ❌ NO TOCAR ─────────────────────────
+// ════════════════════════════════════════════════════════════
+function checkWin(bet,wn){
+  const t=bet.type;
+  if(t==='num')   return wn===bet.num;
+  if(wn===0)      return false;
+  if(t==='red')   return RED_NUMS.has(wn);
+  if(t==='black') return !RED_NUMS.has(wn);
+  if(t==='even')  return wn%2===0;
+  if(t==='odd')   return wn%2!==0;
+  if(t==='low')   return wn>=1&&wn<=18;
+  if(t==='high')  return wn>=19&&wn<=36;
+  if(t==='doz1')  return wn>=1&&wn<=12;
+  if(t==='doz2')  return wn>=13&&wn<=24;
+  if(t==='doz3')  return wn>=25&&wn<=36;
+  if(t==='col1')  return wn%3===1;
+  if(t==='col2')  return wn%3===2;
+  if(t==='col3')  return wn%3===0;
   return false;
 }
 
-function getMult(type) { return BET_TYPES.find(b=>b.id===type)?.mult||1; }
-function getLabel(bet) { return bet.type==='num'?'N.º '+bet.num:(BET_TYPES.find(b=>b.id===bet.type)?.label||bet.type); }
+function getMult(type){ return BET_TYPES.find(b=>b.id===type)?.mult||1; }
+function getLabel(bet){ return bet.type==='num'?'N.º '+bet.num:(BET_TYPES.find(b=>b.id===bet.type)?.label||bet.type); }
 
-// ════════════════════════════════════════════════════════════════
-// ── SVG RULETA (no tocar) ────────────────────────────────────
-// ════════════════════════════════════════════════════════════════
-function buildWheel() {
-  const svg = document.getElementById('wheelSVG');
-  svg.innerHTML = '';
-  const cx=210, cy=210, rOut=200, rMid=148, rIn=108;
-  bloques = [];
-  const n = ROULETTE_ORDER.length;
-  ROULETTE_ORDER.forEach((num,i) => {
-    const color = num===0 ? '#2e7d32' : RED_NUMS.has(num) ? '#c62828' : '#111';
-    const sz=360/n, start=i*sz;
-    bloques.push({num, start, end:start+sz, mid:start+sz/2, color});
+// ════════════════════════════════════════════════════════════
+// ── SVG RULETA  ❌ NO TOCAR ──────────────────────────────
+// ════════════════════════════════════════════════════════════
+function buildWheel(){
+  const svg=document.getElementById('wheelSVG');
+  svg.innerHTML='';
+  const cx=210,cy=210,rOut=200,rMid=148,rIn=108;
+  bloques=[];
+  const n=ROULETTE_ORDER.length;
+  ROULETTE_ORDER.forEach((num,i)=>{
+    const color=num===0?'#2e7d32':RED_NUMS.has(num)?'#c62828':'#111';
+    const sz=360/n,start=i*sz;
+    bloques.push({num,start,end:start+sz,mid:start+sz/2,color});
   });
-
-  const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
-  defs.innerHTML = `
+  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML=`
     <radialGradient id="gold" cx="50%" cy="50%">
       <stop offset="0%" stop-color="#fff8c0"/>
       <stop offset="55%" stop-color="#d4af37"/>
@@ -1142,88 +1074,76 @@ function buildWheel() {
     </radialGradient>
     <filter id="ns"><feDropShadow dx="0" dy="0" stdDeviation="0.8" flood-color="rgba(0,0,0,0.9)"/></filter>`;
   svg.appendChild(defs);
-
-  bloques.forEach(b => {
-    const p = document.createElementNS('http://www.w3.org/2000/svg','path');
-    p.setAttribute('d', arcPath(cx,cy,rOut,b.start,b.end,rMid));
-    p.setAttribute('fill', b.color);
+  bloques.forEach(b=>{
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',arcPath(cx,cy,rOut,b.start,b.end,rMid));
+    p.setAttribute('fill',b.color);
     p.setAttribute('stroke','rgba(200,180,100,0.3)'); p.setAttribute('stroke-width','0.5');
     svg.appendChild(p);
-
-    const rad = (b.mid-90)*Math.PI/180;
-    const tx = cx+Math.cos(rad)*174, ty = cy+Math.sin(rad)*174;
-    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    const rad=(b.mid-90)*Math.PI/180;
+    const tx=cx+Math.cos(rad)*174,ty=cy+Math.sin(rad)*174;
+    const t=document.createElementNS('http://www.w3.org/2000/svg','text');
     t.setAttribute('x',tx); t.setAttribute('y',ty);
     t.setAttribute('fill','#fff'); t.setAttribute('font-size','9.5');
     t.setAttribute('font-weight','700'); t.setAttribute('text-anchor','middle');
     t.setAttribute('dominant-baseline','middle');
     t.setAttribute('transform',`rotate(${b.mid} ${tx} ${ty})`);
-    t.setAttribute('filter','url(#ns)'); t.textContent = b.num;
+    t.setAttribute('filter','url(#ns)'); t.textContent=b.num;
     svg.appendChild(t);
-
     const s1=(b.start-90)*Math.PI/180;
-    const sep = document.createElementNS('http://www.w3.org/2000/svg','line');
+    const sep=document.createElementNS('http://www.w3.org/2000/svg','line');
     sep.setAttribute('x1',cx+Math.cos(s1)*rMid); sep.setAttribute('y1',cy+Math.sin(s1)*rMid);
     sep.setAttribute('x2',cx+Math.cos(s1)*rOut);  sep.setAttribute('y2',cy+Math.sin(s1)*rOut);
     sep.setAttribute('stroke','rgba(212,175,55,0.35)'); sep.setAttribute('stroke-width','0.8');
     svg.appendChild(sep);
   });
-
-  const mRing = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  const mRing=document.createElementNS('http://www.w3.org/2000/svg','circle');
   mRing.setAttribute('cx',cx); mRing.setAttribute('cy',cy); mRing.setAttribute('r',rMid+1);
   mRing.setAttribute('fill','none'); mRing.setAttribute('stroke','rgba(212,175,55,0.5)');
   mRing.setAttribute('stroke-width','2'); svg.appendChild(mRing);
-
-  const inner = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  const inner=document.createElementNS('http://www.w3.org/2000/svg','circle');
   inner.setAttribute('cx',cx); inner.setAttribute('cy',cy);
   inner.setAttribute('r',rMid); inner.setAttribute('fill','#0a0a0a'); svg.appendChild(inner);
-
-  bloques.forEach(b => {
+  bloques.forEach(b=>{
     const s1=(b.start-90)*Math.PI/180;
-    const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    const l=document.createElementNS('http://www.w3.org/2000/svg','line');
     l.setAttribute('x1',cx+Math.cos(s1)*rIn); l.setAttribute('y1',cy+Math.sin(s1)*rIn);
     l.setAttribute('x2',cx+Math.cos(s1)*rMid); l.setAttribute('y2',cy+Math.sin(s1)*rMid);
     l.setAttribute('stroke','rgba(212,175,55,0.25)'); l.setAttribute('stroke-width','0.6');
     svg.appendChild(l);
   });
-
-  const cen = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  const cen=document.createElementNS('http://www.w3.org/2000/svg','circle');
   cen.setAttribute('cx',cx); cen.setAttribute('cy',cy);
   cen.setAttribute('r',78); cen.setAttribute('fill','url(#gold)'); svg.appendChild(cen);
-
-  const dec = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  const dec=document.createElementNS('http://www.w3.org/2000/svg','circle');
   dec.setAttribute('cx',cx); dec.setAttribute('cy',cy); dec.setAttribute('r',72);
   dec.setAttribute('fill','none'); dec.setAttribute('stroke','rgba(212,175,55,0.4)');
   dec.setAttribute('stroke-width','1.5'); dec.setAttribute('stroke-dasharray','4 5');
   svg.appendChild(dec);
-
-  for (let i=0;i<8;i++) {
-    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+  for(let i=0;i<8;i++){
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
     g.setAttribute('transform',`rotate(${i*45} ${cx} ${cy})`);
-    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
     r.setAttribute('x',cx-2.5); r.setAttribute('y',cy-72);
     r.setAttribute('width',5); r.setAttribute('height',44);
     r.setAttribute('fill','#c9a227'); r.setAttribute('rx','2');
-    const c2 = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    const c2=document.createElementNS('http://www.w3.org/2000/svg','circle');
     c2.setAttribute('cx',cx); c2.setAttribute('cy',cy-76);
     c2.setAttribute('r',5.5); c2.setAttribute('fill','url(#hub)');
     g.appendChild(r); g.appendChild(c2); svg.appendChild(g);
   }
-
-  const hub = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  const hub=document.createElementNS('http://www.w3.org/2000/svg','circle');
   hub.setAttribute('cx',cx); hub.setAttribute('cy',cy);
   hub.setAttribute('r',13); hub.setAttribute('fill','url(#hub)'); svg.appendChild(hub);
-
-  const hubR = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  const hubR=document.createElementNS('http://www.w3.org/2000/svg','circle');
   hubR.setAttribute('cx',cx); hubR.setAttribute('cy',cy); hubR.setAttribute('r',8);
   hubR.setAttribute('fill','none'); hubR.setAttribute('stroke','rgba(255,255,255,0.25)');
   hubR.setAttribute('stroke-width','1.5'); svg.appendChild(hubR);
-
-  document.getElementById('wheelSVG').style.transform = `rotate(${wheelAngle}deg)`;
+  document.getElementById('wheelSVG').style.transform=`rotate(${wheelAngle}deg)`;
 }
 
-function arcPath(cx,cy,rO,start,end,rI) {
-  const s=(start-90)*Math.PI/180, e=(end-90)*Math.PI/180;
+function arcPath(cx,cy,rO,start,end,rI){
+  const s=(start-90)*Math.PI/180,e=(end-90)*Math.PI/180;
   const x1=cx+rO*Math.cos(s),y1=cy+rO*Math.sin(s);
   const x2=cx+rO*Math.cos(e),y2=cy+rO*Math.sin(e);
   const x3=cx+rI*Math.cos(e),y3=cy+rI*Math.sin(e);
@@ -1231,313 +1151,276 @@ function arcPath(cx,cy,rO,start,end,rI) {
   return `M${x1} ${y1} A${rO} ${rO} 0 0 1 ${x2} ${y2} L${x3} ${y3} A${rI} ${rI} 0 0 0 ${x4} ${y4}Z`;
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── ANIMACIÓN FÍSICA (no tocar) ──────────────────────────────
-// ════════════════════════════════════════════════════════════════
-function girar() {
-  if (isSpinning) return;
-  const bets = getBets();
-  if (!bets.length) { document.getElementById('mensaje').innerHTML='⚠️ Añade al menos una apuesta.'; return; }
-  const total = bets.reduce((a,b)=>a+b.chip,0);
-  if (total > monedas) { document.getElementById('mensaje').innerHTML='⚠️ No tienes suficientes monedas.'; return; }
+// ════════════════════════════════════════════════════════════
+// ── ANIMACIÓN FÍSICA  ❌ NO TOCAR ────────────────────────
+// ════════════════════════════════════════════════════════════
+function girar(){
+  if(isSpinning) return;
+  const bets=getBets();
+  if(!bets.length){ document.getElementById('mensaje').innerHTML='⚠️ Añade al menos una apuesta.'; return; }
+  const total=bets.reduce((a,b)=>a+b.chip,0);
+  if(total>monedas){ document.getElementById('mensaje').innerHTML='⚠️ No tienes suficientes monedas.'; return; }
 
-  isSpinning = true;
-  document.getElementById('spinBtn').disabled = true;
-  document.getElementById('chipsLayer').innerHTML = '';
-  document.getElementById('mensaje').innerHTML = '<span style="color:#d4af37">Girando...</span>';
-  document.getElementById('resNum').textContent = '—';
-  document.getElementById('resNum').style.color = '#d4af37';
+  isSpinning=true;
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('chipsLayer').innerHTML='';
+  document.getElementById('mensaje').innerHTML='<span style="color:#d4af37">Girando...</span>';
+  document.getElementById('resNum').textContent='—';
+  document.getElementById('resNum').style.color='#d4af37';
 
   placeBetsOnFelt(bets);
   clearFeltHighlight();
 
-  wheelVel = -(2.8 + Math.random() * 1.6);
-  ballVel  =  (9   + Math.random() * 5);
-  ballRadius = BALL_R_START;
-  ballAngle  = Math.random() * 360;
-  phase = 'spinning';
+  wheelVel=-(2.8+Math.random()*1.6);
+  ballVel  = (9  +Math.random()*5);
+  ballRadius=BALL_R_START;
+  ballAngle =Math.random()*360;
+  phase='spinning';
 
-  const totalSpinFrames = 200 + Math.floor(Math.random() * 120);
+  const totalSpinFrames=200+Math.floor(Math.random()*120);
+  const winIdx=Math.floor(Math.random()*ROULETTE_ORDER.length);
+  const winBloque=bloques[winIdx];
 
-  const winIdx = Math.floor(Math.random() * ROULETTE_ORDER.length);
-  const winBloque = bloques[winIdx];
+  let frame=0, decelStarted=false, bounceFrame=0;
 
-  let frame = 0;
-  let decelStarted = false;
-  let bounceFrame  = 0;
-
-  function tick() {
+  function tick(){
     frame++;
-
-    if (phase === 'spinning') {
-      if (frame > totalSpinFrames && !decelStarted) decelStarted = true;
-
-      if (decelStarted) {
-        wheelVel *= 0.988;
-        ballVel  *= 0.978;
-        const drop = (BALL_R_START - BALL_R_END);
-        const progress = Math.max(0, 1 - Math.abs(ballVel) / (9 + 5));
-        ballRadius = BALL_R_START - drop * Math.pow(progress, 1.8);
+    if(phase==='spinning'){
+      if(frame>totalSpinFrames && !decelStarted) decelStarted=true;
+      if(decelStarted){
+        wheelVel*=0.988; ballVel*=0.978;
+        const drop=BALL_R_START-BALL_R_END;
+        const progress=Math.max(0,1-Math.abs(ballVel)/(9+5));
+        ballRadius=BALL_R_START-drop*Math.pow(progress,1.8);
       }
-
-      wheelAngle += wheelVel;
-      ballAngle  += ballVel;
-
-      const jitter = ballRadius < 178 ? (Math.random()-0.5)*1.5 : 0;
-      renderBall(ballAngle + jitter, ballRadius);
-      document.getElementById('wheelSVG').style.transition = 'none';
-      document.getElementById('wheelSVG').style.transform  = `rotate(${wheelAngle}deg)`;
-
-      if (decelStarted && Math.abs(ballVel) < 0.5) {
-        phase = 'landing';
-        bounceFrame = 0;
-        const segWorldAngle = winBloque.mid + wheelAngle;
-        ballAngle = segWorldAngle + 90;
-        ballRadius = BALL_R_END + 8;
+      wheelAngle+=wheelVel; ballAngle+=ballVel;
+      const jitter=ballRadius<178?(Math.random()-.5)*1.5:0;
+      renderBall(ballAngle+jitter,ballRadius);
+      document.getElementById('wheelSVG').style.transition='none';
+      document.getElementById('wheelSVG').style.transform=`rotate(${wheelAngle}deg)`;
+      if(decelStarted && Math.abs(ballVel)<0.5){
+        phase='landing'; bounceFrame=0;
+        const segWorldAngle=winBloque.mid+wheelAngle;
+        ballAngle=segWorldAngle+90; ballRadius=BALL_R_END+8;
       }
     }
-
-    if (phase === 'landing') {
+    if(phase==='landing'){
       bounceFrame++;
-      wheelVel *= 0.93;
-      wheelAngle += wheelVel;
-
-      const bounceAmp = [6, 3, 1.5, 0.6, 0];
-      const bIdx = Math.min(Math.floor(bounceFrame / 10), bounceAmp.length-1);
-      const bAmp = bounceAmp[bIdx];
-      const bounceOff = bAmp * Math.abs(Math.sin(bounceFrame * 0.8));
-      const currentR  = BALL_R_END + bounceOff;
-
-      ballAngle += wheelVel * 0.15;
-      renderBall(ballAngle, currentR);
-      document.getElementById('wheelSVG').style.transform = `rotate(${wheelAngle}deg)`;
-
-      if (bounceFrame > 55 && Math.abs(wheelVel) < 0.04) {
-        phase = 'done';
-        renderBall(ballAngle, BALL_R_END);
-        resolveResult(bets, total, winBloque.num);
+      wheelVel*=0.93; wheelAngle+=wheelVel;
+      const bounceAmp=[6,3,1.5,0.6,0];
+      const bIdx=Math.min(Math.floor(bounceFrame/10),bounceAmp.length-1);
+      const bounceOff=bounceAmp[bIdx]*Math.abs(Math.sin(bounceFrame*0.8));
+      ballAngle+=wheelVel*0.15;
+      renderBall(ballAngle,BALL_R_END+bounceOff);
+      document.getElementById('wheelSVG').style.transform=`rotate(${wheelAngle}deg)`;
+      if(bounceFrame>55 && Math.abs(wheelVel)<0.04){
+        phase='done';
+        renderBall(ballAngle,BALL_R_END);
+        resolveResult(bets,total,winBloque.num);
         return;
       }
     }
-
-    animId = requestAnimationFrame(tick);
+    animId=requestAnimationFrame(tick);
   }
-
-  animId = requestAnimationFrame(tick);
+  animId=requestAnimationFrame(tick);
 }
 
-function renderBall(angleDeg, radius) {
-  const rad = (angleDeg - 90) * Math.PI / 180;
-  const x = CX + Math.cos(rad) * radius;
-  const y = CY + Math.sin(rad) * radius;
-  const b = document.getElementById('ball');
-  b.style.left = (x - 7) + 'px';
-  b.style.top  = (y - 7) + 'px';
-  b.style.transform = 'none';
+function renderBall(angleDeg,radius){
+  const rad=(angleDeg-90)*Math.PI/180;
+  const x=CX+Math.cos(rad)*radius, y=CY+Math.sin(rad)*radius;
+  const b=document.getElementById('ball');
+  b.style.left=(x-7)+'px'; b.style.top=(y-7)+'px'; b.style.transform='none';
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── resolveResult — MODIFICADO CON CAPA ROGUELIKE ────────────
-// ════════════════════════════════════════════════════════════════
-function resolveResult(bets, total, wn) {
-  // Color resultado (igual que antes)
-  const resColor = wn===0 ? '#6bff8f' : RED_NUMS.has(wn) ? '#ff6b6b' : '#eee';
-  document.getElementById('resNum').textContent = wn;
-  document.getElementById('resNum').style.color = resColor;
+// ════════════════════════════════════════════════════════════
+// ── resolveResult — CAPA ROGUELIKE ───────────────────────
+// ════════════════════════════════════════════════════════════
+function resolveResult(bets, total, wn){
+  // ── color resultado (original) ──
+  const resColor=wn===0?'#6bff8f':RED_NUMS.has(wn)?'#ff6b6b':'#eee';
+  document.getElementById('resNum').textContent=wn;
+  document.getElementById('resNum').style.color=resColor;
 
-  // ── Descuento apuesta (igual que antes) ──
-  monedas -= total;
+  // ── descuento apuesta (original) ──
+  monedas-=total;
 
-  let totalWin = 0;
-  const msgs = [];
+  // ── calcular si la tirada fue ganadora (≥1 línea ganó) ──
+  let anyWin=false;
 
-  bets.forEach(bet => {
-    const won      = checkWin(bet, wn);
-    const mult     = getMult(bet.type);
-    const lbl      = getLabel(bet);
-    let basePrize  = won ? bet.chip * mult : 0;
+  let totalWin=0;
+  const msgs=[];
 
-    // ── APLICAR MEJORAS ACTIVAS ──────────────────────────────
-    if (won) {
-      activePerks.forEach(pid => {
-        const perk = getPerkById(pid);
-        if (perk && perk.id !== 'refund_half' && perk.id !== 'zero_hero') {
-          basePrize = perk.apply(bet, won, basePrize, wn);
-        }
+  // ── multiplicador actual ──────────────────────────────
+  const multiplier = Math.max(0, 1 + multBar);  // 0 … 2.0
+  // si multBar < 0 el mult es < 1 (penalización)
+
+  bets.forEach(bet=>{
+    const won   = checkWin(bet,wn);
+    const mult  = getMult(bet.type);
+    const lbl   = getLabel(bet);
+    let prize   = 0;
+
+    if(won){
+      anyWin=true;
+      prize=bet.chip*mult;
+
+      // ── Aplicar multiplicador de barra ──────────────
+      prize=Math.floor(prize*multiplier);
+      if(prize<0) prize=0;
+
+      // ── Aplicar perks normales ──────────────────────
+      activePerks.forEach(pid=>{
+        const perk=getPerkById(pid);
+        if(perk && !['refund_quarter','zero_shield','mult_boost'].includes(pid))
+          prize=perk.apply(bet,true,prize);
       });
-    }
 
-    // Mejora especial: Red de Seguridad (50% de apuesta perdida)
-    if (!won && activePerks.includes('refund_half')) {
-      const refund = Math.floor(bet.chip * 0.5);
-      basePrize = refund;
-      msgs.push(`<span style="color:#ffcc55">↩ ${lbl}: reembolso +${refund}</span>`);
-      monedas += refund;
-      totalWin += refund;
-      return;
-    }
+      monedas+=prize; totalWin+=prize;
+      const multTag = multiplier!==1 ? ` <span style="color:#ffcc55">[x${multiplier.toFixed(1)}]</span>` : '';
+      msgs.push(`<span style="color:#6bff8f">✓ ${lbl}: +${prize}${multTag}</span>`);
 
-    // Mejora especial: Héroe del Cero
-    if (!won && wn === 0 && activePerks.includes('zero_hero')) {
-      msgs.push(`<span style="color:#ffcc55">0 ${lbl}: 0 recuperado +${bet.chip}</span>`);
-      monedas += bet.chip;
-      totalWin += bet.chip;
-      return;
-    }
-
-    if (won) {
-      monedas  += basePrize;
-      totalWin += basePrize;
-      msgs.push(`<span style="color:#6bff8f">✓ ${lbl}: +${basePrize}</span>`);
     } else {
-      msgs.push(`<span style="color:#ff6b6b">✗ ${lbl}: −${bet.chip}</span>`);
+      // ── Perk: Amortiguador (25% reembolso en pérdidas) ──
+      if(activePerks.includes('refund_quarter')){
+        const ref=Math.max(1,Math.floor(bet.chip*0.25));
+        monedas+=ref; totalWin+=ref;
+        msgs.push(`<span style="color:#ffcc55">↩ ${lbl}: reembolso +${ref}</span>`);
+      } else {
+        msgs.push(`<span style="color:#ff6b6b">✗ ${lbl}: −${bet.chip}</span>`);
+      }
+
+      // ── Perk: Escudo del Cero ──────────────────────────
+      if(wn===0 && activePerks.includes('zero_shield')){
+        const ref=Math.floor(bet.chip*0.5);
+        monedas+=ref; totalWin+=ref;
+        msgs.push(`<span style="color:#ffcc55">0 ${lbl}: escudo +${ref}</span>`);
+      }
     }
   });
 
-  placeChipsOnWheel(bets.filter(b=>b.type==='num'), wn);
+  // ── Actualizar barra multiplicador ───────────────────
+  const multBefore=multBar;
+  let step = anyWin ? MULT_STEP_WIN : MULT_STEP_LOSE;
+  if(anyWin && activePerks.includes('mult_boost')) step*=2;  // perk especial
+  multBar=Math.min(MULT_MAX, Math.max(MULT_MIN, multBar+step));
+  multBar=Math.round(multBar*10)/10; // evitar flotantes raros
+
+  // ── UI ────────────────────────────────────────────────
+  placeChipsOnWheel(bets.filter(b=>b.type==='num'),wn);
   highlightFelt(wn);
-
-  document.getElementById('mensaje').innerHTML =
-    `<strong style="color:#d4af37">Salió el ${wn}</strong><br>${msgs.join(' &nbsp;·&nbsp; ')}`;
-
-  // ── ACTUALIZAR HUD ROGUELIKE ──────────────────────────────
   updateHUD();
+  updateMultBar();
 
-  // ── COMPROBAR GAME OVER ───────────────────────────────────
-  if (monedas <= 0) {
-    isSpinning = false; phase = 'idle';
-    setTimeout(() => triggerGameOver('Sin monedas'), 1200);
+  const multChangeTag = multBar>multBefore
+    ? `<span style="color:#6bff8f"> ▲ x${(1+multBar).toFixed(1)}</span>`
+    : `<span style="color:#ff6b6b"> ▼ x${(1+multBar).toFixed(1)}</span>`;
+
+  document.getElementById('mensaje').innerHTML=
+    `<strong style="color:#d4af37">Salió el ${wn}</strong> ${multChangeTag}<br>${msgs.join(' &nbsp;·&nbsp; ')}`;
+
+  // ── Game Over: sin monedas ───────────────────────────
+  if(monedas<=0){
+    isSpinning=false; phase='idle';
+    setTimeout(()=>triggerGameOver('Te has quedado sin monedas'),1200);
     return;
   }
 
-  // ── COMPROBAR OBJETIVO DE RONDA ──────────────────────────
-  const goal   = getRoundGoal(ronda);
-  const benef  = monedas - monedasInicioRonda;
+  // ── Comprobar objetivo de ronda ──────────────────────
+  const goal  = getRoundGoal(ronda);
+  const benef = monedas - monedasInicioRonda;
 
-  if (benef >= goal) {
-    // Ronda superada
-    isSpinning = false; phase = 'idle';
-    document.getElementById('spinBtn').disabled = false;
-    setTimeout(() => triggerRoundComplete(), 1500);
+  if(benef>=goal){
+    isSpinning=false; phase='idle';
+    setTimeout(()=>triggerRoundComplete(),1400);
     return;
   }
 
-  isSpinning = false; phase = 'idle';
-  document.getElementById('spinBtn').disabled = false;
+  isSpinning=false; phase='idle';
+  document.getElementById('spinBtn').disabled=false;
   updateTotalBet();
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── FLUJO ROGUELIKE ──────────────────────────────────────────
-// ════════════════════════════════════════════════════════════════
-function triggerGameOver(reason) {
-  document.getElementById('goSubtitle').textContent = reason;
-  document.getElementById('goRonda').textContent    = ronda;
-  document.getElementById('goMonedas').textContent  = monedas;
-
-  const goPerksList = document.getElementById('goPerks');
-  if (activePerks.length === 0) {
-    goPerksList.innerHTML = '<span style="color:#5a3e1b">Ninguna</span>';
-  } else {
-    goPerksList.innerHTML = activePerks.map(id => {
-      const p = getPerkById(id);
-      return `<div class="perk-badge">${p.icon} ${p.name}</div>`;
-    }).join('');
-  }
-
+// ════════════════════════════════════════════════════════════
+// ── FLUJO ROGUELIKE ──────────────────────────────────────
+// ════════════════════════════════════════════════════════════
+function triggerGameOver(reason){
+  document.getElementById('goSubtitle').textContent=reason;
+  document.getElementById('goRonda').textContent   =ronda;
+  document.getElementById('goMonedas').textContent =monedas;
+  const el=document.getElementById('goPerks');
+  el.innerHTML=activePerks.length===0
+    ? '<span style="color:#5a3e1b">Ninguna</span>'
+    : activePerks.map(id=>{ const p=getPerkById(id); return `<div class="perk-badge">${p.icon} ${p.name}</div>`; }).join('');
   showScreen('pantallaGameOver');
 }
 
-function triggerRoundComplete() {
-  const vicTitle = document.getElementById('vicTitle');
-  const vicSub   = document.getElementById('vicSub');
-  vicTitle.textContent = `¡Ronda ${ronda} Superada!`;
-
-  const benef = monedas - monedasInicioRonda;
-  vicSub.textContent   = `Beneficio: +${benef} monedas · Monedas totales: ${monedas}`;
-
+function triggerRoundComplete(){
+  const benef=monedas-monedasInicioRonda;
+  document.getElementById('vicTitle').textContent=`¡Ronda ${ronda} Superada!`;
+  document.getElementById('vicSub').textContent  =`+${benef} monedas · Total: ${monedas}`;
   showScreen('pantallaVictoria');
-
-  // Avanzar ronda
   ronda++;
-
-  // Después de un momento mostrar pantalla de mejoras (si hay disponibles)
-  setTimeout(() => {
-    const options = getRandomPerkOptions();
-    if (options.length === 0 || ronda === 1) {
-      // Sin mejoras disponibles → ir directo al juego
-      continuarJuego();
-    } else {
-      showPerkSelection(options);
-    }
-  }, 2200);
+  setTimeout(()=>{
+    const opts=getRandomPerkOptions();
+    opts.length>0 ? showPerkSelection(opts) : continuarJuego();
+  },2000);
 }
 
-function showPerkSelection(options) {
-  document.getElementById('perksRondaSub').textContent =
-    `Ronda ${ronda - 1} completada · Elige una mejora para la siguiente ronda`;
-
-  const grid = document.getElementById('perksGrid');
-  grid.innerHTML = '';
-
-  options.forEach(perk => {
-    const card = document.createElement('div');
-    card.className = 'perk-card';
-    card.innerHTML = `
-      <div class="perk-icon">${perk.icon}</div>
+function showPerkSelection(opts){
+  document.getElementById('perksRondaSub').textContent=
+    `Ronda ${ronda-1} completada · Elige una mejora`;
+  const grid=document.getElementById('perksGrid');
+  grid.innerHTML='';
+  opts.forEach(perk=>{
+    const card=document.createElement('div');
+    card.className='perk-card';
+    card.innerHTML=`<div class="perk-icon">${perk.icon}</div>
       <div class="perk-name">${perk.name}</div>
-      <div class="perk-desc">${perk.desc}</div>
-    `;
-    card.onclick = () => choosePerk(perk.id);
+      <div class="perk-desc">${perk.desc}</div>`;
+    card.onclick=()=>choosePerk(perk.id);
     grid.appendChild(card);
   });
-
   showScreen('pantallaPerks');
 }
 
-function choosePerk(perkId) {
-  activePerks.push(perkId);
-  continuarJuego();
-}
+function choosePerk(id){ activePerks.push(id); continuarJuego(); }
 
-function continuarJuego() {
+function continuarJuego(){
   showScreen('pantalla2');
+  // Reset multiplicador al inicio de cada ronda (empieza neutro)
+  multBar=0.0;
   initRonda();
-  // Resetear apuestas
-  document.getElementById('betRows').innerHTML = '';
-  betRowCount = 0;
+  document.getElementById('betRows').innerHTML='';
+  betRowCount=0;
   addBetRow();
   updateTotalBet();
-  document.getElementById('mensaje').innerHTML = `Elige tipo de apuesta, ficha y gira.`;
-  document.getElementById('resNum').textContent = '—';
-  document.getElementById('resNum').style.color = '#d4af37';
+  document.getElementById('mensaje').innerHTML='Elige tipo de apuesta, ficha y gira.';
+  document.getElementById('resNum').textContent='—';
+  document.getElementById('resNum').style.color='#d4af37';
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── FICHAS SOBRE RULETA (no tocar) ───────────────────────────
-// ════════════════════════════════════════════════════════════════
-function placeChipsOnWheel(bets, winNum) {
-  const cl = document.getElementById('chipsLayer');
-  cl.innerHTML = '';
-  bets.forEach(bet => {
-    const bl = bloques.find(b=>b.num===bet.num);
-    if (!bl) return;
-    const absAngle = bl.mid + wheelAngle;
-    const rad = (absAngle-90)*Math.PI/180;
-    const r = 166;
-    const x = CX + Math.cos(rad)*r, y = CY + Math.sin(rad)*r;
-    const ci = CHIP_DEFS.find(c=>c.v===bet.chip)||CHIP_DEFS[0];
-    const isWin = bet.num===winNum;
-
-    const g   = document.createElementNS('http://www.w3.org/2000/svg','g');
-    const c   = document.createElementNS('http://www.w3.org/2000/svg','circle');
+// ════════════════════════════════════════════════════════════
+// ── FICHAS SOBRE RULETA  ❌ NO TOCAR ─────────────────────
+// ════════════════════════════════════════════════════════════
+function placeChipsOnWheel(bets,winNum){
+  const cl=document.getElementById('chipsLayer'); cl.innerHTML='';
+  bets.forEach(bet=>{
+    const bl=bloques.find(b=>b.num===bet.num); if(!bl) return;
+    const absAngle=bl.mid+wheelAngle;
+    const rad=(absAngle-90)*Math.PI/180;
+    const r=166;
+    const x=CX+Math.cos(rad)*r, y=CY+Math.sin(rad)*r;
+    const ci=CHIP_DEFS.find(c=>c.v===bet.chip)||CHIP_DEFS[0];
+    const isWin=bet.num===winNum;
+    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
     c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r',12);
     c.setAttribute('fill',ci.hex);
-    if (isWin){c.setAttribute('stroke','#fff3b0');c.setAttribute('stroke-width','3');}
-    const inn = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    if(isWin){c.setAttribute('stroke','#fff3b0');c.setAttribute('stroke-width','3');}
+    const inn=document.createElementNS('http://www.w3.org/2000/svg','circle');
     inn.setAttribute('cx',x);inn.setAttribute('cy',y);inn.setAttribute('r',7);
     inn.setAttribute('fill','none');inn.setAttribute('stroke','rgba(255,255,255,.35)');inn.setAttribute('stroke-width','1.5');
-    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
     txt.setAttribute('x',x);txt.setAttribute('y',y);
     txt.setAttribute('text-anchor','middle');txt.setAttribute('dominant-baseline','middle');
     txt.setAttribute('font-size','8');txt.setAttribute('fill','#fff');txt.setAttribute('font-weight','700');
@@ -1546,88 +1429,65 @@ function placeChipsOnWheel(bets, winNum) {
   });
 }
 
-// ════════════════════════════════════════════════════════════════
-// ── TAPETE (no tocar) ────────────────────────────────────────
-// ════════════════════════════════════════════════════════════════
-function buildFelt() {
-  const grid = document.getElementById('numsGrid');
-  grid.innerHTML = '';
-  for (let row=0; row<3; row++) {
-    FELT_ROWS[row].forEach(num => {
-      const cell = document.createElement('div');
-      cell.className = 'cell-num ' + (RED_NUMS.has(num) ? 'red' : 'black');
-      cell.id = 'fc-' + num;
-      cell.textContent = num;
+// ════════════════════════════════════════════════════════════
+// ── TAPETE  ❌ NO TOCAR ──────────────────────────────────
+// ════════════════════════════════════════════════════════════
+function buildFelt(){
+  const grid=document.getElementById('numsGrid'); grid.innerHTML='';
+  for(let row=0;row<3;row++){
+    FELT_ROWS[row].forEach(num=>{
+      const cell=document.createElement('div');
+      cell.className='cell-num '+(RED_NUMS.has(num)?'red':'black');
+      cell.id='fc-'+num; cell.textContent=num;
       grid.appendChild(cell);
     });
   }
-
-  const colRow = document.getElementById('colRow');
-  colRow.innerHTML = '';
+  const colRow=document.getElementById('colRow'); colRow.innerHTML='';
   [{id:'col3',label:'Col 1 (2:1)'},{id:'col2',label:'Col 2 (2:1)'},{id:'col1',label:'Col 3 (2:1)'}]
-    .forEach(c => {
-      const el = document.createElement('div');
-      el.className = 'cell-ext span4'; el.id='fc-'+c.id; el.textContent=c.label;
-      colRow.appendChild(el);
-    });
-
-  const dozRow = document.getElementById('dozRow');
-  dozRow.innerHTML = '';
-  [{id:'doz1',label:'1ª Docena  1–12'},{id:'doz2',label:'2ª Docena  13–24'},{id:'doz3',label:'3ª Docena  25–36'}]
-    .forEach(d => {
-      const el = document.createElement('div');
-      el.className = 'cell-ext span4'; el.id='fc-'+d.id; el.textContent=d.label;
-      dozRow.appendChild(el);
-    });
-
-  const extRow = document.getElementById('extRow');
-  extRow.innerHTML = '';
+    .forEach(c=>{ const el=document.createElement('div'); el.className='cell-ext span4'; el.id='fc-'+c.id; el.textContent=c.label; colRow.appendChild(el); });
+  const dozRow=document.getElementById('dozRow'); dozRow.innerHTML='';
+  [{id:'doz1',label:'1ª Docena 1–12'},{id:'doz2',label:'2ª Docena 13–24'},{id:'doz3',label:'3ª Docena 25–36'}]
+    .forEach(d=>{ const el=document.createElement('div'); el.className='cell-ext span4'; el.id='fc-'+d.id; el.textContent=d.label; dozRow.appendChild(el); });
+  const extRow=document.getElementById('extRow'); extRow.innerHTML='';
   [{id:'low',label:'1–18',cls:''},{id:'even',label:'Par',cls:''},{id:'red',label:'Rojo',cls:'red-bg'},
    {id:'black',label:'Negro',cls:'black-bg'},{id:'odd',label:'Impar',cls:''},{id:'high',label:'19–36',cls:''}]
-    .forEach(e => {
-      const el = document.createElement('div');
-      el.className = 'cell-ext ' + e.cls; el.id='fc-'+e.id; el.textContent=e.label;
-      extRow.appendChild(el);
-    });
+    .forEach(e=>{ const el=document.createElement('div'); el.className='cell-ext '+e.cls; el.id='fc-'+e.id; el.textContent=e.label; extRow.appendChild(el); });
 }
 
-function placeBetsOnFelt(bets) {
+function placeBetsOnFelt(bets){
   document.querySelectorAll('.felt-chip').forEach(c=>c.remove());
-  bets.forEach(bet => {
-    const cellId = bet.type==='num' ? 'fc-'+bet.num : 'fc-'+bet.type;
-    const cell = document.getElementById(cellId);
-    if (!cell) return;
-    const ci = CHIP_DEFS.find(c=>c.v===bet.chip)||CHIP_DEFS[0];
-    const chip = document.createElement('div');
-    chip.className = 'felt-chip ' + ci.cls;
-    chip.textContent = bet.chip;
-    const existing = cell.querySelectorAll('.felt-chip').length;
-    chip.style.transform = `translate(calc(-50% + ${existing*9}px), -50%)`;
-    cell.style.position = 'relative';
-    cell.appendChild(chip);
+  bets.forEach(bet=>{
+    const cellId=bet.type==='num'?'fc-'+bet.num:'fc-'+bet.type;
+    const cell=document.getElementById(cellId); if(!cell) return;
+    const ci=CHIP_DEFS.find(c=>c.v===bet.chip)||CHIP_DEFS[0];
+    const chip=document.createElement('div');
+    chip.className='felt-chip '+ci.cls; chip.textContent=bet.chip;
+    const existing=cell.querySelectorAll('.felt-chip').length;
+    chip.style.transform=`translate(calc(-50% + ${existing*9}px), -50%)`;
+    cell.style.position='relative'; cell.appendChild(chip);
   });
 }
 
-function clearFeltHighlight() {
+function clearFeltHighlight(){
   document.querySelectorAll('.win-highlight').forEach(c=>c.classList.remove('win-highlight'));
 }
 
-function highlightFelt(wn) {
+function highlightFelt(wn){
   clearFeltHighlight();
-  if (wn===0) { document.getElementById('fc-zero')?.classList.add('win-highlight'); return; }
+  if(wn===0){ document.getElementById('fc-zero')?.classList.add('win-highlight'); return; }
   document.getElementById('fc-'+wn)?.classList.add('win-highlight');
-  const exts = [];
-  if (RED_NUMS.has(wn)) exts.push('red'); else exts.push('black');
-  if (wn%2===0) exts.push('even'); else exts.push('odd');
-  if (wn>=1&&wn<=18)  exts.push('low');
-  if (wn>=19&&wn<=36) exts.push('high');
-  if (wn>=1&&wn<=12)  exts.push('doz1');
-  if (wn>=13&&wn<=24) exts.push('doz2');
-  if (wn>=25&&wn<=36) exts.push('doz3');
-  if (wn%3===1) exts.push('col1');
-  if (wn%3===2) exts.push('col2');
-  if (wn%3===0) exts.push('col3');
-  exts.forEach(id => document.getElementById('fc-'+id)?.classList.add('win-highlight'));
+  const exts=[];
+  if(RED_NUMS.has(wn)) exts.push('red'); else exts.push('black');
+  if(wn%2===0) exts.push('even'); else exts.push('odd');
+  if(wn>=1&&wn<=18)  exts.push('low');
+  if(wn>=19&&wn<=36) exts.push('high');
+  if(wn>=1&&wn<=12)  exts.push('doz1');
+  if(wn>=13&&wn<=24) exts.push('doz2');
+  if(wn>=25&&wn<=36) exts.push('doz3');
+  if(wn%3===1) exts.push('col1');
+  if(wn%3===2) exts.push('col2');
+  if(wn%3===0) exts.push('col3');
+  exts.forEach(id=>document.getElementById('fc-'+id)?.classList.add('win-highlight'));
 }
 </script>
 </body>
