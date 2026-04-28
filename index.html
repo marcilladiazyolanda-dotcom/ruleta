@@ -983,9 +983,9 @@ function checkWin(bet, wn) {
   if (t === 'doz1')  return wn >= 1  && wn <= 12;
   if (t === 'doz2')  return wn >= 13 && wn <= 24;
   if (t === 'doz3')  return wn >= 25 && wn <= 36;
-  if (t === 'col1')  return wn % 3 === 1;
-  if (t === 'col2')  return wn % 3 === 2;
-  if (t === 'col3')  return wn % 3 === 0;
+  if (t === 'col1')  return wn !== 0 && wn % 3 === 1;
+  if (t === 'col2')  return wn !== 0 && wn % 3 === 2;
+  if (t === 'col3')  return wn !== 0 && wn % 3 === 0;
   return false;
 }
 
@@ -1186,14 +1186,19 @@ function girar() {
 // renderBall usa (angleDeg - 90)* PI/180 → el offset de 90° ya está en el render,
 // así que aquí hacemos la misma corrección inversa.
 function getWinningNumberFromBallPosition() {
-  // Ángulo relativo al sistema local de la rueda
-  let rel = (ballAngle - wheelAngle) % 360;
-  if (rel < 0) rel += 360;
+  // 1. Ángulo final normalizado de la bola (0–360)
+  let ballFinal = ballAngle % 360;
+  if (ballFinal < 0) ballFinal += 360;
 
-  // Deshacer el desfase de -90° que aplica renderBall
-  rel = (rel - 90 + 360) % 360;
+  // 2. Ángulo relativo a la ruleta
+  let relative = (ballFinal - wheelAngle) % 360;
+  if (relative < 0) relative += 360;
 
-  const winner = bloques.find(b => rel >= b.start && rel < b.end);
+  // 3. Ajuste clave: compensar el offset del SVG (+90°)
+  relative = (relative + 90) % 360;
+
+  // 4. Buscar el segmento donde cae la bola
+  const winner = bloques.find(b => relative >= b.start && relative < b.end);
   return winner ? winner.num : bloques[0].num;
 }
 
@@ -1505,9 +1510,9 @@ function highlightFelt(wn) {
   if (wn >= 1  && wn <= 12) exts.push('doz1');
   if (wn >= 13 && wn <= 24) exts.push('doz2');
   if (wn >= 25 && wn <= 36) exts.push('doz3');
-  if (wn % 3 === 1) exts.push('col1');
-  if (wn % 3 === 2) exts.push('col2');
-  if (wn % 3 === 0) exts.push('col3');
+  if (wn !== 0 && wn % 3 === 1) exts.push('col1');
+  if (wn !== 0 && wn % 3 === 2) exts.push('col2');
+  if (wn !== 0 && wn % 3 === 0) exts.push('col3');
   exts.forEach(id => document.getElementById('fc-' + id)?.classList.add('win-highlight'));
 }
 </script>
