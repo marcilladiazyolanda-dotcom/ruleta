@@ -227,7 +227,7 @@
 
     .felt-title { font-size: 10px; letter-spacing: 3px; color: #8a7040; text-transform: uppercase; text-align: center; margin-bottom: 8px; }
 
-    /* SELECTOR DE FICHAS — debajo del tapete pero primero en DOM */
+    /* SELECTOR DE FICHAS */
     .chip-selector {
       display: flex; gap: 10px; justify-content: center;
       margin-bottom: 12px; flex-wrap: wrap;
@@ -239,10 +239,8 @@
       font-family: 'Playfair Display', serif; font-size: 12px; font-weight: 700; color: #fff;
       border: 3px dashed rgba(255,255,255,.4);
       cursor: pointer; transition: transform .15s, box-shadow .15s;
-      position: relative;
-      box-shadow: 0 3px 10px rgba(0,0,0,.4);
+      position: relative; box-shadow: 0 3px 10px rgba(0,0,0,.4);
     }
-
     .chip-sel-btn::before { content:''; position:absolute; inset:4px; border-radius:50%; border:1.5px solid rgba(255,255,255,.3); }
     .chip-sel-btn.c1   { background: radial-gradient(circle at 35% 30%, #ff6b6b, #c62828, #8b0000); }
     .chip-sel-btn.c5   { background: radial-gradient(circle at 35% 30%, #6b8fff, #1565c0, #0a2d6b); }
@@ -250,94 +248,35 @@
     .chip-sel-btn.c25  { background: radial-gradient(circle at 35% 30%, #ffcc55, #e65100, #8b2e00); }
     .chip-sel-btn.c50  { background: radial-gradient(circle at 35% 30%, #e06bff, #6a1b9a, #3a0a5a); }
     .chip-sel-btn.c100 { background: radial-gradient(circle at 35% 30%, #888, #333, #111); }
-
     .chip-sel-btn.active {
       transform: scale(1.22) translateY(-4px);
       box-shadow: 0 6px 18px rgba(0,0,0,.5), 0 0 0 3px #d4af37;
     }
 
     .felt-wrap {
-      background: #0d5c2f;
-      background-image: radial-gradient(ellipse at 50% 0%, #1a7a40 0%, #0d5c2f 50%, #0a4a25 100%);
-      border: 3px solid #5a3e1b; border-radius: 10px; padding: 16px;
-      box-shadow: inset 0 2px 20px rgba(0,0,0,.4), 0 8px 30px rgba(0,0,0,.6), 0 0 0 1px #3B1F08;
+      background: #0b5227;
+      background-image: radial-gradient(ellipse at 50% 0%, #166b35 0%, #0b5227 60%, #083d1d 100%);
+      border: 3px solid #5a3e1b; border-radius: 10px; padding: 10px;
+      box-shadow: inset 0 2px 20px rgba(0,0,0,.5), 0 8px 30px rgba(0,0,0,.6), 0 0 0 1px #3B1F08;
       overflow-x: auto;
     }
 
-    .felt-layout { display: flex; gap: 6px; min-width: 640px; }
-    .zero-col { display: flex; align-items: stretch; }
+    .felt-svg { width: 100%; min-width: 700px; display: block; }
 
-    /* Celdas del tapete — ahora son clickables */
-    .cell-zero {
-      width: 44px; background: #2e7d32;
-      border: 2px solid rgba(255,255,255,.25); border-radius: 4px 0 0 4px;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff;
-      writing-mode: vertical-rl; text-orientation: mixed;
-      letter-spacing: 4px; position: relative; cursor: pointer;
-      transition: filter .15s, border-color .15s;
+    /* Leyenda */
+    .felt-legend {
+      display: flex; gap: 16px; justify-content: center;
+      margin-top: 8px; flex-wrap: wrap;
     }
-    .cell-zero:hover { filter: brightness(1.3); border-color: rgba(255,255,255,.6); }
-
-    .felt-right { display: flex; flex-direction: column; gap: 3px; flex: 1; }
-
-    .nums-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(3, 42px); gap: 2px; }
-
-    .cell-num {
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #fff;
-      border: 2px solid rgba(255,255,255,.18); position: relative;
-      cursor: pointer; user-select: none;
-      transition: filter .1s, border-color .1s;
-    }
-    .cell-num.red   { background: #c62828; }
-    .cell-num.black { background: #111; }
-    .cell-num:hover { filter: brightness(1.4); border-color: rgba(255,255,255,.6); }
-    .cell-num.boss-disabled { opacity: .25; pointer-events: none; }
-
-    .ext-row { display: flex; gap: 2px; }
-
-    .cell-ext {
-      flex: 1; height: 34px; display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 600; color: rgba(255,255,255,.9);
-      border: 2px solid rgba(255,255,255,.18); background: rgba(0,0,0,.28); border-radius: 2px;
-      position: relative; cursor: pointer; user-select: none;
-      letter-spacing: .4px; transition: filter .1s, border-color .1s;
-    }
-    .cell-ext:hover { filter: brightness(1.4); border-color: rgba(255,255,255,.6); }
-    .cell-ext.red-bg   { background: #b71c1c; }
-    .cell-ext.black-bg { background: #111; }
-    .cell-ext.span4    { flex: 4; }
-    .cell-ext.boss-disabled { opacity: .25; pointer-events: none; }
-
-    /* Ficha en tapete */
-    .felt-chip {
-      position: absolute; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-size: 8px; font-weight: 700; color: #fff;
-      border: 2px dashed rgba(255,255,255,.5);
-      box-shadow: 0 2px 8px rgba(0,0,0,.6), inset 0 1px 3px rgba(255,255,255,.15);
-      pointer-events: none; z-index: 10;
-      width: 26px; height: 26px;
-    }
-
-    .felt-chip::before { content:''; position:absolute; inset:3px; border-radius:50%; border:1px solid rgba(255,255,255,.25); }
-
-    .felt-chip.c1   { background: radial-gradient(circle at 35% 30%, #ff6b6b, #c62828); }
-    .felt-chip.c5   { background: radial-gradient(circle at 35% 30%, #6b8fff, #1565c0); }
-    .felt-chip.c10  { background: radial-gradient(circle at 35% 30%, #6bff8f, #2e7d32); }
-    .felt-chip.c25  { background: radial-gradient(circle at 35% 30%, #ffcc55, #e65100); }
-    .felt-chip.c50  { background: radial-gradient(circle at 35% 30%, #e06bff, #6a1b9a); }
-    .felt-chip.c100 { background: radial-gradient(circle at 35% 30%, #888, #333); }
-
-    /* Cuando hay varias fichas en la misma celda, se apilan ligeramente */
-    .chips-stack { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); }
-
-    .win-highlight { outline: 2px solid #d4af37 !important; filter: brightness(1.6) !important; }
+    .leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8a7040; }
+    .leg-dot  { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
     /* Fichas sobre el SVG de la ruleta */
     .chips-on-wheel { position:absolute; top:0; left:0; width:420px; height:420px; pointer-events:none; z-index:15; }
+
+    /* tooltip apuestas internas */
+    .bet-hover-zone { cursor: pointer; }
+    .bet-hover-zone:hover > rect { opacity: 0.25 !important; }
 
     /* ══════════ PANTALLAS ROGUELIKE ══════════ */
     #pantallaPerks {
@@ -512,23 +451,23 @@
 
   <!-- TAPETE DE CASINO -->
   <div class="felt-section">
-    <div class="felt-title">Tapete · Selecciona ficha y haz clic para apostar</div>
+    <div class="felt-title">Selecciona ficha · Haz clic en el tapete para apostar</div>
 
     <!-- Selector de fichas -->
     <div class="chip-selector" id="chipSelector"></div>
 
+    <!-- Tapete SVG interactivo -->
     <div class="felt-wrap">
-      <div class="felt-layout">
-        <div class="zero-col">
-          <div class="cell-zero" id="fc-zero" onclick="placeBetOnCell('zero',null)">0</div>
-        </div>
-        <div class="felt-right">
-          <div class="nums-grid" id="numsGrid"></div>
-          <div class="ext-row" id="colRow"></div>
-          <div class="ext-row" id="dozRow"></div>
-          <div class="ext-row" id="extRow"></div>
-        </div>
-      </div>
+      <svg id="feltSVG" class="felt-svg" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <!-- Leyenda de apuestas internas -->
+    <div class="felt-legend">
+      <span class="leg-item"><span class="leg-dot" style="background:#d4af37"></span>Pleno 35:1</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#e65100"></span>Caballo 17:1</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#1565c0"></span>Calle 11:1</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#6a1b9a"></span>Cuadro 8:1</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#2e7d32"></span>Seisena 5:1</span>
     </div>
   </div>
 </div>
@@ -587,20 +526,28 @@ const RED_NUMS = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
 const ROULETTE_ORDER = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
 
 const BET_TYPES_META = {
-  num:   {label:'Número', mult:36},
-  red:   {label:'Rojo',   mult:2},
-  black: {label:'Negro',  mult:2},
-  even:  {label:'Par',    mult:2},
-  odd:   {label:'Impar',  mult:2},
-  low:   {label:'1-18',   mult:2},
-  high:  {label:'19-36',  mult:2},
-  doz1:  {label:'1ª Doc', mult:3},
-  doz2:  {label:'2ª Doc', mult:3},
-  doz3:  {label:'3ª Doc', mult:3},
-  col1:  {label:'Col 1',  mult:3},
-  col2:  {label:'Col 2',  mult:3},
-  col3:  {label:'Col 3',  mult:3},
-  zero:  {label:'0',      mult:36},
+  // Apuestas internas
+  pleno:   {label:'Pleno',   mult:36},  // 1 número, paga 35:1
+  caballo: {label:'Caballo', mult:18},  // 2 números, paga 17:1
+  calle:   {label:'Calle',   mult:12},  // 3 números, paga 11:1
+  cuadro:  {label:'Cuadro',  mult:9},   // 4 números, paga 8:1
+  seisena: {label:'Seisena', mult:6},   // 6 números, paga 5:1
+  // Apuestas externas
+  red:     {label:'Rojo',    mult:2},
+  black:   {label:'Negro',   mult:2},
+  even:    {label:'Par',     mult:2},
+  odd:     {label:'Impar',   mult:2},
+  low:     {label:'1-18',    mult:2},
+  high:    {label:'19-36',   mult:2},
+  doz1:    {label:'1ª Doc',  mult:3},
+  doz2:    {label:'2ª Doc',  mult:3},
+  doz3:    {label:'3ª Doc',  mult:3},
+  col1:    {label:'Col 1',   mult:3},
+  col2:    {label:'Col 2',   mult:3},
+  col3:    {label:'Col 3',   mult:3},
+  // Alias legado
+  num:     {label:'Pleno',   mult:36},
+  zero:    {label:'0',       mult:36},
 };
 
 const FELT_ROWS = [
@@ -971,21 +918,32 @@ function flashMsg(txt) {
 // ════════════════════════════════════════════════════════════
 function checkWin(bet, wn) {
   const t = bet.type;
-  if (t === 'zero' || (t === 'num' && bet.num === 0)) return wn === 0;
-  if (t === 'num')   return wn === bet.num;
-  if (wn === 0)      return false;
-  if (t === 'red')   return RED_NUMS.has(wn);
-  if (t === 'black') return !RED_NUMS.has(wn);
-  if (t === 'even')  return wn % 2 === 0;
-  if (t === 'odd')   return wn % 2 !== 0;
-  if (t === 'low')   return wn >= 1  && wn <= 18;
-  if (t === 'high')  return wn >= 19 && wn <= 36;
-  if (t === 'doz1')  return wn >= 1  && wn <= 12;
-  if (t === 'doz2')  return wn >= 13 && wn <= 24;
-  if (t === 'doz3')  return wn >= 25 && wn <= 36;
-  if (t === 'col1')  return wn !== 0 && wn % 3 === 1;
-  if (t === 'col2')  return wn !== 0 && wn % 3 === 2;
-  if (t === 'col3')  return wn !== 0 && wn % 3 === 0;
+  const nums = bet.nums || (bet.num !== undefined ? [bet.num] : []);
+
+  // Apuesta al 0 directo
+  if (t === 'zero') return wn === 0;
+  // Legado: num con num===0
+  if (t === 'num' && bet.num === 0) return wn === 0;
+
+  // Apuestas internas (pleno, caballo, calle, cuadro, seisena)
+  if (['pleno','caballo','calle','cuadro','seisena','num'].includes(t)) {
+    return nums.includes(wn);
+  }
+
+  if (wn === 0) return false; // El 0 no gana apuestas externas
+
+  if (t === 'red')     return RED_NUMS.has(wn);
+  if (t === 'black')   return !RED_NUMS.has(wn);
+  if (t === 'even')    return wn % 2 === 0;
+  if (t === 'odd')     return wn % 2 !== 0;
+  if (t === 'low')     return wn >= 1  && wn <= 18;
+  if (t === 'high')    return wn >= 19 && wn <= 36;
+  if (t === 'doz1')    return wn >= 1  && wn <= 12;
+  if (t === 'doz2')    return wn >= 13 && wn <= 24;
+  if (t === 'doz3')    return wn >= 25 && wn <= 36;
+  if (t === 'col1')    return wn !== 0 && wn % 3 === 1;
+  if (t === 'col2')    return wn !== 0 && wn % 3 === 2;
+  if (t === 'col3')    return wn !== 0 && wn % 3 === 0;
   return false;
 }
 
@@ -994,9 +952,16 @@ function getMult(type) {
 }
 
 function getLabel(bet) {
-  if (bet.type === 'zero' || (bet.type === 'num' && bet.num === 0)) return 'N.º 0';
-  if (bet.type === 'num') return 'N.º ' + bet.num;
-  return BET_TYPES_META[bet.type]?.label || bet.type;
+  const t = bet.type;
+  const nums = bet.nums || (bet.num !== undefined ? [bet.num] : []);
+  if (t === 'zero') return 'N.º 0';
+  if (t === 'num' && bet.num === 0) return 'N.º 0';
+  if (['pleno','num'].includes(t)) return 'Pleno ' + (nums[0] ?? '');
+  if (t === 'caballo')  return 'Caballo ' + nums.join('/');
+  if (t === 'calle')    return 'Calle '   + nums[0] + '–' + nums[nums.length-1];
+  if (t === 'cuadro')   return 'Cuadro '  + nums[0] + '–' + nums[nums.length-1];
+  if (t === 'seisena')  return 'Seisena ' + nums[0] + '–' + nums[nums.length-1];
+  return BET_TYPES_META[t]?.label || t;
 }
 
 // ════════════════════════════════════════════════════════════
